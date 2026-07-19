@@ -105,10 +105,10 @@ function ProyectosPage() {
                     <span
                       className={cn(
                         "inline-block rounded px-2 py-1 text-[10px] font-semibold uppercase tracking-wider text-white",
-                        catColor[p.categoria],
+                        p.categoria ? catColor[p.categoria] : "bg-[color:var(--color-siryc-gray)]",
                       )}
                     >
-                      {catLabel[p.categoria]}
+                      {p.categoria ? catLabel[p.categoria] : ""}
                     </span>
                     <h3 className="mt-3 font-display text-lg font-semibold leading-snug text-[color:var(--color-siryc-dark)]">
                       {p.titulo}
