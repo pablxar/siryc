@@ -14,7 +14,129 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      blog_posts: {
+        Row: {
+          categoria: string | null
+          contenido: string | null
+          created_at: string | null
+          extracto: string | null
+          id: string
+          imagen_url: string | null
+          publicado: boolean | null
+          slug: string
+          titulo: string
+        }
+        Insert: {
+          categoria?: string | null
+          contenido?: string | null
+          created_at?: string | null
+          extracto?: string | null
+          id?: string
+          imagen_url?: string | null
+          publicado?: boolean | null
+          slug: string
+          titulo: string
+        }
+        Update: {
+          categoria?: string | null
+          contenido?: string | null
+          created_at?: string | null
+          extracto?: string | null
+          id?: string
+          imagen_url?: string | null
+          publicado?: boolean | null
+          slug?: string
+          titulo?: string
+        }
+        Relationships: []
+      }
+      leads: {
+        Row: {
+          cargo: string | null
+          created_at: string | null
+          email: string
+          empresa: string | null
+          id: string
+          mensaje: string | null
+          nombre: string
+          origen_pagina: string | null
+          segmento: string | null
+          telefono: string | null
+          tipo_servicio: string | null
+        }
+        Insert: {
+          cargo?: string | null
+          created_at?: string | null
+          email: string
+          empresa?: string | null
+          id?: string
+          mensaje?: string | null
+          nombre: string
+          origen_pagina?: string | null
+          segmento?: string | null
+          telefono?: string | null
+          tipo_servicio?: string | null
+        }
+        Update: {
+          cargo?: string | null
+          created_at?: string | null
+          email?: string
+          empresa?: string | null
+          id?: string
+          mensaje?: string | null
+          nombre?: string
+          origen_pagina?: string | null
+          segmento?: string | null
+          telefono?: string | null
+          tipo_servicio?: string | null
+        }
+        Relationships: []
+      }
+      proyectos: {
+        Row: {
+          anio: number | null
+          cantidad_equipos: number | null
+          categoria: string | null
+          cliente_nombre: string | null
+          created_at: string | null
+          descripcion: string | null
+          galeria: Json | null
+          id: string
+          imagen_principal_url: string | null
+          metros_cuadrados: number | null
+          mostrar_cliente: boolean | null
+          titulo: string
+        }
+        Insert: {
+          anio?: number | null
+          cantidad_equipos?: number | null
+          categoria?: string | null
+          cliente_nombre?: string | null
+          created_at?: string | null
+          descripcion?: string | null
+          galeria?: Json | null
+          id?: string
+          imagen_principal_url?: string | null
+          metros_cuadrados?: number | null
+          mostrar_cliente?: boolean | null
+          titulo: string
+        }
+        Update: {
+          anio?: number | null
+          cantidad_equipos?: number | null
+          categoria?: string | null
+          cliente_nombre?: string | null
+          created_at?: string | null
+          descripcion?: string | null
+          galeria?: Json | null
+          id?: string
+          imagen_principal_url?: string | null
+          metros_cuadrados?: number | null
+          mostrar_cliente?: boolean | null
+          titulo?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
