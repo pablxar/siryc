@@ -4,6 +4,10 @@ import { Snowflake, Wind, Zap, Check, ArrowRight, Play, Settings, Thermometer } 
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { FadeIn } from "@/components/site/FadeIn";
+import { cn } from "@/lib/utils";
+import { Thermometer as _Thermometer } from "lucide-react";
+void _Thermometer;
+
 
 
 export const Route = createFileRoute("/")({
