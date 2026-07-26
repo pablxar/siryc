@@ -113,20 +113,30 @@ function HomePage() {
               Más de 20 años liderando proyectos de refrigeración, climatización y electricidad
               con estándares <span className="font-semibold text-white">ISO 9001</span> en todo Chile.
             </p>
-            <div className="mt-12 flex flex-wrap gap-4">
-              <Link
-                to="/contacto"
-                className="rounded-full bg-white px-10 py-5 text-sm font-bold text-[color:var(--color-siryc-blue)] transition-all hover:shadow-2xl hover:shadow-black/30 active:scale-[0.98]"
-              >
-                Iniciar proyecto
-              </Link>
-              <Link
-                to="/servicios"
-                className="rounded-full border border-white/30 px-10 py-5 text-sm font-bold text-white transition-colors hover:bg-white/10"
-              >
-                Nuestra ingeniería
-              </Link>
-            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.25, ease: "easeOut" }}
+              className="mt-12 flex flex-wrap gap-4"
+            >
+              <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
+                <Link
+                  to="/contacto"
+                  className="inline-block rounded-full bg-white px-10 py-5 text-sm font-bold text-[color:var(--color-siryc-blue)] transition-shadow hover:shadow-2xl hover:shadow-black/30"
+                >
+                  Iniciar proyecto
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
+                <Link
+                  to="/servicios"
+                  className="inline-block rounded-full border border-white/30 px-10 py-5 text-sm font-bold text-white transition-colors hover:bg-white/10"
+                >
+                  Nuestra ingeniería
+                </Link>
+              </motion.div>
+            </motion.div>
+
           </motion.div>
         </div>
       </section>
