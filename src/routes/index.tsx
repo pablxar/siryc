@@ -146,7 +146,11 @@ function HomePage() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {pilares.map((p, i) => (
             <FadeIn key={p.titulo} delay={i * 0.08}>
-              <div className="group h-full rounded-2xl border border-black/5 bg-white p-8 shadow-xl shadow-[color:var(--color-siryc-blue)]/5 transition-all duration-300 hover:-translate-y-1 hover:border-[color:var(--color-siryc-blue)]">
+              <motion.div
+                whileHover={{ y: -6 }}
+                transition={{ type: "spring", stiffness: 260, damping: 22 }}
+                className="group h-full rounded-2xl border border-black/5 bg-white p-8 shadow-xl shadow-[color:var(--color-siryc-blue)]/5 transition-colors duration-300 hover:border-[color:var(--color-siryc-blue)]"
+              >
                 <div className="mb-4 font-display text-xs font-bold uppercase tracking-[0.25em] text-[color:var(--color-siryc-blue)]">
                   {String(i + 1).padStart(2, "0")}
                 </div>
@@ -156,9 +160,10 @@ function HomePage() {
                 <p className="mt-2 text-sm leading-relaxed text-[color:var(--color-siryc-gray)]">
                   {p.desc}
                 </p>
-              </div>
+              </motion.div>
             </FadeIn>
           ))}
+
         </div>
       </section>
 
