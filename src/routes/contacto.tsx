@@ -102,7 +102,7 @@ function ContactoPage() {
       <section className="bg-white py-16">
         <div className="container-siryc grid gap-12 lg:grid-cols-[1.4fr_1fr]">
           <FadeIn>
-            <form onSubmit={handleSubmit(onSubmit)} className="rounded-lg border border-black/5 bg-white p-6 md:p-8">
+            <form onSubmit={handleSubmit(onSubmit)} className="rounded-2xl border border-black/5 bg-white p-6 shadow-sm md:p-8">
               <h2 className="mb-6 font-display text-2xl font-bold text-[color:var(--color-siryc-dark)]">
                 Solicitud de cotización
               </h2>
@@ -148,7 +148,7 @@ function ContactoPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="mt-6 inline-flex items-center gap-2 rounded-md bg-[color:var(--color-siryc-red)] px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+                className="mt-6 inline-flex items-center gap-2 rounded-full bg-[color:var(--color-siryc-red)] px-7 py-3 text-sm font-semibold text-white shadow-[0_10px_30px_-10px_rgba(227,6,19,0.5)] transition-all hover:shadow-[0_15px_35px_-10px_rgba(227,6,19,0.6)] disabled:opacity-50"
               >
                 {isSubmitting ? "Enviando…" : "Enviar solicitud"}
               </button>
@@ -162,7 +162,7 @@ function ContactoPage() {
 
           <FadeIn delay={0.1}>
             <div className="space-y-6">
-              <div className="rounded-lg bg-[color:var(--color-siryc-dark)] p-6 text-white">
+              <div className="rounded-2xl bg-[color:var(--color-siryc-dark)] p-6 text-white">
                 <h3 className="font-display text-lg font-semibold">Contacto directo</h3>
                 <ul className="mt-4 space-y-3 text-sm text-white/85">
                   <li className="flex items-start gap-2"><Phone size={16} className="mt-0.5" /> +56 32 000 0000</li>
@@ -172,7 +172,7 @@ function ContactoPage() {
                 </ul>
               </div>
 
-              <div className="overflow-hidden rounded-lg border border-black/5">
+              <div className="overflow-hidden rounded-2xl border border-black/5">
                 <iframe
                   title="Ubicación SIRYC"
                   src="https://www.google.com/maps?q=Valpara%C3%ADso,+Chile&output=embed"
@@ -189,7 +189,7 @@ function ContactoPage() {
 }
 
 const inputCls =
-  "w-full rounded-md border border-black/10 bg-white px-3 py-2.5 text-sm text-[color:var(--color-siryc-dark)] outline-none transition-colors focus:border-[color:var(--color-siryc-blue)] focus:ring-2 focus:ring-[color:var(--color-siryc-blue)]/20";
+  "w-full rounded-xl border border-black/10 bg-white px-3.5 py-2.5 text-sm text-[color:var(--color-siryc-dark)] outline-none transition-colors focus:border-[color:var(--color-siryc-blue)] focus:ring-2 focus:ring-[color:var(--color-siryc-blue)]/20";
 
 function Field({
   label,

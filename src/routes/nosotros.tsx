@@ -97,7 +97,7 @@ function NosotrosPage() {
           </FadeIn>
           <div className="grid gap-6 md:grid-cols-2">
             <FadeIn>
-              <div className="h-full rounded-lg border-t-4 border-[color:var(--color-siryc-blue)] bg-white p-8">
+              <div className="h-full rounded-2xl border-t-4 border-[color:var(--color-siryc-blue)] bg-white p-8 shadow-sm">
                 <h3 className="mb-5 font-display text-xl font-bold text-[color:var(--color-siryc-blue)]">
                   SIRYC es
                 </h3>
@@ -112,7 +112,7 @@ function NosotrosPage() {
               </div>
             </FadeIn>
             <FadeIn delay={0.1}>
-              <div className="h-full rounded-lg border-t-4 border-[color:var(--color-siryc-red)] bg-white p-8">
+              <div className="h-full rounded-2xl border-t-4 border-[color:var(--color-siryc-red)] bg-white p-8 shadow-sm">
                 <h3 className="mb-5 font-display text-xl font-bold text-[color:var(--color-siryc-red)]">
                   SIRYC no es
                 </h3>
@@ -166,7 +166,7 @@ function NosotrosPage() {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {equipo.map((m, i) => (
               <FadeIn key={m.nombre} delay={i * 0.08}>
-                <div className="rounded-lg border border-black/5 p-6 text-center">
+                <div className="rounded-2xl border border-black/5 p-6 text-center">
                   <div className="mx-auto h-20 w-20 rounded-full bg-[color:var(--color-siryc-light)]/40" />
                   <h3 className="mt-4 font-display font-semibold text-[color:var(--color-siryc-dark)]">
                     {m.nombre}
@@ -194,7 +194,7 @@ function NosotrosPage() {
               { icon: ShieldCheck, t: "Refrigerantes", d: "Manejo conforme a normativa chilena y Protocolo de Montreal." },
             ].map(({ icon: Icon, t, d }, i) => (
               <FadeIn key={t} delay={i * 0.08}>
-                <div className="rounded-lg bg-white p-6">
+                <div className="rounded-2xl bg-white p-6 shadow-sm">
                   <Icon className="text-[color:var(--color-siryc-blue)]" size={28} />
                   <h3 className="mt-4 font-display font-semibold text-[color:var(--color-siryc-dark)]">{t}</h3>
                   <p className="mt-2 text-sm text-[color:var(--color-siryc-gray)]">{d}</p>

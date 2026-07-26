@@ -50,7 +50,7 @@ function BlogIndex() {
                 <Link
                   to="/blog/$slug"
                   params={{ slug: p.slug }}
-                  className="group block h-full overflow-hidden rounded-lg border border-black/5 transition-all hover:shadow-lg"
+                  className="group block h-full overflow-hidden rounded-2xl border border-black/5 transition-all hover:shadow-lg"
                 >
                   <div className="aspect-[16/10] overflow-hidden bg-[color:var(--color-siryc-light)]/30">
                     {p.imagen_url && (
