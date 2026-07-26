@@ -31,8 +31,13 @@ export function SiteHeader() {
 
   return (
     <div className="sticky top-0 z-50 w-full">
-      {/* Utility bar */}
-      <div className="hidden bg-[color:var(--color-siryc-dark)] text-white md:block">
+      {/* Utility bar — colapsa al scroll */}
+      <div
+        className={cn(
+          "hidden overflow-hidden bg-[color:var(--color-siryc-dark)] text-white transition-[max-height,opacity] duration-500 ease-out md:block",
+          scrolled ? "max-h-0 opacity-0" : "max-h-10 opacity-100",
+        )}
+      >
         <div className="container-siryc flex h-9 items-center justify-end gap-8 text-[11px] font-medium uppercase tracking-wider">
           <span className="flex items-center gap-2">
             <span className="font-bold text-[color:var(--color-siryc-red)]">T:</span>
@@ -48,14 +53,24 @@ export function SiteHeader() {
       {/* Main header */}
       <header
         className={cn(
-          "border-b border-black/5 bg-white/95 backdrop-blur transition-all",
-          scrolled ? "py-2 shadow-[0_2px_16px_rgba(27,35,44,0.06)]" : "py-3",
+          "border-b transition-all duration-300 ease-out",
+          scrolled
+            ? "border-black/10 bg-white/85 py-1.5 shadow-[0_8px_24px_-12px_rgba(20,57,142,0.18)] backdrop-blur-xl"
+            : "border-transparent bg-white/95 py-3 backdrop-blur",
         )}
       >
         <div className="container-siryc flex items-center justify-between gap-4">
-          <Link to="/" aria-label="SIRYC — Inicio" className="flex items-center">
+          <Link
+            to="/"
+            aria-label="SIRYC — Inicio"
+            className={cn(
+              "flex origin-left items-center transition-transform duration-300 ease-out",
+              scrolled ? "scale-[0.88]" : "scale-100",
+            )}
+          >
             <Logo variant="dark" />
           </Link>
+
 
           <nav className="hidden items-center gap-8 lg:flex">
             {NAV.map((item) => {

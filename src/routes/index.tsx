@@ -113,20 +113,30 @@ function HomePage() {
               Más de 20 años liderando proyectos de refrigeración, climatización y electricidad
               con estándares <span className="font-semibold text-white">ISO 9001</span> en todo Chile.
             </p>
-            <div className="mt-12 flex flex-wrap gap-4">
-              <Link
-                to="/contacto"
-                className="rounded-full bg-white px-10 py-5 text-sm font-bold text-[color:var(--color-siryc-blue)] transition-all hover:shadow-2xl hover:shadow-black/30 active:scale-[0.98]"
-              >
-                Iniciar proyecto
-              </Link>
-              <Link
-                to="/servicios"
-                className="rounded-full border border-white/30 px-10 py-5 text-sm font-bold text-white transition-colors hover:bg-white/10"
-              >
-                Nuestra ingeniería
-              </Link>
-            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.25, ease: "easeOut" }}
+              className="mt-12 flex flex-wrap gap-4"
+            >
+              <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
+                <Link
+                  to="/contacto"
+                  className="inline-block rounded-full bg-white px-10 py-5 text-sm font-bold text-[color:var(--color-siryc-blue)] transition-shadow hover:shadow-2xl hover:shadow-black/30"
+                >
+                  Iniciar proyecto
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
+                <Link
+                  to="/servicios"
+                  className="inline-block rounded-full border border-white/30 px-10 py-5 text-sm font-bold text-white transition-colors hover:bg-white/10"
+                >
+                  Nuestra ingeniería
+                </Link>
+              </motion.div>
+            </motion.div>
+
           </motion.div>
         </div>
       </section>
@@ -136,7 +146,11 @@ function HomePage() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {pilares.map((p, i) => (
             <FadeIn key={p.titulo} delay={i * 0.08}>
-              <div className="group h-full rounded-2xl border border-black/5 bg-white p-8 shadow-xl shadow-[color:var(--color-siryc-blue)]/5 transition-all duration-300 hover:-translate-y-1 hover:border-[color:var(--color-siryc-blue)]">
+              <motion.div
+                whileHover={{ y: -6 }}
+                transition={{ type: "spring", stiffness: 260, damping: 22 }}
+                className="group h-full rounded-2xl border border-black/5 bg-white p-8 shadow-xl shadow-[color:var(--color-siryc-blue)]/5 transition-colors duration-300 hover:border-[color:var(--color-siryc-blue)]"
+              >
                 <div className="mb-4 font-display text-xs font-bold uppercase tracking-[0.25em] text-[color:var(--color-siryc-blue)]">
                   {String(i + 1).padStart(2, "0")}
                 </div>
@@ -146,9 +160,10 @@ function HomePage() {
                 <p className="mt-2 text-sm leading-relaxed text-[color:var(--color-siryc-gray)]">
                   {p.desc}
                 </p>
-              </div>
+              </motion.div>
             </FadeIn>
           ))}
+
         </div>
       </section>
 
@@ -174,26 +189,32 @@ function HomePage() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {especialidades.map((e, i) => (
             <FadeIn key={e.titulo} delay={i * 0.1}>
-              <Link
-                to="/servicios"
-                className="group relative block aspect-[3/4] overflow-hidden rounded-2xl bg-slate-200"
+              <motion.div
+                whileHover={{ y: -4 }}
+                transition={{ type: "spring", stiffness: 240, damping: 22 }}
               >
-                <img
-                  src={e.img}
-                  alt={e.titulo}
-                  loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[color:var(--color-siryc-blue)] via-[color:var(--color-siryc-blue)]/40 to-transparent opacity-90 transition-opacity group-hover:opacity-95" />
-                <div className="absolute inset-x-0 bottom-0 translate-y-4 p-8 text-white transition-transform duration-500 group-hover:translate-y-0">
-                  <h4 className="font-display text-2xl font-bold">{e.titulo}</h4>
-                  <p className="mt-3 max-h-0 overflow-hidden text-sm leading-relaxed text-white/80 opacity-0 transition-all duration-500 group-hover:max-h-40 group-hover:opacity-100">
-                    {e.desc}
-                  </p>
-                </div>
-              </Link>
+                <Link
+                  to="/servicios"
+                  className="group relative block aspect-[3/4] overflow-hidden rounded-2xl bg-slate-200"
+                >
+                  <img
+                    src={e.img}
+                    alt={e.titulo}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[color:var(--color-siryc-blue)] via-[color:var(--color-siryc-blue)]/40 to-transparent opacity-90 transition-opacity group-hover:opacity-95" />
+                  <div className="absolute inset-x-0 bottom-0 translate-y-4 p-8 text-white transition-transform duration-500 group-hover:translate-y-0">
+                    <h4 className="font-display text-2xl font-bold">{e.titulo}</h4>
+                    <p className="mt-3 max-h-0 overflow-hidden text-sm leading-relaxed text-white/80 opacity-0 transition-all duration-500 group-hover:max-h-40 group-hover:opacity-100">
+                      {e.desc}
+                    </p>
+                  </div>
+                </Link>
+              </motion.div>
             </FadeIn>
           ))}
+
         </div>
       </section>
 
