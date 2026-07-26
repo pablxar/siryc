@@ -184,9 +184,9 @@ function HomePage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-          {especialidades.map((e, i) => (
-            <FadeIn key={e.titulo} delay={i * 0.1}>
+        <RevealGroup inView className="grid grid-cols-1 gap-8 md:grid-cols-3">
+          {especialidades.map((e) => (
+            <RevealItem key={e.titulo}>
               <motion.div
                 whileHover={{ y: -4 }}
                 transition={{ type: "spring", stiffness: 240, damping: 22 }}
@@ -210,8 +210,10 @@ function HomePage() {
                   </div>
                 </Link>
               </motion.div>
-            </FadeIn>
+            </RevealItem>
           ))}
+        </RevealGroup>
+
 
         </div>
       </section>
