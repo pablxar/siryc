@@ -9,32 +9,45 @@ export function SiteFooter() {
         <div className="grid gap-10 md:grid-cols-4">
           <div>
             <Logo variant="light" />
-            <p className="mt-4 text-sm text-white/60">
-              Tu clima, nuestra ingeniería.
-            </p>
+            <p className="mt-4 text-sm text-white/60">Tu clima, nuestra ingeniería.</p>
             <p className="mt-4 text-xs text-white/50">
-              Más de 20 años entregando soluciones de ingeniería en refrigeración,
-              climatización y electricidad.
+              Más de 20 años entregando soluciones de ingeniería en refrigeración, climatización y electricidad.
             </p>
           </div>
 
           <div>
-            <h4 className="mb-4 font-display text-sm font-semibold uppercase tracking-wider text-white">
-              Enlaces
-            </h4>
+            <h4 className="mb-4 font-display text-sm font-semibold uppercase tracking-wider text-white">Enlaces</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/nosotros" className="hover:text-white">Nosotros</Link></li>
-              <li><Link to="/servicios" className="hover:text-white">Servicios</Link></li>
-              <li><Link to="/proyectos" className="hover:text-white">Proyectos</Link></li>
-              <li><Link to="/clientes" className="hover:text-white">Clientes</Link></li>
-              <li><Link to="/blog" className="hover:text-white">Blog técnico</Link></li>
+              <li>
+                <Link to="/nosotros" className="hover:text-white">
+                  Nosotros
+                </Link>
+              </li>
+              <li>
+                <Link to="/servicios" className="hover:text-white">
+                  Servicios
+                </Link>
+              </li>
+              <li>
+                <Link to="/proyectos" className="hover:text-white">
+                  Proyectos
+                </Link>
+              </li>
+              <li>
+                <Link to="/clientes" className="hover:text-white">
+                  Clientes
+                </Link>
+              </li>
+              <li>
+                <Link to="/blog" className="hover:text-white">
+                  Blog técnico
+                </Link>
+              </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="mb-4 font-display text-sm font-semibold uppercase tracking-wider text-white">
-              Servicios
-            </h4>
+            <h4 className="mb-4 font-display text-sm font-semibold uppercase tracking-wider text-white">Servicios</h4>
             <ul className="space-y-2 text-sm">
               <li>Refrigeración industrial</li>
               <li>Climatización y aire acondicionado</li>
@@ -44,9 +57,7 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <h4 className="mb-4 font-display text-sm font-semibold uppercase tracking-wider text-white">
-              Contacto
-            </h4>
+            <h4 className="mb-4 font-display text-sm font-semibold uppercase tracking-wider text-white">Contacto</h4>
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-2">
                 <Phone size={16} className="mt-0.5 flex-shrink-0" />
@@ -83,8 +94,10 @@ export function SiteFooter() {
         </div>
 
         <div className="mt-6 flex flex-col items-start justify-between gap-2 text-xs text-white/50 md:flex-row md:items-center">
-          <span>© {new Date().getFullYear()} SIRYC — Servicios de Ingeniería en Electricidad, Refrigeración y Climatización.</span>
-          <span>Desarrollado por Biztech</span>
+          <span>
+            © {new Date().getFullYear()} SIRYC — Servicios de Ingeniería en Electricidad, Refrigeración y Climatización.
+          </span>
+          <span>Desarrollado por Siryc Spa</span>
         </div>
       </div>
     </footer>
