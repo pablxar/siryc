@@ -1,13 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { Snowflake, Wind, Zap, Check, ArrowRight, Play, Settings } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { FadeIn } from "@/components/site/FadeIn";
-import { cn } from "@/lib/utils";
-
-
-
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -24,39 +20,52 @@ export const Route = createFileRoute("/")({
         content:
           "Ingeniería que sostiene la operación de tu edificio. Refrigeración, climatización y electricidad.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "canonical", href: "/" }],
   }),
   component: HomePage,
 });
 
+const pilares = [
+  { titulo: "Ingeniería", desc: "Diseño conceptual y de detalle para soluciones termodinámicas complejas." },
+  { titulo: "Electricidad", desc: "Instalaciones de fuerza, control y automatización bajo normativa SEC." },
+  { titulo: "Refrigeración", desc: "Sistemas de frío industrial y comercial con máxima eficiencia energética." },
+  { titulo: "Climatización", desc: "Soluciones HVAC personalizadas para edificios y centros industriales." },
+];
+
 const especialidades = [
   {
-    icon: Snowflake,
     titulo: "Refrigeración industrial",
     desc: "Mantención preventiva y correctiva, plantas de agua fría, sistemas para data centers y salas eléctricas.",
-    href: "/servicios",
+    img: "https://images.unsplash.com/photo-1581092918484-8313ce1c1c9b?w=1000&q=80",
   },
   {
-    icon: Wind,
     titulo: "Climatización y aire acondicionado",
     desc: "Sistemas VRF, proyectos llave en mano y ventilación industrial para centros comerciales y oficinas.",
-    href: "/servicios",
+    img: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=1000&q=80",
   },
   {
-    icon: Zap,
     titulo: "Electricidad industrial",
     desc: "Instalaciones, tableros, sistemas de control centralizado y mantención eléctrica preventiva.",
-    href: "/servicios",
+    img: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=1000&q=80",
   },
 ];
 
 const razones = [
-  "Ingeniería documentada en cada proyecto",
-  "Equipos certificados y personal capacitado",
-  "Experiencia en sectores exigentes: gobierno, FFAA, corporativo",
-  "Respuesta técnica garantizada",
-  "Más de dos décadas de continuidad operativa",
+  { titulo: "Ingeniería documentada en cada proyecto", desc: "Memoria técnica, planos y protocolos entregables para cada intervención." },
+  { titulo: "Equipos certificados y personal capacitado", desc: "Técnicos con acreditación SEC y formación continua en nuevas tecnologías." },
+  { titulo: "Experiencia en sectores exigentes", desc: "Gobierno, FFAA, retail corporativo, salud y educación con estándares críticos." },
+  { titulo: "Respuesta técnica garantizada", desc: "SLA definidos y guardia operativa para asegurar la continuidad de tu operación." },
+  { titulo: "Más de dos décadas de continuidad operativa", desc: "20+ años ejecutando contratos de mantención y proyectos llave en mano." },
+];
+
+const stats = [
+  { valor: "+20", label: "Años de Trayectoria" },
+  { valor: "500+", label: "Proyectos Entregados" },
+  { valor: "ISO", label: "9001 Certificados" },
+  { valor: "24/7", label: "Respuesta Técnica" },
 ];
 
 function HomePage() {
@@ -75,216 +84,170 @@ function HomePage() {
   });
 
   return (
-    <div>
+    <div className="bg-slate-50 text-[color:var(--color-siryc-dark)]">
       {/* HERO */}
-      <section className="relative flex flex-col border-b border-black/5 bg-white lg:flex-row lg:min-h-[640px]">
-        {/* Left: content */}
-        <div className="flex flex-1 flex-col justify-center px-6 py-16 md:px-12 lg:py-24 lg:pl-16 xl:pl-24">
+      <section className="relative overflow-hidden bg-[color:var(--color-siryc-blue)] py-24 lg:py-36">
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.07]"
+          style={{
+            backgroundImage: "radial-gradient(circle at 2px 2px, white 1px, transparent 0)",
+            backgroundSize: "32px 32px",
+          }}
+        />
+        <div className="absolute right-0 top-0 h-96 w-96 -translate-y-1/3 translate-x-1/3 rounded-full bg-white/5 blur-3xl" />
+        <div className="container-siryc relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: "easeOut" }}
-            className="max-w-xl"
+            className="max-w-4xl"
           >
-            <div className="mb-7 inline-flex items-center gap-3">
-              <span className="h-[3px] w-12 bg-[color:var(--color-siryc-red)]" />
-              <span className="font-display text-xs font-bold uppercase tracking-[0.2em] text-[color:var(--color-siryc-blue)]">
-                Tu clima, nuestra ingeniería
-              </span>
-            </div>
-            <h1 className="font-display text-5xl font-bold leading-[1.05] tracking-tight text-[color:var(--color-siryc-dark)] md:text-6xl lg:text-7xl">
+            <span className="mb-8 inline-block rounded-full bg-[color:var(--color-siryc-red)] px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.25em] text-white">
+              Tu clima, nuestra ingeniería
+            </span>
+            <h1 className="font-display text-5xl font-extrabold leading-[0.95] tracking-tight text-white md:text-7xl lg:text-[6.5rem]">
               Ingeniería de{" "}
-              <span className="text-[color:var(--color-siryc-blue)]">Precisión</span>{" "}
-              Térmica.
+              <span className="text-white/60">Precisión Térmica.</span>
             </h1>
-            <p className="mt-7 max-w-lg text-lg font-light leading-relaxed text-[color:var(--color-siryc-gray)]">
-              Más de 20 años liderando proyectos de refrigeración, climatización
-              y electricidad con estándares{" "}
-              <span className="font-semibold text-[color:var(--color-siryc-dark)]">
-                ISO 9001
-              </span>{" "}
-              en todo Chile.
+            <p className="mt-10 max-w-2xl text-lg leading-relaxed text-white/75 md:text-xl">
+              Más de 20 años liderando proyectos de refrigeración, climatización y electricidad
+              con estándares <span className="font-semibold text-white">ISO 9001</span> en todo Chile.
             </p>
-            <div className="mt-10 flex flex-wrap items-center gap-6">
+            <div className="mt-12 flex flex-wrap gap-4">
+              <Link
+                to="/contacto"
+                className="rounded-full bg-white px-10 py-5 text-sm font-bold text-[color:var(--color-siryc-blue)] transition-all hover:shadow-2xl hover:shadow-black/30 active:scale-[0.98]"
+              >
+                Iniciar proyecto
+              </Link>
               <Link
                 to="/servicios"
-                className="rounded-full bg-[color:var(--color-siryc-blue)] px-10 py-5 text-xs font-bold uppercase tracking-widest text-white shadow-[0_20px_40px_-15px_rgba(20,57,142,0.5)] transition-all hover:shadow-[0_25px_50px_-10px_rgba(20,57,142,0.6)]"
+                className="rounded-full border border-white/30 px-10 py-5 text-sm font-bold text-white transition-colors hover:bg-white/10"
               >
-                Explorar Servicios
-              </Link>
-              <Link to="/nosotros" className="group flex items-center gap-4">
-                <span className="flex h-14 w-14 items-center justify-center rounded-full border border-black/10 transition-colors group-hover:border-[color:var(--color-siryc-blue)]">
-                  <Play
-                    size={18}
-                    className="ml-0.5 fill-[color:var(--color-siryc-blue)] text-[color:var(--color-siryc-blue)]"
-                  />
-                </span>
-                <span className="text-xs font-bold uppercase tracking-widest text-[color:var(--color-siryc-gray)]">
-                  Ver trayectoria
-                </span>
+                Nuestra ingeniería
               </Link>
             </div>
           </motion.div>
         </div>
+      </section>
 
-        {/* Right: visual */}
-        <div className="relative flex-1 bg-[color:var(--color-siryc-light)]/20 min-h-[420px] lg:min-h-0">
-          <img
-            src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=1400&q=80"
-            alt="Sistemas HVAC industriales instalados por SIRYC"
-            className="absolute inset-0 h-full w-full object-cover"
-            loading="eager"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/20 to-transparent lg:from-white/60" />
-          <FadeIn
-            delay={0.25}
-            className="absolute bottom-8 right-6 max-w-xs bg-white p-7 shadow-[0_20px_50px_rgba(20,57,142,0.18)] md:bottom-12 md:right-12"
-          >
-            <div className="h-1 w-12 bg-[color:var(--color-siryc-blue)]" />
-            <div className="mt-4 font-display text-4xl font-bold text-[color:var(--color-siryc-blue)]">
-              +20
-            </div>
-            <div className="mt-1 text-[10px] font-bold uppercase tracking-widest text-[color:var(--color-siryc-gray)]">
-              Años de Experiencia
-            </div>
-            <p className="mt-4 text-xs leading-relaxed text-[color:var(--color-siryc-gray)]">
-              Garantizamos la continuidad operativa de sus procesos con
-              ingeniería de alto estándar.
-            </p>
-          </FadeIn>
+      {/* PILARES flotantes */}
+      <section className="container-siryc relative z-20 -mt-14">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {pilares.map((p, i) => (
+            <FadeIn key={p.titulo} delay={i * 0.08}>
+              <div className="group h-full rounded-2xl border border-black/5 bg-white p-8 shadow-xl shadow-[color:var(--color-siryc-blue)]/5 transition-all duration-300 hover:-translate-y-1 hover:border-[color:var(--color-siryc-blue)]">
+                <div className="mb-4 font-display text-xs font-bold uppercase tracking-[0.25em] text-[color:var(--color-siryc-blue)]">
+                  {String(i + 1).padStart(2, "0")}
+                </div>
+                <h3 className="font-display text-xl font-bold text-[color:var(--color-siryc-dark)]">
+                  {p.titulo}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-[color:var(--color-siryc-gray)]">
+                  {p.desc}
+                </p>
+              </div>
+            </FadeIn>
+          ))}
         </div>
       </section>
 
-      {/* PILARES */}
-      <section className="grid grid-cols-1 bg-[color:var(--color-siryc-blue)] md:grid-cols-2 lg:grid-cols-4">
-        {[
-          {
-            icon: Settings,
-            titulo: "Ingeniería",
-            desc: "Diseño conceptual y de detalle para soluciones termodinámicas complejas.",
-          },
-          {
-            icon: Zap,
-            titulo: "Electricidad",
-            desc: "Instalaciones de fuerza, control y automatización bajo normativa SEC.",
-          },
-          {
-            icon: Snowflake,
-            titulo: "Refrigeración",
-            desc: "Sistemas de frío industrial y comercial con máxima eficiencia energética.",
-          },
-          {
-            icon: Wind,
-            titulo: "Climatización",
-            desc: "Soluciones HVAC personalizadas para edificios y centros industriales.",
-          },
-        ].map((p, i, arr) => (
-          <FadeIn
-            key={p.titulo}
-            delay={i * 0.08}
-            className={cn(
-              "group cursor-default p-10 transition-colors hover:bg-[#0e2a6d] lg:p-12",
-              i < arr.length - 1 && "lg:border-r lg:border-white/10",
-            )}
-          >
-            <div className="mb-6 h-12 w-12 text-white transition-transform group-hover:scale-110">
-              <p.icon strokeWidth={1.5} className="h-full w-full" />
-            </div>
-            <h3 className="font-display text-sm font-bold uppercase tracking-[0.2em] text-white">
-              {p.titulo}
-            </h3>
-            <p className="mt-3 text-xs leading-relaxed text-white/70">
-              {p.desc}
-            </p>
-          </FadeIn>
-        ))}
-      </section>
-
-
       {/* ESPECIALIDADES */}
-      <section className="bg-white py-20">
-        <div className="container-siryc">
+      <section className="container-siryc py-32">
+        <div className="mb-16 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
           <FadeIn>
-            <div className="mb-12 max-w-2xl">
-              <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-[color:var(--color-siryc-blue)]">
-                Especialidades
-              </p>
-              <h2 className="font-display text-3xl font-bold md:text-4xl">
+            <div className="max-w-xl">
+              <h2 className="font-display text-4xl font-extrabold text-[color:var(--color-siryc-blue)] md:text-5xl">
                 Tres líneas técnicas, una sola ingeniería.
               </h2>
+              <p className="mt-4 text-[color:var(--color-siryc-gray)]">
+                Dominio técnico total en montaje, mantenimiento y consultoría estratégica.
+              </p>
             </div>
           </FadeIn>
-          <div className="grid gap-8 md:grid-cols-3">
-            {especialidades.map((e, i) => (
-              <FadeIn key={e.titulo} delay={i * 0.1}>
-                <div className="group h-full rounded-2xl border border-black/5 bg-white p-8 transition-all hover:-translate-y-1 hover:shadow-[0_10px_40px_rgba(20,57,142,0.08)]">
-                  <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[color:var(--color-siryc-blue)] text-white">
-                    <e.icon size={22} />
-                  </div>
-                  <h3 className="font-display text-xl font-semibold text-[color:var(--color-siryc-dark)]">
-                    {e.titulo}
-                  </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-[color:var(--color-siryc-gray)]">
+          <div className="hidden h-px flex-grow bg-slate-200 lg:mx-8 lg:block" />
+          <div className="font-mono text-sm font-bold text-[color:var(--color-siryc-red)]">
+            EST. 2004
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+          {especialidades.map((e, i) => (
+            <FadeIn key={e.titulo} delay={i * 0.1}>
+              <Link
+                to="/servicios"
+                className="group relative block aspect-[3/4] overflow-hidden rounded-2xl bg-slate-200"
+              >
+                <img
+                  src={e.img}
+                  alt={e.titulo}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[color:var(--color-siryc-blue)] via-[color:var(--color-siryc-blue)]/40 to-transparent opacity-90 transition-opacity group-hover:opacity-95" />
+                <div className="absolute inset-x-0 bottom-0 translate-y-4 p-8 text-white transition-transform duration-500 group-hover:translate-y-0">
+                  <h4 className="font-display text-2xl font-bold">{e.titulo}</h4>
+                  <p className="mt-3 max-h-0 overflow-hidden text-sm leading-relaxed text-white/80 opacity-0 transition-all duration-500 group-hover:max-h-40 group-hover:opacity-100">
                     {e.desc}
                   </p>
-                  <Link
-                    to={e.href}
-                    className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-[color:var(--color-siryc-blue)]"
-                  >
-                    Ver más <ArrowRight size={14} />
-                  </Link>
                 </div>
-              </FadeIn>
-            ))}
-          </div>
+              </Link>
+            </FadeIn>
+          ))}
         </div>
       </section>
 
       {/* POR QUÉ SIRYC */}
-      <section className="bg-[color:var(--color-siryc-light)]/40 py-20">
-        <div className="container-siryc grid items-center gap-12 md:grid-cols-2">
+      <section className="border-y border-slate-100 bg-white py-32">
+        <div className="container-siryc grid grid-cols-1 gap-24 lg:grid-cols-2">
           <FadeIn>
-            <img
-              src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1000&q=80"
-              alt="Técnico SIRYC en terreno realizando mantención"
-              className="rounded-2xl object-cover shadow-lg"
-              loading="lazy"
-            />
+            <h2 className="font-display text-4xl font-extrabold text-[color:var(--color-siryc-blue)]">
+              Continuidad operativa,<br />sin improvisación.
+            </h2>
+            <div className="mt-12 space-y-8">
+              {razones.map((r) => (
+                <div key={r.titulo} className="flex gap-6">
+                  <div className="mt-1 h-12 w-[2px] flex-shrink-0 bg-[color:var(--color-siryc-red)]" />
+                  <div>
+                    <h5 className="font-semibold text-[color:var(--color-siryc-dark)]">
+                      {r.titulo}
+                    </h5>
+                    <p className="mt-1 text-sm leading-relaxed text-[color:var(--color-siryc-gray)]">
+                      {r.desc}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </FadeIn>
           <FadeIn delay={0.15}>
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-[color:var(--color-siryc-blue)]">
-              Por qué SIRYC
-            </p>
-            <h2 className="font-display text-3xl font-bold text-[color:var(--color-siryc-dark)] md:text-4xl">
-              Continuidad operativa, sin improvisación.
-            </h2>
-            <ul className="mt-6 space-y-3">
-              {razones.map((r) => (
-                <li key={r} className="flex items-start gap-3 text-[color:var(--color-siryc-dark)]">
-                  <span className="mt-1 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[color:var(--color-siryc-blue)] text-white">
-                    <Check size={12} strokeWidth={3} />
-                  </span>
-                  <span className="text-sm md:text-base">{r}</span>
-                </li>
+            <div className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl bg-slate-100 p-px shadow-2xl shadow-[color:var(--color-siryc-blue)]/10">
+              {stats.map((s) => (
+                <div key={s.label} className="bg-white p-10 text-center lg:p-14">
+                  <div className="font-display text-5xl font-black text-[color:var(--color-siryc-blue)]">
+                    {s.valor}
+                  </div>
+                  <div className="mt-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[color:var(--color-siryc-gray)]">
+                    {s.label}
+                  </div>
+                </div>
               ))}
-            </ul>
+            </div>
           </FadeIn>
         </div>
       </section>
 
       {/* CLIENTES */}
-      <section className="bg-white py-16">
-        <div className="container-siryc">
-          <FadeIn>
-            <h2 className="mb-10 text-center font-display text-2xl font-bold text-[color:var(--color-siryc-dark)] md:text-3xl">
-              Empresas e instituciones que confían en SIRYC
-            </h2>
-          </FadeIn>
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-6">
+      <section className="py-20">
+        <div className="container-siryc text-center">
+          <p className="mb-12 text-[10px] font-bold uppercase tracking-[0.3em] text-[color:var(--color-siryc-gray)]">
+            Empresas e instituciones que confían en SIRYC
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-x-16 gap-y-8 opacity-50 grayscale">
             {["Armada de Chile", "Centro Comercial", "Corporativo", "Colegio", "Institución", "Corporativo"].map((c, i) => (
               <div
                 key={i}
-                className="flex aspect-[3/2] items-center justify-center rounded-xl border border-black/5 bg-[color:var(--color-siryc-light)]/25 p-4 text-center text-[10px] font-semibold uppercase tracking-wider text-[color:var(--color-siryc-gray)]"
+                className="flex h-10 min-w-[140px] items-center justify-center rounded border border-slate-200 bg-white px-6 text-[10px] font-bold uppercase tracking-[0.15em] text-[color:var(--color-siryc-gray)]"
               >
                 {c}
               </div>
@@ -294,85 +257,87 @@ function HomePage() {
       </section>
 
       {/* PROYECTO DESTACADO */}
-      <section className="bg-[color:var(--color-siryc-dark)] py-20 text-white">
-        <div className="container-siryc grid items-center gap-10 md:grid-cols-2">
-          <FadeIn>
-            <img
-              src="https://images.unsplash.com/photo-1565043666747-69f6646db940?w=1200&q=80"
-              alt="Proyecto destacado SIRYC"
-              className="aspect-[4/3] w-full rounded-2xl object-cover"
-              loading="lazy"
-            />
-          </FadeIn>
-          <FadeIn delay={0.15}>
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-[color:var(--color-siryc-red)]">
-              Proyecto destacado
-            </p>
-            <h2 className="font-display text-3xl font-bold md:text-4xl">
-              Climatización integral de 12.000 m² en centro comercial.
-            </h2>
-            <p className="mt-4 text-white/70">
-              48 unidades instaladas, sistema VRF y ventilación mecánica.
-              Contrato de mantención anual vigente desde 2020.
-            </p>
-            <Link
-              to="/proyectos"
-              className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/30 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
-            >
-              Ver todos los proyectos <ArrowRight size={16} />
-            </Link>
-          </FadeIn>
-        </div>
+      <section className="container-siryc py-24">
+        <FadeIn>
+          <div className="flex flex-col overflow-hidden rounded-[2.5rem] bg-[color:var(--color-siryc-blue)] shadow-2xl shadow-[color:var(--color-siryc-blue)]/20 lg:flex-row">
+            <div className="relative min-h-[400px] lg:w-1/2">
+              <img
+                src="https://images.unsplash.com/photo-1565043666747-69f6646db940?w=1400&q=80"
+                alt="Proyecto destacado SIRYC"
+                loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+            </div>
+            <div className="flex flex-col justify-center p-12 text-white lg:w-1/2 lg:p-20">
+              <span className="mb-6 text-xs font-bold uppercase tracking-[0.25em] text-[color:var(--color-siryc-red)]">
+                Proyecto destacado
+              </span>
+              <h3 className="font-display text-4xl font-bold leading-tight">
+                Climatización integral de 12.000 m² en centro comercial.
+              </h3>
+              <p className="mt-8 text-lg leading-relaxed text-white/75">
+                48 unidades instaladas, sistema VRF y ventilación mecánica.
+                Contrato de mantención anual vigente desde 2020.
+              </p>
+              <div className="mt-10">
+                <Link
+                  to="/proyectos"
+                  className="inline-flex items-center gap-2 rounded-full border-2 border-white px-8 py-4 text-sm font-bold text-white transition-all hover:bg-white hover:text-[color:var(--color-siryc-blue)]"
+                >
+                  Ver todos los proyectos <ArrowRight size={16} />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </FadeIn>
       </section>
 
       {/* BLOG PREVIEW */}
-      <section className="bg-white py-20">
+      <section className="bg-slate-100/60 py-32">
         <div className="container-siryc">
-          <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+          <div className="mb-16 flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-[color:var(--color-siryc-blue)]">
+              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-[color:var(--color-siryc-gray)]">
                 Actualidad técnica
               </p>
-              <h2 className="font-display text-3xl font-bold text-[color:var(--color-siryc-dark)] md:text-4xl">
+              <h2 className="font-display text-4xl font-extrabold text-[color:var(--color-siryc-blue)]">
                 Análisis y normativa para operaciones.
               </h2>
             </div>
             <Link
               to="/blog"
-              className="text-sm font-semibold text-[color:var(--color-siryc-blue)]"
+              className="border-b-2 border-[color:var(--color-siryc-red)] pb-1 text-sm font-bold text-[color:var(--color-siryc-dark)]"
             >
-              Ver todos →
+              Leer todas las noticias
             </Link>
           </div>
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
             {(posts ?? []).map((p, i) => (
               <FadeIn key={p.id} delay={i * 0.1}>
                 <Link
                   to="/blog/$slug"
                   params={{ slug: p.slug }}
-                  className="group block overflow-hidden rounded-2xl border border-black/5 transition-all hover:shadow-lg"
+                  className="group block"
                 >
-                  <div className="aspect-[16/10] overflow-hidden bg-[color:var(--color-siryc-light)]/30">
+                  <div className="mb-6 aspect-video overflow-hidden rounded-2xl bg-slate-200">
                     {p.imagen_url && (
                       <img
                         src={p.imagen_url}
                         alt={p.titulo}
-                        className="h-full w-full object-cover transition-transform group-hover:scale-105"
                         loading="lazy"
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                     )}
                   </div>
-                  <div className="p-5">
-                    <p className="text-[10px] font-semibold uppercase tracking-wider text-[color:var(--color-siryc-red)]">
-                      {p.categoria}
-                    </p>
-                    <h3 className="mt-2 font-display text-lg font-semibold leading-snug text-[color:var(--color-siryc-dark)]">
-                      {p.titulo}
-                    </h3>
-                    <p className="mt-2 line-clamp-2 text-sm text-[color:var(--color-siryc-gray)]">
-                      {p.extracto}
-                    </p>
-                  </div>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[color:var(--color-siryc-red)]">
+                    {p.categoria}
+                  </span>
+                  <h4 className="mt-3 font-display text-xl font-bold leading-snug text-[color:var(--color-siryc-dark)] transition-colors group-hover:text-[color:var(--color-siryc-blue)]">
+                    {p.titulo}
+                  </h4>
+                  <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-[color:var(--color-siryc-gray)]">
+                    {p.extracto}
+                  </p>
                 </Link>
               </FadeIn>
             ))}
@@ -381,22 +346,35 @@ function HomePage() {
       </section>
 
       {/* CTA FINAL */}
-      <section className="bg-[color:var(--color-siryc-blue)] py-16 text-white">
-        <div className="container-siryc text-center">
-          <h2 className="font-display text-3xl font-bold md:text-4xl">
-            ¿Necesitas una cotización técnica?
-          </h2>
-          <p className="mx-auto mt-3 max-w-xl text-white/80">
-            Nuestro equipo evalúa tu instalación y entrega una propuesta
-            documentada.
-          </p>
-          <Link
-            to="/contacto"
-            className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-[color:var(--color-siryc-blue)] shadow-lg transition-opacity hover:opacity-90"
-          >
-            Contactar a SIRYC <ArrowRight size={16} />
-          </Link>
-        </div>
+      <section className="container-siryc py-32">
+        <FadeIn>
+          <div className="relative overflow-hidden rounded-[3rem] bg-[color:var(--color-siryc-blue)] p-12 text-center md:p-24">
+            <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-white/10 blur-3xl" />
+            <div className="absolute -bottom-40 -left-20 h-96 w-96 rounded-full bg-[color:var(--color-siryc-red)]/20 blur-3xl" />
+            <div className="relative z-10">
+              <h2 className="mx-auto max-w-3xl font-display text-4xl font-extrabold leading-tight text-white md:text-6xl">
+                ¿Necesitas una cotización técnica?
+              </h2>
+              <p className="mx-auto mt-8 max-w-xl text-lg text-white/75">
+                Nuestro equipo evalúa tu instalación y entrega una propuesta documentada.
+              </p>
+              <div className="mt-12 flex flex-wrap justify-center gap-4">
+                <Link
+                  to="/contacto"
+                  className="rounded-full bg-[color:var(--color-siryc-red)] px-12 py-5 text-sm font-bold text-white transition-all hover:shadow-2xl hover:shadow-[color:var(--color-siryc-red)]/40"
+                >
+                  Contactar a SIRYC
+                </Link>
+                <Link
+                  to="/proyectos"
+                  className="rounded-full bg-white px-12 py-5 text-sm font-bold text-[color:var(--color-siryc-blue)] transition-colors hover:bg-white/90"
+                >
+                  Ver proyectos
+                </Link>
+              </div>
+            </div>
+          </div>
+        </FadeIn>
       </section>
     </div>
   );
