@@ -96,48 +96,46 @@ function HomePage() {
         />
         <div className="absolute right-0 top-0 h-96 w-96 -translate-y-1/3 translate-x-1/3 rounded-full bg-white/5 blur-3xl" />
         <div className="container-siryc relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-            className="max-w-4xl"
-          >
-            <span className="mb-8 inline-block rounded-full bg-[color:var(--color-siryc-red)] px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.25em] text-white">
-              Tu clima, nuestra ingeniería
-            </span>
-            <h1 className="font-display text-5xl font-extrabold leading-[0.95] tracking-tight text-white md:text-7xl lg:text-[6.5rem]">
-              Ingeniería de{" "}
-              <span className="text-white/60">Precisión Térmica.</span>
-            </h1>
-            <p className="mt-10 max-w-2xl text-lg leading-relaxed text-white/75 md:text-xl">
-              Más de 20 años liderando proyectos de refrigeración, climatización y electricidad
-              con estándares <span className="font-semibold text-white">ISO 9001</span> en todo Chile.
-            </p>
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.25, ease: "easeOut" }}
-              className="mt-12 flex flex-wrap gap-4"
-            >
-              <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
-                <Link
-                  to="/contacto"
-                  className="inline-block rounded-full bg-white px-10 py-5 text-sm font-bold text-[color:var(--color-siryc-blue)] transition-shadow hover:shadow-2xl hover:shadow-black/30"
-                >
-                  Iniciar proyecto
-                </Link>
-              </motion.div>
-              <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
-                <Link
-                  to="/servicios"
-                  className="inline-block rounded-full border border-white/30 px-10 py-5 text-sm font-bold text-white transition-colors hover:bg-white/10"
-                >
-                  Nuestra ingeniería
-                </Link>
-              </motion.div>
-            </motion.div>
+          <RevealGroup className="max-w-4xl">
+            <RevealItem>
+              <span className="mb-8 inline-block rounded-full bg-[color:var(--color-siryc-red)] px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.25em] text-white">
+                Tu clima, nuestra ingeniería
+              </span>
+            </RevealItem>
+            <RevealItem>
+              <h1 className="font-display text-5xl font-extrabold leading-[0.95] tracking-tight text-white md:text-7xl lg:text-[6.5rem]">
+                Ingeniería de{" "}
+                <span className="text-white/60">Precisión Térmica.</span>
+              </h1>
+            </RevealItem>
+            <RevealItem>
+              <p className="mt-10 max-w-2xl text-lg leading-relaxed text-white/75 md:text-xl">
+                Más de 20 años liderando proyectos de refrigeración, climatización y electricidad
+                con estándares <span className="font-semibold text-white">ISO 9001</span> en todo Chile.
+              </p>
+            </RevealItem>
+            <RevealItem>
+              <div className="mt-12 flex flex-wrap gap-4">
+                <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
+                  <Link
+                    to="/contacto"
+                    className="inline-block rounded-full bg-white px-10 py-5 text-sm font-bold text-[color:var(--color-siryc-blue)] transition-shadow hover:shadow-2xl hover:shadow-black/30"
+                  >
+                    Iniciar proyecto
+                  </Link>
+                </motion.div>
+                <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
+                  <Link
+                    to="/servicios"
+                    className="inline-block rounded-full border border-white/30 px-10 py-5 text-sm font-bold text-white transition-colors hover:bg-white/10"
+                  >
+                    Nuestra ingeniería
+                  </Link>
+                </motion.div>
+              </div>
+            </RevealItem>
+          </RevealGroup>
 
-          </motion.div>
         </div>
       </section>
 
