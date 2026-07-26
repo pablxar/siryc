@@ -90,7 +90,7 @@ function ProyectosPage() {
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {filtered.map((p, i) => (
               <FadeIn key={p.id} delay={i * 0.05}>
-                <article className="group h-full overflow-hidden rounded-lg border border-black/5 bg-white transition-all hover:shadow-lg">
+                <article className="group h-full overflow-hidden rounded-2xl border border-black/5 bg-white transition-all hover:shadow-lg">
                   <div className="aspect-[16/10] overflow-hidden">
                     {p.imagen_principal_url && (
                       <img

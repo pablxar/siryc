@@ -51,7 +51,7 @@ function ClientesPage() {
                 {seg.clientes.map((c) => (
                   <div
                     key={c}
-                    className="flex aspect-[3/2] items-center justify-center rounded-md border border-black/5 bg-white p-4 text-center text-[10px] font-semibold uppercase tracking-wider text-[color:var(--color-siryc-gray)]"
+                    className="flex aspect-[3/2] items-center justify-center rounded-xl border border-black/5 bg-white p-4 text-center text-[10px] font-semibold uppercase tracking-wider text-[color:var(--color-siryc-gray)]"
                   >
                     {c}
                   </div>
@@ -92,7 +92,7 @@ function ClientesPage() {
           <div className="grid gap-6 md:grid-cols-2">
             {testimonios.map((t, i) => (
               <FadeIn key={i} delay={i * 0.1}>
-                <div className="h-full rounded-lg border border-black/5 bg-[color:var(--color-siryc-light)]/25 p-8">
+                <div className="h-full rounded-2xl border border-black/5 bg-[color:var(--color-siryc-light)]/25 p-8">
                   <Quote className="text-[color:var(--color-siryc-blue)]" />
                   <p className="mt-4 text-[color:var(--color-siryc-dark)]">"{t.quote}"</p>
                   <div className="mt-6 border-t border-black/10 pt-4">

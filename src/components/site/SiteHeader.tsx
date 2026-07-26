@@ -80,7 +80,7 @@ export function SiteHeader() {
           <div className="flex items-center gap-2">
             <Link
               to="/contacto"
-              className="group hidden items-center gap-2 bg-[color:var(--color-siryc-blue)] px-6 py-3.5 text-[11px] font-bold uppercase tracking-widest text-white shadow-[0_10px_30px_-10px_rgba(20,57,142,0.5)] transition-all hover:bg-[color:var(--color-siryc-dark)] md:inline-flex"
+              className="group hidden items-center gap-2 rounded-full bg-[color:var(--color-siryc-blue)] px-6 py-3.5 text-[11px] font-bold uppercase tracking-widest text-white shadow-[0_10px_30px_-10px_rgba(20,57,142,0.5)] transition-all hover:bg-[color:var(--color-siryc-dark)] md:inline-flex"
             >
               Solicitar cotización
               <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
@@ -110,7 +110,7 @@ export function SiteHeader() {
               ))}
               <Link
                 to="/contacto"
-                className="mt-3 inline-flex justify-center bg-[color:var(--color-siryc-blue)] px-4 py-3 text-xs font-bold uppercase tracking-widest text-white"
+                className="mt-3 inline-flex justify-center rounded-full bg-[color:var(--color-siryc-blue)] px-4 py-3 text-xs font-bold uppercase tracking-widest text-white"
               >
                 Solicitar cotización
               </Link>

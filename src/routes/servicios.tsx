@@ -89,11 +89,11 @@ function ServiciosPage() {
                   src={s.img}
                   alt={s.titulo}
                   loading="lazy"
-                  className="aspect-[4/3] w-full rounded-lg object-cover shadow-lg"
+                  className="aspect-[4/3] w-full rounded-2xl object-cover shadow-lg"
                 />
               </FadeIn>
               <FadeIn delay={0.15}>
-                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-md bg-[color:var(--color-siryc-blue)] text-white">
+                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[color:var(--color-siryc-blue)] text-white">
                   <s.icon size={22} />
                 </div>
                 <h2 className="font-display text-3xl font-bold text-[color:var(--color-siryc-dark)] md:text-4xl">
@@ -110,7 +110,7 @@ function ServiciosPage() {
                 <Link
                   to="/contacto"
                   search={{ servicio: s.id }}
-                  className="mt-8 inline-flex items-center gap-2 rounded-md bg-[color:var(--color-siryc-red)] px-5 py-3 text-sm font-semibold text-white"
+                  className="mt-8 inline-flex items-center gap-2 rounded-full bg-[color:var(--color-siryc-red)] px-6 py-3 text-sm font-semibold text-white shadow-[0_10px_30px_-10px_rgba(227,6,19,0.5)] transition-all hover:shadow-[0_15px_35px_-10px_rgba(227,6,19,0.6)]"
                 >
                   Solicitar cotización de {s.titulo.toLowerCase()} <ArrowRight size={16} />
                 </Link>
@@ -137,7 +137,7 @@ function ServiciosPage() {
             </p>
             <Link
               to="/contacto"
-              className="mt-8 inline-flex items-center gap-2 rounded-md bg-[color:var(--color-siryc-red)] px-6 py-3 text-sm font-semibold"
+              className="mt-8 inline-flex items-center gap-2 rounded-full bg-[color:var(--color-siryc-red)] px-6 py-3 text-sm font-semibold text-white shadow-[0_10px_30px_-10px_rgba(227,6,19,0.5)] transition-all hover:shadow-[0_15px_35px_-10px_rgba(227,6,19,0.6)]"
             >
               Solicitar propuesta de contrato <ArrowRight size={16} />
             </Link>
