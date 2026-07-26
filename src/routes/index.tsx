@@ -213,10 +213,8 @@ function HomePage() {
             </RevealItem>
           ))}
         </RevealGroup>
-
-
-        </div>
       </section>
+
 
       {/* POR QUÉ SIRYC */}
       <section className="border-y border-slate-100 bg-white py-32">
