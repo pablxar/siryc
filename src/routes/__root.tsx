@@ -83,22 +83,25 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "SIRYC: más de 20 años de ingeniería en refrigeración industrial, climatización y electricidad para centros comerciales, edificios corporativos, instituciones educacionales y las Fuerzas Armadas de Chile.",
+          "Más de 20 años en refrigeración industrial, climatización y electricidad para centros comerciales, edificios corporativos e instituciones en Chile.",
       },
       { name: "author", content: "SIRYC" },
-      { property: "og:title", content: "SIRYC — Tu clima, nuestra ingeniería." },
+      { property: "og:title", content: "SIRYC — Ingeniería en refrigeración, climatización y electricidad" },
       {
         property: "og:description",
         content:
-          "Ingeniería que sostiene la operación de tu edificio. Refrigeración, climatización y electricidad industrial.",
+          "Más de 20 años en refrigeración industrial, climatización y electricidad para centros comerciales, edificios corporativos e instituciones en Chile.",
       },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "SIRYC" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "SIRYC — Ingeniería en refrigeración, climatización y electricidad" },
+      { name: "twitter:description", content: "Más de 20 años en refrigeración industrial, climatización y electricidad para centros comerciales, edificios corporativos e instituciones en Chile." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8d089586-70ac-4ce8-b071-bf3df8990fd6/id-preview-cb0b100a--677beb3d-3aa9-420d-b1fe-e8cfb67f3218.lovable.app-1785033716609.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8d089586-70ac-4ce8-b071-bf3df8990fd6/id-preview-cb0b100a--677beb3d-3aa9-420d-b1fe-e8cfb67f3218.lovable.app-1785033716609.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {

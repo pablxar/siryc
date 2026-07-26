@@ -18,11 +18,11 @@ export const Route = createFileRoute("/")({
         content:
           "Más de 20 años en refrigeración industrial, climatización y electricidad para centros comerciales, edificios corporativos e instituciones en Chile.",
       },
-      { property: "og:title", content: "SIRYC — Tu clima, nuestra ingeniería." },
+      { property: "og:title", content: "SIRYC — Ingeniería en refrigeración, climatización y electricidad" },
       {
         property: "og:description",
         content:
-          "Ingeniería que sostiene la operación de tu edificio. Refrigeración, climatización y electricidad.",
+          "Más de 20 años en refrigeración industrial, climatización y electricidad para centros comerciales, edificios corporativos e instituciones en Chile.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
