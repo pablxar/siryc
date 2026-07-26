@@ -1,6 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Snowflake, Wind, Zap, ArrowRight, Check } from "lucide-react";
-import { PageHero } from "@/components/site/PageHero";
+import { EditorialHero } from "@/components/site/EditorialHero";
+import { SectionMarker } from "@/components/site/Parallax";
 import { FadeIn } from "@/components/site/FadeIn";
 
 export const Route = createFileRoute("/servicios")({
@@ -14,6 +17,8 @@ export const Route = createFileRoute("/servicios")({
       },
       { property: "og:title", content: "Servicios — SIRYC" },
       { property: "og:description", content: "Tres líneas técnicas para operaciones exigentes." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "canonical", href: "/servicios" }],
   }),
@@ -25,7 +30,7 @@ const servicios = [
     id: "refrigeracion",
     icon: Snowflake,
     titulo: "Refrigeración industrial",
-    img: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=1200&q=80",
+    img: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=1400&q=80",
     items: [
       "Mantención preventiva y correctiva",
       "Cambio de compresores y componentes críticos",
@@ -39,7 +44,7 @@ const servicios = [
     id: "climatizacion",
     icon: Wind,
     titulo: "Climatización y aire acondicionado",
-    img: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=1200&q=80",
+    img: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=1400&q=80",
     items: [
       "Instalación residencial y comercial",
       "Sistemas VRF de volumen variable",
@@ -53,7 +58,7 @@ const servicios = [
     id: "electricidad",
     icon: Zap,
     titulo: "Electricidad industrial",
-    img: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80",
+    img: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1400&q=80",
     items: [
       "Instalaciones eléctricas industriales y comerciales",
       "Sistemas de control centralizado",
@@ -67,83 +72,163 @@ const servicios = [
 function ServiciosPage() {
   return (
     <div>
-      <PageHero
-        title="Servicios"
-        subtitle="Tres líneas técnicas integradas bajo una misma ingeniería, con procedimientos documentados y personal certificado."
+      <EditorialHero
+        index="01"
+        eyebrow="Servicios"
+        title="Tres líneas técnicas, una misma ingeniería."
+        subtitle="Procedimientos documentados y personal certificado para refrigeración industrial, climatización y electricidad."
       />
 
       {servicios.map((s, idx) => (
-        <section
-          key={s.id}
-          id={s.id}
-          className={idx % 2 === 0 ? "bg-white py-20" : "bg-[color:var(--color-siryc-light)]/30 py-20"}
-        >
-          <div className="container-siryc">
-            <div
-              className={`grid items-center gap-12 md:grid-cols-2 ${
-                idx % 2 === 1 ? "md:[&>*:first-child]:order-2" : ""
-              }`}
-            >
-              <FadeIn>
-                <img
-                  src={s.img}
-                  alt={s.titulo}
-                  loading="lazy"
-                  className="aspect-[4/3] w-full rounded-2xl object-cover shadow-lg"
-                />
-              </FadeIn>
-              <FadeIn delay={0.15}>
-                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[color:var(--color-siryc-blue)] text-white">
-                  <s.icon size={22} />
-                </div>
-                <h2 className="font-display text-3xl font-bold text-[color:var(--color-siryc-dark)] md:text-4xl">
-                  {s.titulo}
-                </h2>
-                <ul className="mt-6 space-y-2.5">
-                  {s.items.map((it) => (
-                    <li key={it} className="flex items-start gap-3">
-                      <Check size={16} strokeWidth={3} className="mt-1 flex-shrink-0 text-[color:var(--color-siryc-blue)]" />
-                      <span className="text-[color:var(--color-siryc-dark)]">{it}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  to="/contacto"
-                  search={{ servicio: s.id }}
-                  className="mt-8 inline-flex items-center gap-2 rounded-full bg-[color:var(--color-siryc-red)] px-6 py-3 text-sm font-semibold text-white shadow-[0_10px_30px_-10px_rgba(227,6,19,0.5)] transition-all hover:shadow-[0_15px_35px_-10px_rgba(227,6,19,0.6)]"
-                >
-                  Solicitar cotización de {s.titulo.toLowerCase()} <ArrowRight size={16} />
-                </Link>
-              </FadeIn>
-            </div>
-          </div>
-        </section>
+        <ServiceBlock key={s.id} servicio={s} index={idx} />
       ))}
 
-      <section className="bg-[color:var(--color-siryc-dark)] py-20 text-white">
-        <div className="container-siryc max-w-3xl">
+      <ContratosSection />
+    </div>
+  );
+}
+
+function ServiceBlock({
+  servicio,
+  index,
+}: {
+  servicio: (typeof servicios)[number];
+  index: number;
+}) {
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const imgY = useTransform(scrollYProgress, [0, 1], [80, -80]);
+  const imgScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.15, 1.05, 1.15]);
+
+  const reverse = index % 2 === 1;
+  const Icon = servicio.icon;
+
+  return (
+    <section
+      ref={ref}
+      id={servicio.id}
+      className={`relative overflow-hidden py-24 md:py-32 ${
+        index % 2 === 0 ? "bg-white" : "bg-[color:var(--color-siryc-light)]/25"
+      }`}
+    >
+      <div className="container-siryc">
+        <SectionMarker
+          index={`0${index + 2}`}
+          label={servicio.titulo}
+        />
+        <div
+          className={`grid items-center gap-12 md:gap-16 md:grid-cols-2 ${
+            reverse ? "md:[&>*:first-child]:order-2" : ""
+          }`}
+        >
+          {/* Image with parallax */}
+          <div className="relative">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-black/10 shadow-[0_40px_100px_-40px_rgba(20,57,142,0.5)]">
+              <motion.img
+                src={servicio.img}
+                alt={servicio.titulo}
+                loading="lazy"
+                style={{ y: imgY, scale: imgScale }}
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[color:var(--color-siryc-dark)]/60 via-transparent to-transparent" />
+              <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between text-white">
+                <div className="font-mono text-xs tracking-[0.3em] text-white/70">
+                  {String(index + 1).padStart(2, "0")} / 0{servicios.length}
+                </div>
+                <div className="font-display text-sm font-semibold uppercase tracking-widest">
+                  {servicio.id}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Content */}
           <FadeIn>
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-[color:var(--color-siryc-red)]">
-              Modalidad institucional
-            </p>
-            <h2 className="font-display text-3xl font-bold md:text-4xl">
-              Contratos de mantención
+            <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-[color:var(--color-siryc-blue)] text-white shadow-[0_15px_40px_-15px_rgba(20,57,142,0.55)]">
+              <Icon size={24} />
+            </div>
+            <h2 className="font-display text-4xl font-bold leading-tight text-[color:var(--color-siryc-dark)] md:text-5xl">
+              {servicio.titulo}
             </h2>
-            <p className="mt-5 text-white/80">
-              Modalidad de contrato anual o semestral con visitas técnicas
-              programadas, informes documentados y respuesta técnica
-              garantizada. Dirigido a clientes corporativos, gobierno,
-              instituciones educacionales y Fuerzas Armadas.
-            </p>
+            <div className="mt-8 grid gap-3 sm:grid-cols-2">
+              {servicio.items.map((it, i) => (
+                <motion.div
+                  key={it}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ duration: 0.5, delay: i * 0.05 }}
+                  className="flex items-start gap-3 rounded-xl border border-black/5 bg-white/60 px-4 py-3 backdrop-blur-sm"
+                >
+                  <Check
+                    size={16}
+                    strokeWidth={3}
+                    className="mt-1 flex-shrink-0 text-[color:var(--color-siryc-blue)]"
+                  />
+                  <span className="text-sm text-[color:var(--color-siryc-dark)]">{it}</span>
+                </motion.div>
+              ))}
+            </div>
             <Link
               to="/contacto"
-              className="mt-8 inline-flex items-center gap-2 rounded-full bg-[color:var(--color-siryc-red)] px-6 py-3 text-sm font-semibold text-white shadow-[0_10px_30px_-10px_rgba(227,6,19,0.5)] transition-all hover:shadow-[0_15px_35px_-10px_rgba(227,6,19,0.6)]"
+              search={{ servicio: servicio.id }}
+              className="group mt-10 inline-flex items-center gap-3 rounded-full bg-[color:var(--color-siryc-red)] px-7 py-4 text-sm font-semibold text-white shadow-[0_15px_40px_-15px_rgba(227,6,19,0.55)] transition-all hover:shadow-[0_20px_50px_-15px_rgba(227,6,19,0.7)]"
             >
-              Solicitar propuesta de contrato <ArrowRight size={16} />
+              Solicitar cotización
+              <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
             </Link>
           </FadeIn>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
+  );
+}
+
+function ContratosSection() {
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const bigY = useTransform(scrollYProgress, [0, 1], [80, -80]);
+
+  return (
+    <section
+      ref={ref}
+      className="relative overflow-hidden bg-[color:var(--color-siryc-dark)] py-32 text-white"
+    >
+      <motion.div
+        aria-hidden
+        style={{ y: bigY }}
+        className="pointer-events-none absolute -right-10 top-10 select-none font-display text-[18rem] font-black leading-none tracking-tighter text-white/[0.04] md:text-[26rem]"
+      >
+        05
+      </motion.div>
+      <div className="container-siryc relative max-w-4xl">
+        <SectionMarker index="05" label="Contratos de mantención" />
+        <FadeIn>
+          <h2 className="font-display text-4xl font-bold leading-tight md:text-6xl">
+            Contratos de <span className="text-[color:var(--color-siryc-red)]">mantención</span> institucional.
+          </h2>
+          <p className="mt-8 max-w-2xl text-lg leading-relaxed text-white/75">
+            Modalidad de contrato anual o semestral con visitas técnicas
+            programadas, informes documentados y respuesta técnica
+            garantizada. Dirigido a clientes corporativos, gobierno,
+            instituciones educacionales y Fuerzas Armadas.
+          </p>
+          <Link
+            to="/contacto"
+            className="group mt-10 inline-flex items-center gap-3 rounded-full bg-[color:var(--color-siryc-red)] px-7 py-4 text-sm font-semibold text-white shadow-[0_15px_40px_-15px_rgba(227,6,19,0.55)] transition-all hover:shadow-[0_20px_50px_-15px_rgba(227,6,19,0.7)]"
+          >
+            Solicitar propuesta de contrato
+            <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+          </Link>
+        </FadeIn>
+      </div>
+    </section>
   );
 }
