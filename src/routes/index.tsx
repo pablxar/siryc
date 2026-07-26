@@ -5,6 +5,9 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { FadeIn, RevealGroup, RevealItem } from "@/components/site/FadeIn";
 import { LogoMarquee } from "@/components/site/LogoMarquee";
+import { StackedSpecialties } from "@/components/site/StackedSpecialties";
+import { HorizontalGallery } from "@/components/site/HorizontalGallery";
+import { Counter } from "@/components/site/Counter";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -166,8 +169,8 @@ function HomePage() {
 
       </section>
 
-      {/* ESPECIALIDADES */}
-      <section className="container-siryc py-32">
+      {/* ESPECIALIDADES — stacked cards on scroll */}
+      <section className="container-siryc pt-32 pb-4">
         <div className="mb-16 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
           <FadeIn>
             <div className="max-w-xl">
@@ -184,37 +187,8 @@ function HomePage() {
             EST. 2004
           </div>
         </div>
-
-        <RevealGroup inView className="grid grid-cols-1 gap-8 md:grid-cols-3">
-          {especialidades.map((e) => (
-            <RevealItem key={e.titulo}>
-              <motion.div
-                whileHover={{ y: -4 }}
-                transition={{ type: "spring", stiffness: 240, damping: 22 }}
-              >
-                <Link
-                  to="/servicios"
-                  className="group relative block aspect-[3/4] overflow-hidden rounded-2xl bg-slate-200"
-                >
-                  <img
-                    src={e.img}
-                    alt={e.titulo}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[color:var(--color-siryc-blue)] via-[color:var(--color-siryc-blue)]/40 to-transparent opacity-90 transition-opacity group-hover:opacity-95" />
-                  <div className="absolute inset-x-0 bottom-0 translate-y-4 p-8 text-white transition-transform duration-500 group-hover:translate-y-0">
-                    <h4 className="font-display text-2xl font-bold">{e.titulo}</h4>
-                    <p className="mt-3 max-h-0 overflow-hidden text-sm leading-relaxed text-white/80 opacity-0 transition-all duration-500 group-hover:max-h-40 group-hover:opacity-100">
-                      {e.desc}
-                    </p>
-                  </div>
-                </Link>
-              </motion.div>
-            </RevealItem>
-          ))}
-        </RevealGroup>
       </section>
+      <StackedSpecialties items={especialidades} />
 
 
       {/* POR QUÉ SIRYC */}
@@ -244,9 +218,10 @@ function HomePage() {
             <div className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl bg-slate-100 p-px shadow-2xl shadow-[color:var(--color-siryc-blue)]/10">
               {stats.map((s) => (
                 <div key={s.label} className="bg-white p-10 text-center lg:p-14">
-                  <div className="font-display text-5xl font-black text-[color:var(--color-siryc-blue)]">
-                    {s.valor}
-                  </div>
+                  <Counter
+                    value={s.valor}
+                    className="font-display text-5xl font-black text-[color:var(--color-siryc-blue)]"
+                  />
                   <div className="mt-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[color:var(--color-siryc-gray)]">
                     {s.label}
                   </div>
@@ -279,6 +254,9 @@ function HomePage() {
         </div>
         <LogoMarquee />
       </section>
+
+      {/* HORIZONTAL SCROLL GALLERY — pinned */}
+      <HorizontalGallery />
 
       {/* PROYECTO DESTACADO */}
       <section className="container-siryc py-24">
