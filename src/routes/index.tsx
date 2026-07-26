@@ -108,7 +108,7 @@ function HomePage() {
             <div className="mt-10 flex flex-wrap items-center gap-6">
               <Link
                 to="/servicios"
-                className="bg-[color:var(--color-siryc-blue)] px-10 py-5 text-xs font-bold uppercase tracking-widest text-white shadow-[0_20px_40px_-15px_rgba(20,57,142,0.5)] transition-all hover:shadow-[0_25px_50px_-10px_rgba(20,57,142,0.6)]"
+                className="rounded-full bg-[color:var(--color-siryc-blue)] px-10 py-5 text-xs font-bold uppercase tracking-widest text-white shadow-[0_20px_40px_-15px_rgba(20,57,142,0.5)] transition-all hover:shadow-[0_25px_50px_-10px_rgba(20,57,142,0.6)]"
               >
                 Explorar Servicios
               </Link>
@@ -217,8 +217,8 @@ function HomePage() {
           <div className="grid gap-8 md:grid-cols-3">
             {especialidades.map((e, i) => (
               <FadeIn key={e.titulo} delay={i * 0.1}>
-                <div className="group h-full rounded-lg border border-black/5 bg-white p-8 transition-all hover:-translate-y-1 hover:shadow-[0_10px_40px_rgba(20,57,142,0.08)]">
-                  <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-md bg-[color:var(--color-siryc-blue)] text-white">
+                <div className="group h-full rounded-2xl border border-black/5 bg-white p-8 transition-all hover:-translate-y-1 hover:shadow-[0_10px_40px_rgba(20,57,142,0.08)]">
+                  <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[color:var(--color-siryc-blue)] text-white">
                     <e.icon size={22} />
                   </div>
                   <h3 className="font-display text-xl font-semibold text-[color:var(--color-siryc-dark)]">
@@ -247,7 +247,7 @@ function HomePage() {
             <img
               src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1000&q=80"
               alt="Técnico SIRYC en terreno realizando mantención"
-              className="rounded-lg object-cover shadow-lg"
+              className="rounded-2xl object-cover shadow-lg"
               loading="lazy"
             />
           </FadeIn>
@@ -284,7 +284,7 @@ function HomePage() {
             {["Armada de Chile", "Centro Comercial", "Corporativo", "Colegio", "Institución", "Corporativo"].map((c, i) => (
               <div
                 key={i}
-                className="flex aspect-[3/2] items-center justify-center rounded-md border border-black/5 bg-[color:var(--color-siryc-light)]/25 p-4 text-center text-[10px] font-semibold uppercase tracking-wider text-[color:var(--color-siryc-gray)]"
+                className="flex aspect-[3/2] items-center justify-center rounded-xl border border-black/5 bg-[color:var(--color-siryc-light)]/25 p-4 text-center text-[10px] font-semibold uppercase tracking-wider text-[color:var(--color-siryc-gray)]"
               >
                 {c}
               </div>
@@ -300,7 +300,7 @@ function HomePage() {
             <img
               src="https://images.unsplash.com/photo-1565043666747-69f6646db940?w=1200&q=80"
               alt="Proyecto destacado SIRYC"
-              className="aspect-[4/3] w-full rounded-lg object-cover"
+              className="aspect-[4/3] w-full rounded-2xl object-cover"
               loading="lazy"
             />
           </FadeIn>
@@ -317,7 +317,7 @@ function HomePage() {
             </p>
             <Link
               to="/proyectos"
-              className="mt-6 inline-flex items-center gap-2 rounded-md border border-white/30 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+              className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/30 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
             >
               Ver todos los proyectos <ArrowRight size={16} />
             </Link>
@@ -350,7 +350,7 @@ function HomePage() {
                 <Link
                   to="/blog/$slug"
                   params={{ slug: p.slug }}
-                  className="group block overflow-hidden rounded-lg border border-black/5 transition-all hover:shadow-lg"
+                  className="group block overflow-hidden rounded-2xl border border-black/5 transition-all hover:shadow-lg"
                 >
                   <div className="aspect-[16/10] overflow-hidden bg-[color:var(--color-siryc-light)]/30">
                     {p.imagen_url && (
@@ -392,7 +392,7 @@ function HomePage() {
           </p>
           <Link
             to="/contacto"
-            className="mt-8 inline-flex items-center gap-2 rounded-md bg-white px-7 py-3.5 text-sm font-semibold text-[color:var(--color-siryc-blue)] transition-opacity hover:opacity-90"
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-[color:var(--color-siryc-blue)] shadow-lg transition-opacity hover:opacity-90"
           >
             Contactar a SIRYC <ArrowRight size={16} />
           </Link>
