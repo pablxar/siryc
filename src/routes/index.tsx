@@ -141,9 +141,9 @@ function HomePage() {
 
       {/* PILARES flotantes */}
       <section className="container-siryc relative z-20 -mt-14">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <RevealGroup inView className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {pilares.map((p, i) => (
-            <FadeIn key={p.titulo} delay={i * 0.08}>
+            <RevealItem key={p.titulo}>
               <motion.div
                 whileHover={{ y: -6 }}
                 transition={{ type: "spring", stiffness: 260, damping: 22 }}
@@ -159,10 +159,10 @@ function HomePage() {
                   {p.desc}
                 </p>
               </motion.div>
-            </FadeIn>
+            </RevealItem>
           ))}
+        </RevealGroup>
 
-        </div>
       </section>
 
       {/* ESPECIALIDADES */}
