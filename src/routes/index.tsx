@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { FadeIn, RevealGroup, RevealItem } from "@/components/site/FadeIn";
+import { LogoMarquee } from "@/components/site/LogoMarquee";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -256,23 +257,27 @@ function HomePage() {
         </div>
       </section>
 
-      {/* CLIENTES */}
-      <section className="py-20">
-        <div className="container-siryc text-center">
-          <p className="mb-12 text-[10px] font-bold uppercase tracking-[0.3em] text-[color:var(--color-siryc-gray)]">
-            Empresas e instituciones que confían en SIRYC
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-x-16 gap-y-8 opacity-50 grayscale">
-            {["Armada de Chile", "Centro Comercial", "Corporativo", "Colegio", "Institución", "Corporativo"].map((c, i) => (
-              <div
-                key={i}
-                className="flex h-10 min-w-[140px] items-center justify-center rounded border border-slate-200 bg-white px-6 text-[10px] font-bold uppercase tracking-[0.15em] text-[color:var(--color-siryc-gray)]"
-              >
-                {c}
+      {/* CLIENTES — marquee */}
+      <section className="border-y border-black/5 bg-white py-20">
+        <div className="container-siryc">
+          <FadeIn>
+            <div className="mb-12 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
+              <div>
+                <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-[color:var(--color-siryc-red)]">
+                  — Confianza institucional
+                </span>
+                <h2 className="mt-3 max-w-2xl font-display text-3xl font-bold text-[color:var(--color-siryc-dark)] md:text-4xl">
+                  Empresas e instituciones que confían en SIRYC.
+                </h2>
               </div>
-            ))}
-          </div>
+              <p className="max-w-xs text-sm leading-relaxed text-[color:var(--color-siryc-gray)]">
+                Relaciones técnicas de largo plazo con corporativos, retail,
+                educación y Fuerzas Armadas.
+              </p>
+            </div>
+          </FadeIn>
         </div>
+        <LogoMarquee />
       </section>
 
       {/* PROYECTO DESTACADO */}
