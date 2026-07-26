@@ -218,9 +218,10 @@ function HomePage() {
             <div className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl bg-slate-100 p-px shadow-2xl shadow-[color:var(--color-siryc-blue)]/10">
               {stats.map((s) => (
                 <div key={s.label} className="bg-white p-10 text-center lg:p-14">
-                  <div className="font-display text-5xl font-black text-[color:var(--color-siryc-blue)]">
-                    {s.valor}
-                  </div>
+                  <Counter
+                    value={s.valor}
+                    className="font-display text-5xl font-black text-[color:var(--color-siryc-blue)]"
+                  />
                   <div className="mt-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[color:var(--color-siryc-gray)]">
                     {s.label}
                   </div>
@@ -253,6 +254,9 @@ function HomePage() {
         </div>
         <LogoMarquee />
       </section>
+
+      {/* HORIZONTAL SCROLL GALLERY — pinned */}
+      <HorizontalGallery />
 
       {/* PROYECTO DESTACADO */}
       <section className="container-siryc py-24">
