@@ -59,6 +59,8 @@ const servicioMap: Record<string, string> = {
 function ContactoPage() {
   const { servicio } = Route.useSearch();
   const [sent, setSent] = useState(false);
+  const sendLeadNotification = useServerFn(notifyLead);
+
 
   const {
     register,
