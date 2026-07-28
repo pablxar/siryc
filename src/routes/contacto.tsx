@@ -71,6 +71,7 @@ function ContactoPage() {
   });
 
   const onSubmit = async (values: FormValues) => {
+    const origen_pagina = typeof window !== "undefined" ? window.location.pathname : null;
     const { error } = await supabase.from("leads").insert({
       nombre: values.nombre,
       empresa: values.empresa || null,
@@ -80,16 +81,34 @@ function ContactoPage() {
       tipo_servicio: values.tipo_servicio,
       segmento: values.segmento,
       mensaje: values.mensaje || null,
-      origen_pagina: typeof window !== "undefined" ? window.location.pathname : null,
+      origen_pagina,
     });
     if (error) {
       toast.error("No pudimos enviar tu solicitud. Intenta nuevamente.");
       return;
     }
+    try {
+      await sendLeadNotification({
+        data: {
+          nombre: values.nombre,
+          empresa: values.empresa || null,
+          cargo: values.cargo || null,
+          email: values.email,
+          telefono: values.telefono || null,
+          tipo_servicio: values.tipo_servicio,
+          segmento: values.segmento,
+          mensaje: values.mensaje || null,
+          origen_pagina,
+        },
+      });
+    } catch {
+      // El lead ya quedó registrado; la notificación no bloquea al usuario.
+    }
     setSent(true);
     reset();
     toast.success("Solicitud enviada. Te contactaremos a la brevedad.");
   };
+
 
   return (
     <div>
