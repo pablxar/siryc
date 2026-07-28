@@ -3,6 +3,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { notifyLead } from "@/lib/leads.functions";
+
 import { toast } from "sonner";
 import { Mail, Phone, MapPin, Clock, ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -56,6 +59,8 @@ const servicioMap: Record<string, string> = {
 function ContactoPage() {
   const { servicio } = Route.useSearch();
   const [sent, setSent] = useState(false);
+  const sendLeadNotification = useServerFn(notifyLead);
+
 
   const {
     register,
@@ -71,6 +76,7 @@ function ContactoPage() {
   });
 
   const onSubmit = async (values: FormValues) => {
+    const origen_pagina = typeof window !== "undefined" ? window.location.pathname : null;
     const { error } = await supabase.from("leads").insert({
       nombre: values.nombre,
       empresa: values.empresa || null,
@@ -80,16 +86,34 @@ function ContactoPage() {
       tipo_servicio: values.tipo_servicio,
       segmento: values.segmento,
       mensaje: values.mensaje || null,
-      origen_pagina: typeof window !== "undefined" ? window.location.pathname : null,
+      origen_pagina,
     });
     if (error) {
       toast.error("No pudimos enviar tu solicitud. Intenta nuevamente.");
       return;
     }
+    try {
+      await sendLeadNotification({
+        data: {
+          nombre: values.nombre,
+          empresa: values.empresa || null,
+          cargo: values.cargo || null,
+          email: values.email,
+          telefono: values.telefono || null,
+          tipo_servicio: values.tipo_servicio,
+          segmento: values.segmento,
+          mensaje: values.mensaje || null,
+          origen_pagina,
+        },
+      });
+    } catch {
+      // El lead ya quedó registrado; la notificación no bloquea al usuario.
+    }
     setSent(true);
     reset();
     toast.success("Solicitud enviada. Te contactaremos a la brevedad.");
   };
+
 
   return (
     <div>
