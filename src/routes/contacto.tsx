@@ -3,6 +3,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { notifyLead } from "@/lib/leads.functions";
+
 import { toast } from "sonner";
 import { Mail, Phone, MapPin, Clock, ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
