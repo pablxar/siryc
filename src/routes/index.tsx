@@ -51,7 +51,7 @@ const pilares = [
 
 const especialidades = [
   {
-    titulo: "Refrigeración industrial",
+    titulo: "Refrigeración",
     desc: "Mantención preventiva y correctiva a los sistemas de frío para que operen sin interrupciones, con respuesta técnica garantizada ante cualquier falla.",
     img: "https://images.unsplash.com/photo-1581092918484-8313ce1c1c9b?w=1000&q=80",
   },
