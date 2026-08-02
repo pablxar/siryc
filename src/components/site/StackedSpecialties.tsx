@@ -13,26 +13,13 @@ export function StackedSpecialties({ items }: { items: StackedItem[] }) {
   return (
     <section className="container-siryc pt-8 pb-24">
       {items.map((item, i) => (
-        <StackedCard
-          key={item.titulo}
-          item={item}
-          index={i}
-          total={items.length}
-        />
+        <StackedCard key={item.titulo} item={item} index={i} total={items.length} />
       ))}
     </section>
   );
 }
 
-function StackedCard({
-  item,
-  index,
-  total,
-}: {
-  item: StackedItem;
-  index: number;
-  total: number;
-}) {
+function StackedCard({ item, index, total }: { item: StackedItem; index: number; total: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -47,11 +34,7 @@ function StackedCard({
   const topOffset = 96 + index * 18; // stagger sticky top
 
   return (
-    <div
-      ref={ref}
-      className="sticky"
-      style={{ top: `${topOffset}px`, marginBottom: "4rem" }}
-    >
+    <div ref={ref} className="sticky" style={{ top: `${topOffset}px`, marginBottom: "4rem" }}>
       <motion.article
         style={{ scale, opacity }}
         className="relative grid overflow-hidden rounded-[2rem] border border-black/5 bg-white shadow-2xl shadow-[color:var(--color-siryc-blue)]/10 md:grid-cols-2"
@@ -71,14 +54,12 @@ function StackedCard({
         <div className="flex flex-col justify-between p-10 md:p-14">
           <div>
             <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-[color:var(--color-siryc-red)]">
-              Línea técnica
+              Área técnica
             </span>
             <h3 className="mt-6 font-display text-3xl font-bold leading-tight text-[color:var(--color-siryc-dark)] md:text-4xl">
               {item.titulo}
             </h3>
-            <p className="mt-6 text-base leading-relaxed text-[color:var(--color-siryc-gray)]">
-              {item.desc}
-            </p>
+            <p className="mt-6 text-base leading-relaxed text-[color:var(--color-siryc-gray)]">{item.desc}</p>
           </div>
           <Link
             to="/servicios"
