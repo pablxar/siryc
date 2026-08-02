@@ -8,6 +8,7 @@ import { LogoMarquee } from "@/components/site/LogoMarquee";
 import { StackedSpecialties } from "@/components/site/StackedSpecialties";
 import { HorizontalGallery } from "@/components/site/HorizontalGallery";
 import { Counter } from "@/components/site/Counter";
+import bannerWeb from "@/assets/banner-web-siryc.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -90,15 +91,41 @@ function HomePage() {
   return (
     <div className="bg-slate-50 text-[color:var(--color-siryc-dark)]">
       {/* HERO */}
-      <section className="relative overflow-hidden bg-[color:var(--color-siryc-blue)] py-24 lg:py-36">
+      <section className="relative overflow-hidden bg-[color:var(--color-siryc-blue)] py-24 lg:min-h-[720px] lg:py-36">
+        {/* Desktop hero image */}
+        <div className="absolute inset-0 z-0 hidden lg:block">
+          <img
+            src={bannerWeb.url}
+            alt="Técnico SIRYC supervisando instalación industrial de refrigeración"
+            className="h-full w-full object-cover object-center"
+            loading="eager"
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(90deg, color-mix(in oklab, var(--color-siryc-blue) 92%, transparent) 0%, color-mix(in oklab, var(--color-siryc-blue) 55%, transparent) 45%, transparent 75%)",
+            }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(180deg, transparent 50%, color-mix(in oklab, var(--color-siryc-blue) 70%, transparent) 100%)",
+            }}
+          />
+        </div>
+
+        {/* Mobile texture */}
         <div
-          className="pointer-events-none absolute inset-0 opacity-[0.07]"
+          className="pointer-events-none absolute inset-0 opacity-[0.07] lg:hidden"
           style={{
             backgroundImage: "radial-gradient(circle at 2px 2px, white 1px, transparent 0)",
             backgroundSize: "32px 32px",
           }}
         />
-        <div className="absolute right-0 top-0 h-96 w-96 -translate-y-1/3 translate-x-1/3 rounded-full bg-white/5 blur-3xl" />
+        <div className="absolute right-0 top-0 h-96 w-96 -translate-y-1/3 translate-x-1/3 rounded-full bg-white/5 blur-3xl lg:hidden" />
+
         <div className="container-siryc relative z-10">
           <RevealGroup className="max-w-4xl">
             <RevealItem>
@@ -113,7 +140,7 @@ function HomePage() {
               </h1>
             </RevealItem>
             <RevealItem>
-              <p className="mt-10 max-w-2xl text-lg leading-relaxed text-white/75 md:text-xl">
+              <p className="mt-10 max-w-2xl text-lg leading-relaxed text-white/90 md:text-xl">
                 Más de 20 años liderando proyectos de refrigeración, climatización y electricidad
                 con estándares <span className="font-semibold text-white">ISO 9001</span> en todo Chile.
               </p>
@@ -139,7 +166,6 @@ function HomePage() {
               </div>
             </RevealItem>
           </RevealGroup>
-
         </div>
       </section>
 
