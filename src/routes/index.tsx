@@ -222,7 +222,8 @@ function HomePage() {
                 Tres áreas técnicas, un mismo equipo.
               </h2>
               <p className="mt-4 text-[color:var(--color-siryc-gray)]">
-                Dominio técnico total en montaje, mantenimiento y consultoría estratégica.
+                Refrigeración, climatización y electricidad instaladas y mantenidas por el mismo equipo de técnicos que
+                llevan más de 20 años en terreno.
               </p>
             </div>
           </FadeIn>
