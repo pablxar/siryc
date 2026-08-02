@@ -62,7 +62,7 @@ const especialidades = [
   },
   {
     titulo: "Electricidad industrial",
-    desc: "Instalaciones, tableros, sistemas de control centralizado y mantención eléctrica preventiva.",
+    desc: "Instalaciones, tableros, sistemas de control centralizado, detección de incendio y mantención eléctrica preventiva. Todo bajo normativas y registros técnicos documentados.",
     img: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=1000&q=80",
   },
 ];
