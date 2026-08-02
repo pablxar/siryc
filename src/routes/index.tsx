@@ -9,6 +9,9 @@ import { StackedSpecialties } from "@/components/site/StackedSpecialties";
 import { HorizontalGallery } from "@/components/site/HorizontalGallery";
 import { Counter } from "@/components/site/Counter";
 import bannerWeb from "@/assets/banner-web-siryc.png.asset.json";
+import imgRefrigeracion from "@/assets/refrigeracion.png.asset.json";
+import imgClimatizacion from "@/assets/climatizacion.png.asset.json";
+import imgElectricidad from "@/assets/electricidad.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
