@@ -40,12 +40,8 @@ export function SiteHeader() {
       >
         <div className="container-siryc flex h-9 items-center justify-end gap-8 text-[11px] font-medium uppercase tracking-wider">
           <span className="flex items-center gap-2">
-            <span className="font-bold text-[color:var(--color-siryc-red)]">T:</span>
-            +56 2 2345 6789
-          </span>
-          <span className="flex items-center gap-2">
             <span className="font-bold text-[color:var(--color-siryc-red)]">E:</span>
-            contacto@siryc.cl
+            ventas@siryc.cl
           </span>
         </div>
       </div>
@@ -70,7 +66,6 @@ export function SiteHeader() {
           >
             <Logo variant="dark" />
           </Link>
-
 
           <nav className="hidden items-center gap-8 lg:flex">
             {NAV.map((item) => {
