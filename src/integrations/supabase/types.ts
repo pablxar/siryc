@@ -139,7 +139,51 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      proyectos_public: {
+        Row: {
+          anio: number | null
+          cantidad_equipos: number | null
+          categoria: string | null
+          cliente_nombre: string | null
+          created_at: string | null
+          descripcion: string | null
+          galeria: Json | null
+          id: string | null
+          imagen_principal_url: string | null
+          metros_cuadrados: number | null
+          mostrar_cliente: boolean | null
+          titulo: string | null
+        }
+        Insert: {
+          anio?: number | null
+          cantidad_equipos?: number | null
+          categoria?: string | null
+          cliente_nombre?: never
+          created_at?: string | null
+          descripcion?: string | null
+          galeria?: Json | null
+          id?: string | null
+          imagen_principal_url?: string | null
+          metros_cuadrados?: number | null
+          mostrar_cliente?: boolean | null
+          titulo?: string | null
+        }
+        Update: {
+          anio?: number | null
+          cantidad_equipos?: number | null
+          categoria?: string | null
+          cliente_nombre?: never
+          created_at?: string | null
+          descripcion?: string | null
+          galeria?: Json | null
+          id?: string | null
+          imagen_principal_url?: string | null
+          metros_cuadrados?: number | null
+          mostrar_cliente?: boolean | null
+          titulo?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
