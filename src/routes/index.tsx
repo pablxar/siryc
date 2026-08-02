@@ -56,17 +56,17 @@ const especialidades = [
   {
     titulo: "Refrigeración",
     desc: "Mantención preventiva y correctiva a los sistemas de frío para que operen sin interrupciones, con respuesta técnica garantizada ante cualquier falla.",
-    img: "https://images.unsplash.com/photo-1581092918484-8313ce1c1c9b?w=1000&q=80",
+    img: imgRefrigeracion.url,
   },
   {
     titulo: "Climatización y aire acondicionado",
     desc: "Desde una vivienda hasta un centro comercial completo, con el mismo estándar de instalación en cada escala de proyecto.",
-    img: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=1000&q=80",
+    img: imgClimatizacion.url,
   },
   {
     titulo: "Electricidad industrial",
     desc: "Instalaciones, tableros, sistemas de control centralizado, detección de incendio y mantención eléctrica preventiva. Todo bajo normativas y registros técnicos documentados.",
-    img: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=1000&q=80",
+    img: imgElectricidad.url,
   },
 ];
 
