@@ -38,7 +38,10 @@ const pilares = [
     titulo: "Ingeniería",
     desc: "Diseñamos, desarrollamos y ejecutamos proyectos de ingeniería a la medida de cada cliente.",
   },
-  { titulo: "Electricidad", desc: "Instalaciones de fuerza, control y automatización bajo normativa SEC." },
+  {
+    titulo: "Electricidad",
+    desc: "Instalación y mantenciones eléctricas, tableros y sistemas de control y detección de incendio, bajo normativa SEC.",
+  },
   { titulo: "Refrigeración", desc: "Sistemas de frío industrial y comercial con máxima eficiencia energética." },
   { titulo: "Climatización", desc: "Soluciones HVAC personalizadas para edificios y centros industriales." },
 ];
