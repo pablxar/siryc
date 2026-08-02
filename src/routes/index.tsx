@@ -57,7 +57,7 @@ const especialidades = [
   },
   {
     titulo: "Climatización y aire acondicionado",
-    desc: "Sistemas VRF, proyectos llave en mano y ventilación industrial para centros comerciales y oficinas.",
+    desc: "Desde una vivienda hasta un centro comercial completo, con el mismo estándar de instalación en cada escala de proyecto.",
     img: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=1000&q=80",
   },
   {
