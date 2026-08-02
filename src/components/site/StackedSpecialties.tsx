@@ -11,7 +11,7 @@ export type StackedItem = {
 
 export function StackedSpecialties({ items }: { items: StackedItem[] }) {
   return (
-    <section className="container-siryc py-24">
+    <section className="container-siryc pt-8 pb-24">
       {items.map((item, i) => (
         <StackedCard
           key={item.titulo}

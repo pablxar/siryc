@@ -214,8 +214,8 @@ function HomePage() {
       </section>
 
       {/* ESPECIALIDADES — stacked cards on scroll */}
-      <section className="container-siryc pt-32 pb-4">
-        <div className="mb-16 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
+      <section className="container-siryc pt-24 pb-2">
+        <div className="mb-6 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
           <FadeIn>
             <div className="max-w-xl">
               <h2 className="font-display text-4xl font-extrabold text-[color:var(--color-siryc-blue)] md:text-5xl">
