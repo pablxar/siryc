@@ -42,8 +42,11 @@ const pilares = [
     titulo: "Electricidad",
     desc: "Instalación y mantenciones eléctricas, tableros y sistemas de control y detección de incendio, bajo normativa SEC.",
   },
-  { titulo: "Refrigeración", desc: "Sistemas de frío industrial y comercial con máxima eficiencia energética." },
-  { titulo: "Climatización", desc: "Soluciones HVAC personalizadas para edificios y centros industriales." },
+  { titulo: "Refrigeración", desc: "Instalación, mantención y reparación de sistemas de frío industrial y comercial." },
+  {
+    titulo: "Climatización",
+    desc: "Instalación, mantención y reparación de equipos para espacios domiciliarios, comerciales e industriales.",
+  },
 ];
 
 const especialidades = [
