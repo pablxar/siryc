@@ -218,7 +218,6 @@ function HomePage() {
             </div>
           </FadeIn>
           <div className="hidden h-px flex-grow bg-slate-200 lg:mx-8 lg:block" />
-          <div className="font-mono text-sm font-bold text-[color:var(--color-siryc-red)]">EST. 2004</div>
         </div>
       </section>
       <StackedSpecialties items={especialidades} />
