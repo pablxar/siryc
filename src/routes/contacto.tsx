@@ -61,7 +61,6 @@ function ContactoPage() {
   const [sent, setSent] = useState(false);
   const sendLeadNotification = useServerFn(notifyLead);
 
-
   const {
     register,
     handleSubmit,
@@ -70,7 +69,7 @@ function ContactoPage() {
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
-      tipo_servicio: servicio ? servicioMap[servicio] ?? "" : "",
+      tipo_servicio: servicio ? (servicioMap[servicio] ?? "") : "",
       segmento: "",
     },
   });
@@ -113,7 +112,6 @@ function ContactoPage() {
     reset();
     toast.success("Solicitud enviada. Te contactaremos a la brevedad.");
   };
-
 
   return (
     <div>
@@ -208,22 +206,18 @@ function ContactoPage() {
                     aria-hidden
                     className="pointer-events-none absolute inset-0 opacity-[0.06]"
                     style={{
-                      backgroundImage:
-                        "radial-gradient(circle at center, #ffffff 1px, transparent 1px)",
+                      backgroundImage: "radial-gradient(circle at center, #ffffff 1px, transparent 1px)",
                       backgroundSize: "18px 18px",
                     }}
                   />
                   <div className="relative">
                     <div className="mb-6 flex items-center gap-3">
                       <div className="h-[3px] w-8 bg-[color:var(--color-siryc-red)]" />
-                      <span className="font-mono text-xs uppercase tracking-[0.3em] text-white/60">
-                        Directo
-                      </span>
+                      <span className="font-mono text-xs uppercase tracking-[0.3em] text-white/60">Directo</span>
                     </div>
                     <h3 className="font-display text-2xl font-bold">Contáctanos</h3>
                     <ul className="mt-6 space-y-4 text-sm text-white/85">
-                      <ContactRow icon={Phone} label="Teléfono" value="+56 32 000 0000" />
-                      <ContactRow icon={Mail} label="Email" value="contacto@siryc.cl" />
+                      <ContactRow icon={Mail} label="Email" value="ventas@siryc.cl" />
                       <ContactRow icon={MapPin} label="Ubicación" value="V Región, Chile" />
                       <ContactRow icon={Clock} label="Horario" value="Lun a Vie · 08:30 – 18:00" />
                     </ul>
@@ -272,24 +266,14 @@ function Field({
   );
 }
 
-function ContactRow({
-  icon: Icon,
-  label,
-  value,
-}: {
-  icon: typeof Phone;
-  label: string;
-  value: string;
-}) {
+function ContactRow({ icon: Icon, label, value }: { icon: typeof Phone; label: string; value: string }) {
   return (
     <li className="flex items-start gap-4 border-b border-white/10 pb-3 last:border-0 last:pb-0">
       <div className="mt-0.5 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-white/10">
         <Icon size={15} />
       </div>
       <div>
-        <div className="font-mono text-[10px] uppercase tracking-widest text-white/50">
-          {label}
-        </div>
+        <div className="font-mono text-[10px] uppercase tracking-widest text-white/50">{label}</div>
         <div className="mt-0.5 text-sm text-white">{value}</div>
       </div>
     </li>
