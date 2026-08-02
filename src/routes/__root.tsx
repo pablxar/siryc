@@ -1,18 +1,11 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import {
-  Outlet,
-  createRootRouteWithContext,
-  useRouter,
-  HeadContent,
-  Scripts,
-} from "@tanstack/react-router";
+import { Outlet, createRootRouteWithContext, useRouter, HeadContent, Scripts } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
-import { WhatsAppButton } from "@/components/site/WhatsAppButton";
 import { ScrollProgress } from "@/components/site/ScrollProgress";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -22,9 +15,7 @@ function NotFoundComponent() {
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold">404</h1>
         <h2 className="mt-4 text-xl font-semibold">Página no encontrada</h2>
-        <p className="mt-2 text-sm text-white/70">
-          La página que buscas no existe o fue movida.
-        </p>
+        <p className="mt-2 text-sm text-white/70">La página que buscas no existe o fue movida.</p>
         <div className="mt-6">
           <a
             href="/"
@@ -96,9 +87,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:site_name", content: "SIRYC" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "SIRYC — Ingeniería en refrigeración, climatización y electricidad" },
-      { name: "twitter:description", content: "Más de 20 años en refrigeración industrial, climatización y electricidad para centros comerciales, edificios corporativos e instituciones en Chile." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8d089586-70ac-4ce8-b071-bf3df8990fd6/id-preview-cb0b100a--677beb3d-3aa9-420d-b1fe-e8cfb67f3218.lovable.app-1785033716609.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8d089586-70ac-4ce8-b071-bf3df8990fd6/id-preview-cb0b100a--677beb3d-3aa9-420d-b1fe-e8cfb67f3218.lovable.app-1785033716609.png" },
+      {
+        name: "twitter:description",
+        content:
+          "Más de 20 años en refrigeración industrial, climatización y electricidad para centros comerciales, edificios corporativos e instituciones en Chile.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8d089586-70ac-4ce8-b071-bf3df8990fd6/id-preview-cb0b100a--677beb3d-3aa9-420d-b1fe-e8cfb67f3218.lovable.app-1785033716609.png",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8d089586-70ac-4ce8-b071-bf3df8990fd6/id-preview-cb0b100a--677beb3d-3aa9-420d-b1fe-e8cfb67f3218.lovable.app-1785033716609.png",
+      },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -142,7 +145,6 @@ function RootComponent() {
           <Outlet />
         </main>
         <SiteFooter />
-        <WhatsAppButton />
       </div>
       <Toaster richColors position="top-right" />
     </QueryClientProvider>
