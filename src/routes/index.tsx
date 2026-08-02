@@ -149,8 +149,8 @@ function HomePage() {
               </span>
             </RevealItem>
             <RevealItem>
-              <h1 className="font-display text-5xl font-extrabold leading-[0.95] tracking-tight text-white md:text-7xl lg:text-[6.5rem]">
-                Ingeniería de <span className="text-white/60">Precisión Térmica.</span>
+              <h1 className="font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-white md:text-6xl lg:text-5xl">
+                Ingeniería en climatización, refrigeración y electricidad.
               </h1>
             </RevealItem>
             <RevealItem>
