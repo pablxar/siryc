@@ -60,13 +60,9 @@ export function SiteFooter() {
             <h4 className="mb-4 font-display text-sm font-semibold uppercase tracking-wider text-white">Contacto</h4>
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-2">
-                <Phone size={16} className="mt-0.5 flex-shrink-0" />
-                <span>+56 32 000 0000</span>
-              </li>
-              <li className="flex items-start gap-2">
                 <Mail size={16} className="mt-0.5 flex-shrink-0" />
-                <a href="mailto:contacto@siryc.cl" className="hover:text-white">
-                  contacto@siryc.cl
+                <a href="mailto:ventas@siryc.cl" className="hover:text-white">
+                  ventas@siryc.cl
                 </a>
               </li>
               <li className="flex items-start gap-2">
