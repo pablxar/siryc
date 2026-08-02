@@ -98,6 +98,7 @@ export type Database = {
           cantidad_equipos: number | null
           categoria: string | null
           cliente_nombre: string | null
+          cliente_nombre_publico: string | null
           created_at: string | null
           descripcion: string | null
           galeria: Json | null
@@ -112,6 +113,7 @@ export type Database = {
           cantidad_equipos?: number | null
           categoria?: string | null
           cliente_nombre?: string | null
+          cliente_nombre_publico?: string | null
           created_at?: string | null
           descripcion?: string | null
           galeria?: Json | null
@@ -126,6 +128,7 @@ export type Database = {
           cantidad_equipos?: number | null
           categoria?: string | null
           cliente_nombre?: string | null
+          cliente_nombre_publico?: string | null
           created_at?: string | null
           descripcion?: string | null
           galeria?: Json | null

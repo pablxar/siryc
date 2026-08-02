@@ -50,7 +50,9 @@ function ProyectosPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("proyectos")
-        .select("*")
+        .select(
+          "id, titulo, categoria, descripcion, metros_cuadrados, cantidad_equipos, anio, imagen_principal_url, galeria, mostrar_cliente, cliente_nombre_publico, created_at",
+        )
         .order("anio", { ascending: false });
       if (error) throw error;
       return data;
