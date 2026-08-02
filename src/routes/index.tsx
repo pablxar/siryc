@@ -59,11 +59,26 @@ const especialidades = [
 ];
 
 const razones = [
-  { titulo: "Ingeniería documentada en cada proyecto", desc: "Memoria técnica, planos y protocolos entregables para cada intervención." },
-  { titulo: "Equipos certificados y personal capacitado", desc: "Técnicos con acreditación SEC y formación continua en nuevas tecnologías." },
-  { titulo: "Experiencia en sectores exigentes", desc: "Gobierno, FFAA, retail corporativo, salud y educación con estándares críticos." },
-  { titulo: "Respuesta técnica garantizada", desc: "SLA definidos y guardia operativa para asegurar la continuidad de tu operación." },
-  { titulo: "Más de dos décadas de continuidad operativa", desc: "20+ años ejecutando contratos de mantención y proyectos llave en mano." },
+  {
+    titulo: "Ingeniería documentada en cada proyecto",
+    desc: "Memoria técnica, planos y protocolos entregables para cada intervención.",
+  },
+  {
+    titulo: "Equipos certificados y personal capacitado",
+    desc: "Técnicos con acreditación SEC y formación continua en nuevas tecnologías.",
+  },
+  {
+    titulo: "Experiencia en sectores exigentes",
+    desc: "Gobierno, FFAA, retail corporativo, salud y educación con estándares críticos.",
+  },
+  {
+    titulo: "Respuesta técnica garantizada",
+    desc: "SLA definidos y guardia operativa para asegurar la continuidad de tu operación.",
+  },
+  {
+    titulo: "Más de dos décadas de continuidad operativa",
+    desc: "20+ años ejecutando contratos de mantención y proyectos llave en mano.",
+  },
 ];
 
 const stats = [
@@ -135,14 +150,13 @@ function HomePage() {
             </RevealItem>
             <RevealItem>
               <h1 className="font-display text-5xl font-extrabold leading-[0.95] tracking-tight text-white md:text-7xl lg:text-[6.5rem]">
-                Ingeniería de{" "}
-                <span className="text-white/60">Precisión Térmica.</span>
+                Ingeniería de <span className="text-white/60">Precisión Térmica.</span>
               </h1>
             </RevealItem>
             <RevealItem>
               <p className="mt-10 max-w-2xl text-lg leading-relaxed text-white/90 md:text-xl">
-                Más de 20 años liderando proyectos de refrigeración, climatización y electricidad
-                con estándares <span className="font-semibold text-white">ISO 9001</span> en todo Chile.
+                Más de 20 años liderando proyectos de refrigeración, climatización y electricidad con estándares{" "}
+                <span className="font-semibold text-white">ISO 9001</span> en todo Chile.
               </p>
             </RevealItem>
             <RevealItem>
@@ -160,7 +174,7 @@ function HomePage() {
                     to="/servicios"
                     className="inline-block rounded-full border border-white/30 px-10 py-5 text-sm font-bold text-white transition-colors hover:bg-white/10"
                   >
-                    Nuestra ingeniería
+                    Ver servicios
                   </Link>
                 </motion.div>
               </div>
@@ -182,17 +196,12 @@ function HomePage() {
                 <div className="mb-4 font-display text-xs font-bold uppercase tracking-[0.25em] text-[color:var(--color-siryc-blue)]">
                   {String(i + 1).padStart(2, "0")}
                 </div>
-                <h3 className="font-display text-xl font-bold text-[color:var(--color-siryc-dark)]">
-                  {p.titulo}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-[color:var(--color-siryc-gray)]">
-                  {p.desc}
-                </p>
+                <h3 className="font-display text-xl font-bold text-[color:var(--color-siryc-dark)]">{p.titulo}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-[color:var(--color-siryc-gray)]">{p.desc}</p>
               </motion.div>
             </RevealItem>
           ))}
         </RevealGroup>
-
       </section>
 
       {/* ESPECIALIDADES — stacked cards on scroll */}
@@ -209,32 +218,27 @@ function HomePage() {
             </div>
           </FadeIn>
           <div className="hidden h-px flex-grow bg-slate-200 lg:mx-8 lg:block" />
-          <div className="font-mono text-sm font-bold text-[color:var(--color-siryc-red)]">
-            EST. 2004
-          </div>
+          <div className="font-mono text-sm font-bold text-[color:var(--color-siryc-red)]">EST. 2004</div>
         </div>
       </section>
       <StackedSpecialties items={especialidades} />
-
 
       {/* POR QUÉ SIRYC */}
       <section className="border-y border-slate-100 bg-white py-32">
         <div className="container-siryc grid grid-cols-1 gap-24 lg:grid-cols-2">
           <FadeIn>
             <h2 className="font-display text-4xl font-extrabold text-[color:var(--color-siryc-blue)]">
-              Continuidad operativa,<br />sin improvisación.
+              Continuidad operativa,
+              <br />
+              sin improvisación.
             </h2>
             <div className="mt-12 space-y-8">
               {razones.map((r) => (
                 <div key={r.titulo} className="flex gap-6">
                   <div className="mt-1 h-12 w-[2px] flex-shrink-0 bg-[color:var(--color-siryc-red)]" />
                   <div>
-                    <h5 className="font-semibold text-[color:var(--color-siryc-dark)]">
-                      {r.titulo}
-                    </h5>
-                    <p className="mt-1 text-sm leading-relaxed text-[color:var(--color-siryc-gray)]">
-                      {r.desc}
-                    </p>
+                    <h5 className="font-semibold text-[color:var(--color-siryc-dark)]">{r.titulo}</h5>
+                    <p className="mt-1 text-sm leading-relaxed text-[color:var(--color-siryc-gray)]">{r.desc}</p>
                   </div>
                 </div>
               ))}
@@ -272,8 +276,7 @@ function HomePage() {
                 </h2>
               </div>
               <p className="max-w-xs text-sm leading-relaxed text-[color:var(--color-siryc-gray)]">
-                Relaciones técnicas de largo plazo con corporativos, retail,
-                educación y Fuerzas Armadas.
+                Relaciones técnicas de largo plazo con corporativos, retail, educación y Fuerzas Armadas.
               </p>
             </div>
           </FadeIn>
@@ -304,8 +307,8 @@ function HomePage() {
                 Climatización integral de 12.000 m² en centro comercial.
               </h3>
               <p className="mt-8 text-lg leading-relaxed text-white/75">
-                48 unidades instaladas, sistema VRF y ventilación mecánica.
-                Contrato de mantención anual vigente desde 2020.
+                48 unidades instaladas, sistema VRF y ventilación mecánica. Contrato de mantención anual vigente desde
+                2020.
               </p>
               <div className="mt-10">
                 <Link
@@ -342,11 +345,7 @@ function HomePage() {
           <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
             {(posts ?? []).map((p, i) => (
               <FadeIn key={p.id} delay={i * 0.1}>
-                <Link
-                  to="/blog/$slug"
-                  params={{ slug: p.slug }}
-                  className="group block"
-                >
+                <Link to="/blog/$slug" params={{ slug: p.slug }} className="group block">
                   <div className="mb-6 aspect-video overflow-hidden rounded-2xl bg-slate-200">
                     {p.imagen_url && (
                       <img
