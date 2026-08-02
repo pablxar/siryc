@@ -219,7 +219,7 @@ function HomePage() {
           <FadeIn>
             <div className="max-w-xl">
               <h2 className="font-display text-4xl font-extrabold text-[color:var(--color-siryc-blue)] md:text-5xl">
-                Tres líneas técnicas, una sola ingeniería.
+                Tres áreas técnicas, un mismo equipo.
               </h2>
               <p className="mt-4 text-[color:var(--color-siryc-gray)]">
                 Dominio técnico total en montaje, mantenimiento y consultoría estratégica.
