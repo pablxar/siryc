@@ -77,7 +77,7 @@ const razones = [
   },
   {
     titulo: "Equipos certificados y personal capacitado",
-    desc: "Técnicos con acreditación SEC y formación continua en nuevas tecnologías.",
+    desc: "Técnicos acreditados por la SEC y afiliados a mutual ACHS, con formación continua a través del ICT. SIRYC es una empresa asociada a la Cámara de Comercio.",
   },
   {
     titulo: "Experiencia en sectores exigentes",
