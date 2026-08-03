@@ -94,10 +94,10 @@ const razones = [
 ];
 
 const stats = [
-  { valor: "+20", label: "Años de Trayectoria" },
-  { valor: "500+", label: "Proyectos Entregados" },
-  { valor: "ISO", label: "9001 Certificados" },
-  { valor: "24/7", label: "Respuesta Técnica" },
+  { valor: "+20", label: "Años de trayectoria" },
+  { valor: "3.000+", label: "Proyectos entregados" },
+  { valor: "2.000+", label: "Mantenciones realizadas" },
+  { valor: "24/7", label: "Respuesta técnica" },
 ];
 
 function HomePage() {
