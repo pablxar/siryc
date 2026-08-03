@@ -77,7 +77,7 @@ const razones = [
   },
   {
     titulo: "Equipos certificados y personal capacitado",
-    desc: "Técnicos acreditados por la SEC y afiliados a mutual ACHS, con formación continua a través del ICT. SIRYC es una empresa asociada a la Cámara de Comercio.",
+    desc: "Técnicos acreditados por la SEC. SIRYC es una empresa asociada a una mutual de seguridad laboral y miembro de la Cámara Chilena de Refrigeración y Climatización A.G.",
   },
   {
     titulo: "Experiencia en sectores exigentes",
