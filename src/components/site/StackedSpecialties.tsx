@@ -26,11 +26,12 @@ function StackedCard({ item, index, total }: { item: StackedItem; index: number;
     offset: ["start end", "end start"],
   });
 
-  // As next card overlaps, current card scales down, dims and blurs
+  // As next card overlaps, current card scales down, fades to 0 and blurs fully
   const scale = useTransform(scrollYProgress, [0.5, 1], [1, 0.92]);
-  const opacity = useTransform(scrollYProgress, [0.5, 1], [1, 0.05]);
-  const blur = useTransform(scrollYProgress, [0.5, 1], ["blur(0px)", "blur(4px)"]);
+  const opacity = useTransform(scrollYProgress, [0.5, 1], [1, 0]);
+  const blur = useTransform(scrollYProgress, [0.5, 1], ["blur(0px)", "blur(10px)"]);
   const imgY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
+
 
   const topOffset = 96 + index * 18; // stagger sticky top
 
