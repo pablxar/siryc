@@ -26,10 +26,17 @@ function StackedCard({ item, index, total }: { item: StackedItem; index: number;
     offset: ["start end", "end start"],
   });
 
-  // Card stays crisp until it's 50% covered, then progressively fades/blurs out
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1, 0.92]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1, 0]);
-  const blur = useTransform(scrollYProgress, [0, 0.5, 1], ["blur(0px)", "blur(0px)", "blur(10px)"]);
+  // Card stays fully crisp while visible; only once the next card has covered
+  // roughly half of it (late in its own scroll range) does it fade + blur out.
+  const isLast = index === total - 1;
+  const START = 0.78;
+  const scale = useTransform(scrollYProgress, [0, START, 1], [1, 1, isLast ? 1 : 0.92]);
+  const opacity = useTransform(scrollYProgress, [0, START, 1], [1, 1, isLast ? 1 : 0]);
+  const blur = useTransform(
+    scrollYProgress,
+    [0, START, 1],
+    ["blur(0px)", "blur(0px)", isLast ? "blur(0px)" : "blur(10px)"],
+  );
   const imgY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
 
 
