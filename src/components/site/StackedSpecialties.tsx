@@ -28,7 +28,7 @@ function StackedCard({ item, index, total }: { item: StackedItem; index: number;
 
   // As next card overlaps, current card scales down, dims and blurs
   const scale = useTransform(scrollYProgress, [0.5, 1], [1, 0.92]);
-  const opacity = useTransform(scrollYProgress, [0.5, 1], [1, 0.15]);
+  const opacity = useTransform(scrollYProgress, [0.5, 1], [1, 0.05]);
   const blur = useTransform(scrollYProgress, [0.5, 1], ["blur(0px)", "blur(4px)"]);
   const imgY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
 
