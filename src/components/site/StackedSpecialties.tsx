@@ -38,9 +38,10 @@ function StackedCard({ item, index, total }: { item: StackedItem; index: number;
   return (
     <div ref={ref} className="sticky" style={{ top: `${topOffset}px`, marginBottom: "4rem" }}>
       <motion.article
-        style={{ scale, opacity }}
+        style={{ scale, opacity, filter: blur }}
         className="relative grid overflow-hidden rounded-[2rem] border border-black/5 bg-white shadow-2xl shadow-[color:var(--color-siryc-blue)]/10 md:grid-cols-2"
       >
+
         <div className="relative aspect-[4/3] overflow-hidden bg-slate-100 md:aspect-auto md:min-h-[480px]">
           <motion.img
             src={item.img}
