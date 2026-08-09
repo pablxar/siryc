@@ -85,7 +85,7 @@ export function HorizontalGallery() {
           <div className="flex items-end justify-between gap-6">
             <div>
               <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-[color:var(--color-siryc-red)]">
-                — Obra ejecutada
+                Obra ejecutada
               </span>
               <h2 className="mt-3 max-w-2xl font-display text-3xl font-bold leading-tight md:text-5xl">
                 Proyectos recientes.
@@ -122,9 +122,7 @@ export function HorizontalGallery() {
                   {String(i + 1).padStart(2, "0")} · {it.categoria}
                 </div>
                 <div className="absolute inset-x-0 bottom-0 p-8">
-                  <h3 className="font-display text-2xl font-semibold leading-tight md:text-3xl">
-                    {it.titulo}
-                  </h3>
+                  <h3 className="font-display text-2xl font-semibold leading-tight md:text-3xl">{it.titulo}</h3>
                 </div>
               </article>
             ))}
