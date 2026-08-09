@@ -236,43 +236,8 @@ function HomePage() {
       <StackedSpecialties items={especialidades} />
 
       {/* POR QUÉ SIRYC */}
-      <section className="border-y border-slate-100 bg-white py-32">
-        <div className="container-siryc grid grid-cols-1 gap-24 lg:grid-cols-2">
-          <FadeIn>
-            <h2 className="font-display text-4xl font-extrabold text-[color:var(--color-siryc-blue)]">
-              Continuidad operativa,
-              <br />
-              sin improvisación.
-            </h2>
-            <div className="mt-12 space-y-8">
-              {razones.map((r) => (
-                <div key={r.titulo} className="flex gap-6">
-                  <div className="mt-1 h-12 w-[2px] flex-shrink-0 bg-[color:var(--color-siryc-red)]" />
-                  <div>
-                    <h5 className="font-semibold text-[color:var(--color-siryc-dark)]">{r.titulo}</h5>
-                    <p className="mt-1 text-sm leading-relaxed text-[color:var(--color-siryc-gray)]">{r.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </FadeIn>
-          <FadeIn delay={0.15}>
-            <div className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl bg-slate-100 p-px shadow-2xl shadow-[color:var(--color-siryc-blue)]/10">
-              {stats.map((s) => (
-                <div key={s.label} className="bg-white p-10 text-center lg:p-14">
-                  <Counter
-                    value={s.valor}
-                    className="font-display text-5xl font-black text-[color:var(--color-siryc-blue)]"
-                  />
-                  <div className="mt-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[color:var(--color-siryc-gray)]">
-                    {s.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </FadeIn>
-        </div>
-      </section>
+      <OperationalContinuity />
+
 
       {/* CLIENTES — marquee */}
       <section className="border-y border-black/5 bg-white py-20">
