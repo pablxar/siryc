@@ -70,9 +70,6 @@ const especialidades = [
   },
 ];
 
-
-
-
 function HomePage() {
   const { data: posts } = useQuery({
     queryKey: ["home-posts"],
@@ -211,7 +208,6 @@ function HomePage() {
       {/* POR QUÉ SIRYC */}
       <OperationalContinuity />
 
-
       {/* CLIENTES — marquee */}
       <section className="border-y border-black/5 bg-white py-20">
         <div className="container-siryc">
@@ -219,14 +215,15 @@ function HomePage() {
             <div className="mb-12 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
               <div>
                 <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-[color:var(--color-siryc-red)]">
-                  — Confianza institucional
+                  Confianza institucional
                 </span>
                 <h2 className="mt-3 max-w-2xl font-display text-3xl font-bold text-[color:var(--color-siryc-dark)] md:text-4xl">
                   Empresas e instituciones que confían en SIRYC.
                 </h2>
               </div>
               <p className="max-w-xs text-sm leading-relaxed text-[color:var(--color-siryc-gray)]">
-                Relaciones técnicas de largo plazo con corporativos, retail, educación y Fuerzas Armadas.
+                Relaciones construidas en el tiempo con clientes de gobierno, FFAA, retail corporativo, salud, educación
+                y particulares.
               </p>
             </div>
           </FadeIn>
