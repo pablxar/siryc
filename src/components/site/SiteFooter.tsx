@@ -93,8 +93,23 @@ export function SiteFooter() {
           <span>
             © {new Date().getFullYear()} SIRYC — Servicios de Ingeniería en Electricidad, Refrigeración y Climatización.
           </span>
-          <span>Desarrollado por Siryc Spa</span>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <Link to="/terminos" className="hover:text-white">
+              Términos de uso
+            </Link>
+            <span aria-hidden className="text-white/25">
+              ·
+            </span>
+            <Link to="/privacidad" className="hover:text-white">
+              Política de privacidad
+            </Link>
+            <span aria-hidden className="text-white/25">
+              ·
+            </span>
+            <span>Desarrollado por Siryc Spa</span>
+          </div>
         </div>
+
       </div>
     </footer>
   );
