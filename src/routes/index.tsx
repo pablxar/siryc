@@ -239,7 +239,37 @@ function HomePage() {
       {/* TESTIMONIOS */}
       <Testimonials />
 
-
+      {/* CTA FINAL */}
+      <section className="container-siryc py-32">
+        <FadeIn>
+          <div className="relative overflow-hidden rounded-[3rem] bg-[color:var(--color-siryc-blue)] p-12 text-center md:p-24">
+            <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-white/10 blur-3xl" />
+            <div className="absolute -bottom-40 -left-20 h-96 w-96 rounded-full bg-[color:var(--color-siryc-red)]/20 blur-3xl" />
+            <div className="relative z-10">
+              <h2 className="mx-auto max-w-3xl font-display text-4xl font-extrabold leading-tight text-white md:text-6xl">
+                ¿Necesitas una cotización técnica?
+              </h2>
+              <p className="mx-auto mt-8 max-w-xl text-lg text-white/75">
+                Nuestro equipo evalúa tu instalación y entrega una propuesta documentada.
+              </p>
+              <div className="mt-12 flex flex-wrap justify-center gap-4">
+                <Link
+                  to="/contacto"
+                  className="rounded-full bg-[color:var(--color-siryc-red)] px-12 py-5 text-sm font-bold text-white transition-all hover:shadow-2xl hover:shadow-[color:var(--color-siryc-red)]/40"
+                >
+                  Contactar a SIRYC
+                </Link>
+                <Link
+                  to="/proyectos"
+                  className="rounded-full bg-white px-12 py-5 text-sm font-bold text-[color:var(--color-siryc-blue)] transition-colors hover:bg-white/90"
+                >
+                  Ver proyectos
+                </Link>
+              </div>
+            </div>
+          </div>
+        </FadeIn>
+      </section>
       {/* BLOG PREVIEW */}
       <section className="bg-slate-100/60 py-32">
         <div className="container-siryc">
@@ -287,38 +317,6 @@ function HomePage() {
             ))}
           </div>
         </div>
-      </section>
-
-      {/* CTA FINAL */}
-      <section className="container-siryc py-32">
-        <FadeIn>
-          <div className="relative overflow-hidden rounded-[3rem] bg-[color:var(--color-siryc-blue)] p-12 text-center md:p-24">
-            <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-white/10 blur-3xl" />
-            <div className="absolute -bottom-40 -left-20 h-96 w-96 rounded-full bg-[color:var(--color-siryc-red)]/20 blur-3xl" />
-            <div className="relative z-10">
-              <h2 className="mx-auto max-w-3xl font-display text-4xl font-extrabold leading-tight text-white md:text-6xl">
-                ¿Necesitas una cotización técnica?
-              </h2>
-              <p className="mx-auto mt-8 max-w-xl text-lg text-white/75">
-                Nuestro equipo evalúa tu instalación y entrega una propuesta documentada.
-              </p>
-              <div className="mt-12 flex flex-wrap justify-center gap-4">
-                <Link
-                  to="/contacto"
-                  className="rounded-full bg-[color:var(--color-siryc-red)] px-12 py-5 text-sm font-bold text-white transition-all hover:shadow-2xl hover:shadow-[color:var(--color-siryc-red)]/40"
-                >
-                  Contactar a SIRYC
-                </Link>
-                <Link
-                  to="/proyectos"
-                  className="rounded-full bg-white px-12 py-5 text-sm font-bold text-[color:var(--color-siryc-blue)] transition-colors hover:bg-white/90"
-                >
-                  Ver proyectos
-                </Link>
-              </div>
-            </div>
-          </div>
-        </FadeIn>
       </section>
     </div>
   );
