@@ -13,22 +13,19 @@ export type Testimonio = {
 
 const defaultTestimonios: Testimonio[] = [
   {
-    cita:
-      "Llevamos [X] años trabajando con SIRYC en la mantención de nuestros sistemas de climatización. Nunca hemos tenido un problema sin resolver a tiempo.",
+    cita: "Llevamos [X] años trabajando con SIRYC en la mantención de nuestros sistemas de climatización. Nunca hemos tenido un problema sin resolver a tiempo.",
     nombre: "[Nombre del contacto]",
     cargo: "[Cargo]",
     empresa: "[Empresa]",
   },
   {
-    cita:
-      "Lo que más valoramos de SIRYC es que cada intervención queda documentada. Sabemos exactamente qué se hizo y cuándo.",
+    cita: "Lo que más valoramos de SIRYC es que cada intervención queda documentada. Sabemos exactamente qué se hizo y cuándo.",
     nombre: "[Nombre del contacto]",
     cargo: "[Cargo]",
     empresa: "[Empresa]",
   },
   {
-    cita:
-      "Cuando tuvimos una falla eléctrica fuera de horario, SIRYC respondió esa misma noche. Esa es la diferencia entre un proveedor y un socio técnico.",
+    cita: "Cuando tuvimos una falla eléctrica fuera de horario, SIRYC respondió esa misma noche. Esa es la diferencia entre un proveedor y un socio técnico.",
     nombre: "[Nombre del contacto]",
     cargo: "[Cargo]",
     empresa: "[Empresa]",
@@ -59,7 +56,7 @@ export function Testimonials({ items = defaultTestimonios }: { items?: Testimoni
             onMouseLeave={() => setPaused(false)}
           >
             <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-[color:var(--color-siryc-red)]">
-              — Testimonios
+              Testimonios
             </span>
 
             <div className="mt-10 min-h-[220px] md:min-h-[240px]">
