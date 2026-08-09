@@ -7,7 +7,7 @@ import { FadeIn, RevealGroup, RevealItem } from "@/components/site/FadeIn";
 import { LogoMarquee } from "@/components/site/LogoMarquee";
 import { StackedSpecialties } from "@/components/site/StackedSpecialties";
 import { HorizontalGallery } from "@/components/site/HorizontalGallery";
-import { Counter } from "@/components/site/Counter";
+import { OperationalContinuity } from "@/components/site/OperationalContinuity";
 import bannerWeb from "@/assets/banner-web-siryc.png.asset.json";
 import imgRefrigeracion from "@/assets/refrigeracion.png.asset.json";
 import imgClimatizacion from "@/assets/climatizacion.png.asset.json";
@@ -70,35 +70,8 @@ const especialidades = [
   },
 ];
 
-const razones = [
-  {
-    titulo: "Ingeniería documentada en cada proyecto",
-    desc: "Memoria técnica, planos y protocolos entregables para cada intervención.",
-  },
-  {
-    titulo: "Equipos certificados y personal capacitado",
-    desc: "Técnicos acreditados por la SEC. SIRYC es una empresa asociada a una mutual de seguridad laboral y miembro de la Cámara Chilena de Refrigeración y Climatización A.G.",
-  },
-  {
-    titulo: "Experiencia en sectores exigentes",
-    desc: "Gobierno, FFAA, retail corporativo, salud y educación con estándares críticos.",
-  },
-  {
-    titulo: "Respuesta técnica garantizada",
-    desc: "SLA definidos y guardia operativa para asegurar la continuidad de tu operación.",
-  },
-  {
-    titulo: "Más de dos décadas de continuidad operativa",
-    desc: "20+ años ejecutando contratos de mantención y proyectos llave en mano.",
-  },
-];
 
-const stats = [
-  { valor: "+20", label: "Años de trayectoria" },
-  { valor: "3.000+", label: "Proyectos entregados" },
-  { valor: "2.000+", label: "Mantenciones realizadas" },
-  { valor: "24/7", label: "Respuesta técnica" },
-];
+
 
 function HomePage() {
   const { data: posts } = useQuery({
