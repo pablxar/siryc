@@ -8,6 +8,8 @@ import { LogoMarquee } from "@/components/site/LogoMarquee";
 import { StackedSpecialties } from "@/components/site/StackedSpecialties";
 import { HorizontalGallery } from "@/components/site/HorizontalGallery";
 import { OperationalContinuity } from "@/components/site/OperationalContinuity";
+import { Testimonials } from "@/components/site/Testimonials";
+
 import bannerWeb from "@/assets/banner-web-siryc.png.asset.json";
 import imgRefrigeracion from "@/assets/refrigeracion.png.asset.json";
 import imgClimatizacion from "@/assets/climatizacion.png.asset.json";
