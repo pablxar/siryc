@@ -234,41 +234,9 @@ function HomePage() {
       {/* HORIZONTAL SCROLL GALLERY — pinned */}
       <HorizontalGallery />
 
-      {/* PROYECTO DESTACADO */}
-      <section className="container-siryc py-24">
-        <FadeIn>
-          <div className="flex flex-col overflow-hidden rounded-[2.5rem] bg-[color:var(--color-siryc-blue)] shadow-2xl shadow-[color:var(--color-siryc-blue)]/20 lg:flex-row">
-            <div className="relative min-h-[400px] lg:w-1/2">
-              <img
-                src="https://images.unsplash.com/photo-1565043666747-69f6646db940?w=1400&q=80"
-                alt="Proyecto destacado SIRYC"
-                loading="lazy"
-                className="absolute inset-0 h-full w-full object-cover"
-              />
-            </div>
-            <div className="flex flex-col justify-center p-12 text-white lg:w-1/2 lg:p-20">
-              <span className="mb-6 text-xs font-bold uppercase tracking-[0.25em] text-[color:var(--color-siryc-red)]">
-                Proyecto destacado
-              </span>
-              <h3 className="font-display text-4xl font-bold leading-tight">
-                Climatización integral de 12.000 m² en centro comercial.
-              </h3>
-              <p className="mt-8 text-lg leading-relaxed text-white/75">
-                48 unidades instaladas, sistema VRF y ventilación mecánica. Contrato de mantención anual vigente desde
-                2020.
-              </p>
-              <div className="mt-10">
-                <Link
-                  to="/proyectos"
-                  className="inline-flex items-center gap-2 rounded-full border-2 border-white px-8 py-4 text-sm font-bold text-white transition-all hover:bg-white hover:text-[color:var(--color-siryc-blue)]"
-                >
-                  Ver todos los proyectos <ArrowRight size={16} />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </FadeIn>
-      </section>
+      {/* TESTIMONIOS */}
+      <Testimonials />
+
 
       {/* BLOG PREVIEW */}
       <section className="bg-slate-100/60 py-32">
