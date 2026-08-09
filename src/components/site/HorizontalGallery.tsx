@@ -1,6 +1,9 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
+import climatizacionAsset from "@/assets/climatizacion.png.asset.json";
+import electricidadAsset from "@/assets/electricidad.png.asset.json";
+import bannerAsset from "@/assets/banner-web-siryc.png.asset.json";
 
 type GalleryItem = {
   titulo: string;
@@ -10,47 +13,72 @@ type GalleryItem = {
 
 const items: GalleryItem[] = [
   {
-    titulo: "Centro comercial · VRF 12.000 m²",
+    titulo: "Proyecto comercial · Sistema VRF",
     categoria: "Climatización",
-    img: "https://images.unsplash.com/photo-1565043666747-69f6646db940?w=1400&q=80",
+    img: climatizacionAsset.url,
   },
   {
-    titulo: "Data center · Chillers redundantes",
+    titulo: "Mantención de sistema de frío industrial",
     categoria: "Refrigeración",
     img: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=1400&q=80",
   },
   {
-    titulo: "Edificio corporativo · Tableros",
+    titulo: "Edificio corporativo · Tableros eléctricos",
     categoria: "Electricidad",
     img: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1400&q=80",
   },
   {
-    titulo: "Institución educacional · HVAC",
+    titulo: "Institución educacional · Climatización",
     categoria: "Climatización",
-    img: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=1400&q=80",
+    img: bannerAsset.url,
   },
   {
-    titulo: "Armada de Chile · Mantención",
-    categoria: "Gobierno / FFAA",
-    img: "https://images.unsplash.com/photo-1581092918484-8313ce1c1c9b?w=1400&q=80",
+    titulo: "Armada de Chile · Mantención de tableros eléctricos",
+    categoria: "Electricidad",
+    img: electricidadAsset.url,
   },
 ];
 
+const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
 export function HorizontalGallery() {
   const ref = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const [distance, setDistance] = useState(0);
+
+  useIsomorphicLayoutEffect(() => {
+    const measure = () => {
+      const track = trackRef.current;
+      const view = viewportRef.current;
+      if (!track || !view) return;
+      // total horizontal travel so the last card ends fully visible
+      const d = Math.max(0, track.scrollWidth - view.clientWidth);
+      setDistance(d);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (trackRef.current) ro.observe(trackRef.current);
+    if (viewportRef.current) ro.observe(viewportRef.current);
+    window.addEventListener("resize", measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end end"],
   });
 
-  // Move the track from 0 to negative width (translate in %)
-  const x = useTransform(scrollYProgress, [0, 1], ["2%", "-72%"]);
+  const x = useTransform(scrollYProgress, [0, 1], [0, -distance]);
 
   return (
     <section
       ref={ref}
       className="relative bg-[color:var(--color-siryc-dark)] text-white"
-      style={{ height: `${items.length * 90}vh` }}
+      style={{ height: `calc(100vh + ${distance}px)` }}
     >
       <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
         <div className="container-siryc pt-16 pb-8">
@@ -60,7 +88,7 @@ export function HorizontalGallery() {
                 — Obra ejecutada
               </span>
               <h2 className="mt-3 max-w-2xl font-display text-3xl font-bold leading-tight md:text-5xl">
-                Proyectos que sostienen operaciones críticas.
+                Proyectos recientes.
               </h2>
             </div>
             <Link
@@ -72,15 +100,16 @@ export function HorizontalGallery() {
           </div>
         </div>
 
-        <div className="relative flex-1 overflow-hidden">
+        <div ref={viewportRef} className="relative flex-1 overflow-hidden">
           <motion.div
+            ref={trackRef}
             style={{ x }}
-            className="flex h-full items-center gap-8 pl-[4vw] pr-[10vw] will-change-transform"
+            className="flex h-full w-max items-center gap-8 px-[4vw] will-change-transform"
           >
             {items.map((it, i) => (
               <article
                 key={it.titulo}
-                className="group relative h-[68vh] w-[68vw] shrink-0 overflow-hidden rounded-[2rem] bg-black/40 md:w-[46vw] lg:w-[38vw]"
+                className="group relative h-[62vh] w-[78vw] shrink-0 overflow-hidden rounded-[2rem] bg-black/40 md:w-[52vw] lg:w-[40vw]"
               >
                 <img
                   src={it.img}
