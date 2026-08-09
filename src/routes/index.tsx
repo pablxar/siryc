@@ -247,10 +247,10 @@ function HomePage() {
             <div className="absolute -bottom-40 -left-20 h-96 w-96 rounded-full bg-[color:var(--color-siryc-red)]/20 blur-3xl" />
             <div className="relative z-10">
               <h2 className="mx-auto max-w-3xl font-display text-4xl font-extrabold leading-tight text-white md:text-6xl">
-                ¿Necesitas una cotización técnica?
+                ¿Necesitas una cotización?
               </h2>
               <p className="mx-auto mt-8 max-w-xl text-lg text-white/75">
-                Nuestro equipo evalúa tu instalación y entrega una propuesta documentada.
+                Nuestro equipo evalúa tu instalación o mantención y entrega una propuesta documentada.
               </p>
               <div className="mt-12 flex flex-wrap justify-center gap-4">
                 <Link
