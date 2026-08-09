@@ -7,7 +7,7 @@ import { FadeIn, RevealGroup, RevealItem } from "@/components/site/FadeIn";
 import { LogoMarquee } from "@/components/site/LogoMarquee";
 import { StackedSpecialties } from "@/components/site/StackedSpecialties";
 import { HorizontalGallery } from "@/components/site/HorizontalGallery";
-import { Counter } from "@/components/site/Counter";
+import { OperationalContinuity } from "@/components/site/OperationalContinuity";
 import bannerWeb from "@/assets/banner-web-siryc.png.asset.json";
 import imgRefrigeracion from "@/assets/refrigeracion.png.asset.json";
 import imgClimatizacion from "@/assets/climatizacion.png.asset.json";
@@ -70,35 +70,8 @@ const especialidades = [
   },
 ];
 
-const razones = [
-  {
-    titulo: "Ingeniería documentada en cada proyecto",
-    desc: "Memoria técnica, planos y protocolos entregables para cada intervención.",
-  },
-  {
-    titulo: "Equipos certificados y personal capacitado",
-    desc: "Técnicos acreditados por la SEC. SIRYC es una empresa asociada a una mutual de seguridad laboral y miembro de la Cámara Chilena de Refrigeración y Climatización A.G.",
-  },
-  {
-    titulo: "Experiencia en sectores exigentes",
-    desc: "Gobierno, FFAA, retail corporativo, salud y educación con estándares críticos.",
-  },
-  {
-    titulo: "Respuesta técnica garantizada",
-    desc: "SLA definidos y guardia operativa para asegurar la continuidad de tu operación.",
-  },
-  {
-    titulo: "Más de dos décadas de continuidad operativa",
-    desc: "20+ años ejecutando contratos de mantención y proyectos llave en mano.",
-  },
-];
 
-const stats = [
-  { valor: "+20", label: "Años de trayectoria" },
-  { valor: "3.000+", label: "Proyectos entregados" },
-  { valor: "2.000+", label: "Mantenciones realizadas" },
-  { valor: "24/7", label: "Respuesta técnica" },
-];
+
 
 function HomePage() {
   const { data: posts } = useQuery({
@@ -236,43 +209,8 @@ function HomePage() {
       <StackedSpecialties items={especialidades} />
 
       {/* POR QUÉ SIRYC */}
-      <section className="border-y border-slate-100 bg-white py-32">
-        <div className="container-siryc grid grid-cols-1 gap-24 lg:grid-cols-2">
-          <FadeIn>
-            <h2 className="font-display text-4xl font-extrabold text-[color:var(--color-siryc-blue)]">
-              Continuidad operativa,
-              <br />
-              sin improvisación.
-            </h2>
-            <div className="mt-12 space-y-8">
-              {razones.map((r) => (
-                <div key={r.titulo} className="flex gap-6">
-                  <div className="mt-1 h-12 w-[2px] flex-shrink-0 bg-[color:var(--color-siryc-red)]" />
-                  <div>
-                    <h5 className="font-semibold text-[color:var(--color-siryc-dark)]">{r.titulo}</h5>
-                    <p className="mt-1 text-sm leading-relaxed text-[color:var(--color-siryc-gray)]">{r.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </FadeIn>
-          <FadeIn delay={0.15}>
-            <div className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl bg-slate-100 p-px shadow-2xl shadow-[color:var(--color-siryc-blue)]/10">
-              {stats.map((s) => (
-                <div key={s.label} className="bg-white p-10 text-center lg:p-14">
-                  <Counter
-                    value={s.valor}
-                    className="font-display text-5xl font-black text-[color:var(--color-siryc-blue)]"
-                  />
-                  <div className="mt-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[color:var(--color-siryc-gray)]">
-                    {s.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </FadeIn>
-        </div>
-      </section>
+      <OperationalContinuity />
+
 
       {/* CLIENTES — marquee */}
       <section className="border-y border-black/5 bg-white py-20">
