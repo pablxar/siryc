@@ -23,7 +23,7 @@ export function ClientsSections() {
       {/* Segmentos — logo marquee style */}
       <section className="bg-white py-24">
         <div className="container-siryc">
-          <SectionMarker index="02" label="Segmentos" />
+          <SectionMarker index="03" label="Segmentos" />
           <FadeIn>
             <h2 className="mb-16 max-w-3xl font-display text-4xl font-bold text-[color:var(--color-siryc-dark)] md:text-5xl">
               Sectores en los <span className="text-[color:var(--color-siryc-blue)]">que operamos.</span>
@@ -76,7 +76,7 @@ export function ClientsSections() {
       {/* Testimonios */}
       <section className="bg-white py-24">
         <div className="container-siryc">
-          <SectionMarker index="04" label="Testimonios" />
+          <SectionMarker index="05" label="Testimonios" />
           <FadeIn>
             <WordReveal
               text="Lo que dicen quienes operan con nosotros."
@@ -147,7 +147,7 @@ function ArmadaSection() {
         }}
       />
       <div className="container-siryc relative max-w-4xl">
-        <SectionMarker index="03" label="Cliente destacado" />
+        <SectionMarker index="04" label="Cliente destacado" />
         <FadeIn>
           <div className="mb-4 inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 backdrop-blur-sm">
             <div className="h-2 w-2 rounded-full bg-[color:var(--color-siryc-red)]" />
