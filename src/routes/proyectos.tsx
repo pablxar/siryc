@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { EditorialHero } from "@/components/site/EditorialHero";
 import { SectionMarker } from "@/components/site/Parallax";
 import { cn } from "@/lib/utils";
+import { ClientsSections } from "@/components/site/ClientsSections";
 import { KineticMarquee } from "@/components/site/KineticMarquee";
 import imgElectricidad from "@/assets/electricidad.png.asset.json";
 
@@ -194,6 +195,8 @@ function ProyectosPage() {
           )}
         </div>
       </section>
+
+      <ClientsSections />
     </div>
   );
 }
