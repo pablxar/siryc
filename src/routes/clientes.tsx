@@ -5,6 +5,9 @@ import { Quote } from "lucide-react";
 import { EditorialHero } from "@/components/site/EditorialHero";
 import { SectionMarker } from "@/components/site/Parallax";
 import { FadeIn, RevealGroup, RevealItem } from "@/components/site/FadeIn";
+import { WordReveal } from "@/components/site/WordReveal";
+import { KineticMarquee } from "@/components/site/KineticMarquee";
+import imgClimatizacion from "@/assets/climatizacion.png.asset.json";
 
 export const Route = createFileRoute("/clientes")({
   head: () => ({
@@ -45,6 +48,12 @@ function ClientesPage() {
         eyebrow="Clientes e instituciones"
         title="Confianza institucional de largo plazo."
         subtitle="Empresas y organismos que confían en SIRYC para sostener su operación técnica."
+        image={imgClimatizacion.url}
+      />
+
+      <KineticMarquee
+        items={["Armada de Chile", "Retail", "Educación", "Corporativo", "Gobierno"]}
+        tone="light"
       />
 
       {/* Segmentos — logo marquee style */}
@@ -105,9 +114,10 @@ function ClientesPage() {
         <div className="container-siryc">
           <SectionMarker index="04" label="Testimonios" />
           <FadeIn>
-            <h2 className="mb-12 max-w-3xl font-display text-4xl font-bold text-[color:var(--color-siryc-dark)] md:text-5xl">
-              Lo que dicen quienes operan con nosotros.
-            </h2>
+            <WordReveal
+              text="Lo que dicen quienes operan con nosotros."
+              className="mb-12 max-w-3xl font-display text-4xl font-bold text-[color:var(--color-siryc-dark)] md:text-5xl"
+            />
           </FadeIn>
           <RevealGroup inView className="grid gap-6 md:grid-cols-2">
             {testimonios.map((t, i) => (
