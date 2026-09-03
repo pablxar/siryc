@@ -5,6 +5,11 @@ import { Snowflake, Wind, Zap, ArrowRight, Check } from "lucide-react";
 import { EditorialHero } from "@/components/site/EditorialHero";
 import { SectionMarker } from "@/components/site/Parallax";
 import { FadeIn } from "@/components/site/FadeIn";
+import { WordReveal } from "@/components/site/WordReveal";
+import { KineticMarquee } from "@/components/site/KineticMarquee";
+import imgRefrigeracion from "@/assets/refrigeracion.png.asset.json";
+import imgClimatizacion from "@/assets/climatizacion.png.asset.json";
+import imgElectricidad from "@/assets/electricidad.png.asset.json";
 
 export const Route = createFileRoute("/servicios")({
   head: () => ({
