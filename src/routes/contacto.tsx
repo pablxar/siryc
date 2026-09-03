@@ -121,7 +121,7 @@ function ContactoPage() {
         title="Hablemos de tu operación."
         subtitle="Solicita una cotización técnica documentada. Nuestro equipo evalúa tu instalación y entrega una propuesta."
       >
-        <div className="mt-6 flex items-center gap-3">
+        <div className="flex items-center gap-3">
           <div className="h-[3px] w-10 bg-[color:var(--color-siryc-red)]" />
           <p className="font-display text-lg font-semibold text-[color:var(--color-siryc-red)]">
             Tu clima, nuestra ingeniería.
