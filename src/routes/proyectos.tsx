@@ -70,24 +70,25 @@ function ProyectosPage() {
         title="Ingeniería documentada, obra por obra."
         subtitle="Datos técnicos, alcance y resultados de proyectos ejecutados en sectores exigentes."
       >
-        <div className="mt-8 flex flex-wrap items-baseline gap-8 text-white/70">
+        <div className="flex items-baseline gap-8 text-white/60">
           <div>
-            <div className="font-display text-5xl font-bold text-white md:text-6xl">
+            <div className="font-display text-3xl font-bold text-white">
               {total}
             </div>
-            <div className="mt-1 font-mono text-xs uppercase tracking-[0.3em]">
-              Proyectos publicados
+            <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.25em]">
+              Proyectos
             </div>
           </div>
           <div>
-            <div className="font-display text-5xl font-bold text-white md:text-6xl">
+            <div className="font-display text-3xl font-bold text-white">
               20+
             </div>
-            <div className="mt-1 font-mono text-xs uppercase tracking-[0.3em]">
-              Años de trayectoria
+            <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.25em]">
+              Años
             </div>
           </div>
         </div>
+
       </EditorialHero>
 
       <section className="bg-white py-20">
