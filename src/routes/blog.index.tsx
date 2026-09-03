@@ -5,6 +5,7 @@ import { ArrowUpRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { EditorialHero } from "@/components/site/EditorialHero";
 import { SectionMarker } from "@/components/site/Parallax";
+import imgRefrigeracion from "@/assets/refrigeracion.png.asset.json";
 
 export const Route = createFileRoute("/blog/")({
   head: () => ({
@@ -50,6 +51,7 @@ function BlogIndex() {
         eyebrow="Blog técnico"
         title="Actualidad técnica para operaciones."
         subtitle="Análisis, normativa y casos técnicos para administradores de edificios y responsables de operaciones."
+        image={imgRefrigeracion.url}
       />
 
       {/* Featured */}
@@ -101,58 +103,62 @@ function BlogIndex() {
         </section>
       )}
 
-      {/* Grid */}
+      {/* Editorial index */}
       <section className="bg-[color:var(--color-siryc-light)]/25 py-20">
         <div className="container-siryc">
           <SectionMarker index="03" label="Todos los artículos" />
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="border-t border-black/10">
             {rest.map((p, i) => (
               <motion.div
                 key={p.id}
-                initial={{ opacity: 0, y: 40, filter: "blur(6px)" }}
-                whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.6, delay: (i % 3) * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.6, delay: (i % 4) * 0.05, ease: [0.22, 1, 0.36, 1] }}
               >
                 <Link
                   to="/blog/$slug"
                   params={{ slug: p.slug }}
-                  className="group block h-full overflow-hidden rounded-3xl border border-black/5 bg-white transition-all hover:-translate-y-1 hover:shadow-[0_30px_60px_-25px_rgba(20,57,142,0.35)]"
+                  className="group grid items-center gap-6 border-b border-black/10 py-8 transition-colors hover:bg-white md:grid-cols-[auto_1fr_auto_auto] md:gap-10 md:px-6"
                 >
-                  <div className="aspect-[16/10] overflow-hidden bg-[color:var(--color-siryc-light)]/30">
+                  <span className="font-mono text-xs tracking-[0.3em] text-[color:var(--color-siryc-red)]">
+                    {String(i + 2).padStart(2, "0")}
+                  </span>
+
+                  <div className="min-w-0">
+                    <h3 className="font-display text-2xl font-semibold leading-snug text-[color:var(--color-siryc-dark)] transition-transform duration-500 md:text-3xl md:group-hover:translate-x-2">
+                      {p.titulo}
+                    </h3>
+                    <p className="mt-2 line-clamp-2 max-w-2xl text-sm text-[color:var(--color-siryc-gray)]">
+                      {p.extracto}
+                    </p>
+                  </div>
+
+                  <div className="hidden h-20 w-32 overflow-hidden rounded-2xl bg-[color:var(--color-siryc-light)]/40 opacity-0 transition-all duration-500 group-hover:opacity-100 lg:block">
                     {p.imagen_url && (
                       <img
                         src={p.imagen_url}
                         alt={p.titulo}
                         loading="lazy"
-                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        className="h-full w-full scale-110 object-cover transition-transform duration-700 group-hover:scale-100"
                       />
                     )}
                   </div>
-                  <div className="p-7">
-                    <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-widest">
-                      <span className="text-[color:var(--color-siryc-red)]">{p.categoria}</span>
-                      <span className="text-[color:var(--color-siryc-gray)]">
+
+                  <div className="flex items-center gap-5">
+                    <div className="text-right font-mono text-[10px] uppercase tracking-widest">
+                      <div className="text-[color:var(--color-siryc-red)]">{p.categoria}</div>
+                      <div className="mt-1 text-[color:var(--color-siryc-gray)]">
                         {new Date(p.created_at ?? "").toLocaleDateString("es-CL", {
                           day: "2-digit",
                           month: "short",
                           year: "numeric",
                         })}
-                      </span>
+                      </div>
                     </div>
-                    <h3 className="mt-3 font-display text-xl font-semibold leading-snug text-[color:var(--color-siryc-dark)]">
-                      {p.titulo}
-                    </h3>
-                    <p className="mt-3 line-clamp-3 text-sm text-[color:var(--color-siryc-gray)]">
-                      {p.extracto}
-                    </p>
-                    <div className="mt-6 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--color-siryc-blue)]">
-                      Leer
-                      <ArrowUpRight
-                        size={12}
-                        className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"
-                      />
-                    </div>
+                    <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full border border-black/10 text-[color:var(--color-siryc-dark)] transition-all duration-500 group-hover:border-transparent group-hover:bg-[color:var(--color-siryc-red)] group-hover:text-white">
+                      <ArrowUpRight size={18} />
+                    </span>
                   </div>
                 </Link>
               </motion.div>
@@ -160,6 +166,7 @@ function BlogIndex() {
           </div>
         </div>
       </section>
+
     </div>
   );
 }
