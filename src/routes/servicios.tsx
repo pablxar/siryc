@@ -82,6 +82,29 @@ function ServiciosPage() {
         eyebrow="Servicios"
         title="Tres líneas técnicas, una misma ingeniería."
         subtitle="Procedimientos documentados y personal certificado para refrigeración industrial, climatización y electricidad."
+        image={imgClimatizacion.url}
+      >
+        <nav className="flex flex-col gap-2">
+          {servicios.map((s, i) => (
+            <a
+              key={s.id}
+              href={`#${s.id}`}
+              className="group flex items-center gap-4 rounded-full border border-white/15 bg-white/[0.06] px-5 py-2.5 backdrop-blur-md transition-colors hover:border-white/40"
+            >
+              <span className="font-mono text-[10px] tracking-[0.25em] text-[color:var(--color-siryc-red)]">
+                0{i + 1}
+              </span>
+              <span className="text-sm font-medium text-white/85 group-hover:text-white">
+                {s.titulo}
+              </span>
+            </a>
+          ))}
+        </nav>
+      </EditorialHero>
+
+      <KineticMarquee
+        items={["Refrigeración industrial", "Climatización VRF", "Electricidad", "Mantención 24/7"]}
+        tone="light"
       />
 
       {servicios.map((s, idx) => (
