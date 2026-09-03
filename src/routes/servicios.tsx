@@ -179,9 +179,10 @@ function ServiceBlock({
             <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-[color:var(--color-siryc-blue)] text-white shadow-[0_15px_40px_-15px_rgba(20,57,142,0.55)]">
               <Icon size={24} />
             </div>
-            <h2 className="font-display text-4xl font-bold leading-tight text-[color:var(--color-siryc-dark)] md:text-5xl">
-              {servicio.titulo}
-            </h2>
+            <WordReveal
+              text={servicio.titulo}
+              className="font-display text-4xl font-bold leading-tight text-[color:var(--color-siryc-dark)] md:text-5xl"
+            />
             <div className="mt-8 grid gap-3 sm:grid-cols-2">
               {servicio.items.map((it, i) => (
                 <motion.div
