@@ -35,7 +35,7 @@ const servicios = [
     id: "refrigeracion",
     icon: Snowflake,
     titulo: "Refrigeración industrial",
-    img: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=1400&q=80",
+    img: imgRefrigeracion.url,
     items: [
       "Mantención preventiva y correctiva",
       "Cambio de compresores y componentes críticos",
@@ -49,7 +49,7 @@ const servicios = [
     id: "climatizacion",
     icon: Wind,
     titulo: "Climatización y aire acondicionado",
-    img: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=1400&q=80",
+    img: imgClimatizacion.url,
     items: [
       "Instalación residencial y comercial",
       "Sistemas VRF de volumen variable",
@@ -63,7 +63,7 @@ const servicios = [
     id: "electricidad",
     icon: Zap,
     titulo: "Electricidad industrial",
-    img: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1400&q=80",
+    img: imgElectricidad.url,
     items: [
       "Instalaciones eléctricas industriales y comerciales",
       "Sistemas de control centralizado",
