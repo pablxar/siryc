@@ -5,6 +5,9 @@ import { Check, X, Award, ShieldCheck, Zap } from "lucide-react";
 import { EditorialHero } from "@/components/site/EditorialHero";
 import { SectionMarker } from "@/components/site/Parallax";
 import { FadeIn, RevealGroup, RevealItem } from "@/components/site/FadeIn";
+import { WordReveal } from "@/components/site/WordReveal";
+import { KineticMarquee } from "@/components/site/KineticMarquee";
+import bannerWeb from "@/assets/banner-web-siryc.png.asset.json";
 
 export const Route = createFileRoute("/nosotros")({
   head: () => ({
@@ -62,6 +65,26 @@ function NosotrosPage() {
         eyebrow="Sobre SIRYC"
         title="Dos décadas sosteniendo la operación técnica."
         subtitle="Una empresa chilena de ingeniería que documenta cada intervención, dimensiona cada instalación y responde por cada m² de operación."
+        image={bannerWeb.url}
+      >
+        <div className="grid grid-cols-3 gap-6 text-white/60 md:gap-8">
+          {[
+            { v: "20+", l: "Años" },
+            { v: "250+", l: "Proyectos" },
+            { v: "ISO", l: "9001:2015" },
+          ].map((s) => (
+            <div key={s.l}>
+              <div className="font-display text-2xl font-bold text-white md:text-3xl">{s.v}</div>
+              <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.25em]">{s.l}</div>
+            </div>
+          ))}
+        </div>
+      </EditorialHero>
+
+      <KineticMarquee
+        items={["Trazabilidad", "Ingeniería", "Continuidad operativa", "Norma SEC", "ISO 9001"]}
+        tone="dark"
+        direction={-1}
       />
 
       {/* Historia — sticky scrollytelling */}
@@ -125,9 +148,10 @@ function NosotrosPage() {
         <div className="container-siryc">
           <SectionMarker index="05" label="Equipo" />
           <FadeIn>
-            <h2 className="mb-12 max-w-3xl font-display text-4xl font-bold text-[color:var(--color-siryc-dark)] md:text-5xl">
-              Estructura técnica y operacional.
-            </h2>
+            <WordReveal
+              text="Estructura técnica y operacional."
+              className="mb-12 max-w-3xl font-display text-4xl font-bold text-[color:var(--color-siryc-dark)] md:text-5xl"
+            />
           </FadeIn>
           <RevealGroup inView className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {equipo.map((m) => (
@@ -153,9 +177,10 @@ function NosotrosPage() {
         <div className="container-siryc">
           <SectionMarker index="06" label="Certificaciones" />
           <FadeIn>
-            <h2 className="mb-12 max-w-3xl font-display text-4xl font-bold text-[color:var(--color-siryc-dark)] md:text-5xl">
-              Certificaciones y normativa.
-            </h2>
+            <WordReveal
+              text="Certificaciones y normativa."
+              className="mb-12 max-w-3xl font-display text-4xl font-bold text-[color:var(--color-siryc-dark)] md:text-5xl"
+            />
           </FadeIn>
           <RevealGroup inView className="grid gap-6 md:grid-cols-3">
             {[

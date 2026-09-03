@@ -5,6 +5,11 @@ import { Snowflake, Wind, Zap, ArrowRight, Check } from "lucide-react";
 import { EditorialHero } from "@/components/site/EditorialHero";
 import { SectionMarker } from "@/components/site/Parallax";
 import { FadeIn } from "@/components/site/FadeIn";
+import { WordReveal } from "@/components/site/WordReveal";
+import { KineticMarquee } from "@/components/site/KineticMarquee";
+import imgRefrigeracion from "@/assets/refrigeracion.png.asset.json";
+import imgClimatizacion from "@/assets/climatizacion.png.asset.json";
+import imgElectricidad from "@/assets/electricidad.png.asset.json";
 
 export const Route = createFileRoute("/servicios")({
   head: () => ({
@@ -30,7 +35,7 @@ const servicios = [
     id: "refrigeracion",
     icon: Snowflake,
     titulo: "Refrigeración industrial",
-    img: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=1400&q=80",
+    img: imgRefrigeracion.url,
     items: [
       "Mantención preventiva y correctiva",
       "Cambio de compresores y componentes críticos",
@@ -44,7 +49,7 @@ const servicios = [
     id: "climatizacion",
     icon: Wind,
     titulo: "Climatización y aire acondicionado",
-    img: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=1400&q=80",
+    img: imgClimatizacion.url,
     items: [
       "Instalación residencial y comercial",
       "Sistemas VRF de volumen variable",
@@ -58,7 +63,7 @@ const servicios = [
     id: "electricidad",
     icon: Zap,
     titulo: "Electricidad industrial",
-    img: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1400&q=80",
+    img: imgElectricidad.url,
     items: [
       "Instalaciones eléctricas industriales y comerciales",
       "Sistemas de control centralizado",
@@ -77,6 +82,29 @@ function ServiciosPage() {
         eyebrow="Servicios"
         title="Tres líneas técnicas, una misma ingeniería."
         subtitle="Procedimientos documentados y personal certificado para refrigeración industrial, climatización y electricidad."
+        image={imgClimatizacion.url}
+      >
+        <nav className="flex flex-col gap-2">
+          {servicios.map((s, i) => (
+            <a
+              key={s.id}
+              href={`#${s.id}`}
+              className="group flex items-center gap-4 rounded-full border border-white/15 bg-white/[0.06] px-5 py-2.5 backdrop-blur-md transition-colors hover:border-white/40"
+            >
+              <span className="font-mono text-[10px] tracking-[0.25em] text-[color:var(--color-siryc-red)]">
+                0{i + 1}
+              </span>
+              <span className="text-sm font-medium text-white/85 group-hover:text-white">
+                {s.titulo}
+              </span>
+            </a>
+          ))}
+        </nav>
+      </EditorialHero>
+
+      <KineticMarquee
+        items={["Refrigeración industrial", "Climatización VRF", "Electricidad", "Mantención 24/7"]}
+        tone="light"
       />
 
       {servicios.map((s, idx) => (
@@ -151,9 +179,10 @@ function ServiceBlock({
             <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-[color:var(--color-siryc-blue)] text-white shadow-[0_15px_40px_-15px_rgba(20,57,142,0.55)]">
               <Icon size={24} />
             </div>
-            <h2 className="font-display text-4xl font-bold leading-tight text-[color:var(--color-siryc-dark)] md:text-5xl">
-              {servicio.titulo}
-            </h2>
+            <WordReveal
+              text={servicio.titulo}
+              className="font-display text-4xl font-bold leading-tight text-[color:var(--color-siryc-dark)] md:text-5xl"
+            />
             <div className="mt-8 grid gap-3 sm:grid-cols-2">
               {servicio.items.map((it, i) => (
                 <motion.div

@@ -1,10 +1,11 @@
-import { motion } from "framer-motion";
-import type { ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 export function EditorialHero({
   eyebrow,
   title,
   subtitle,
+  image,
   children,
 }: {
   /** Two-digit index like "01" — kept for API compatibility, no longer rendered */
@@ -12,17 +13,40 @@ export function EditorialHero({
   eyebrow?: string;
   title: string;
   subtitle?: string;
+  /** Optional background photograph, rendered with a scroll parallax */
+  image?: string;
   children?: ReactNode;
 }) {
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+  const imgY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, 60]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
+
   return (
-    <section className="relative overflow-hidden bg-[color:var(--color-siryc-dark)] text-white">
+    <section
+      ref={ref}
+      className="relative overflow-hidden bg-[color:var(--color-siryc-dark)] text-white"
+    >
+      {/* Optional photographic layer */}
+      {image && (
+        <motion.div aria-hidden style={{ y: imgY }} className="absolute inset-0 -top-[10%] h-[120%]">
+          <img src={image} alt="" className="h-full w-full object-cover opacity-40" />
+        </motion.div>
+      )}
+
       {/* Deep blue gradient field */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
-          background:
-            "linear-gradient(115deg, color-mix(in oklab, var(--color-siryc-blue) 85%, #000) 0%, var(--color-siryc-dark) 55%, #0f151b 100%)",
+          background: image
+            ? "linear-gradient(100deg, var(--color-siryc-dark) 8%, color-mix(in oklab, var(--color-siryc-blue) 70%, #000) 55%, transparent 130%)"
+            : "linear-gradient(115deg, color-mix(in oklab, var(--color-siryc-blue) 85%, #000) 0%, var(--color-siryc-dark) 55%, #0f151b 100%)",
+          opacity: image ? 0.92 : 1,
         }}
       />
       {/* Technical grid */}
@@ -46,7 +70,10 @@ export function EditorialHero({
         }}
       />
 
-      <div className="container-siryc relative py-14 md:py-20">
+      <motion.div
+        style={{ y: contentY, opacity: contentOpacity }}
+        className="container-siryc relative py-14 md:py-20"
+      >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -79,7 +106,7 @@ export function EditorialHero({
 
           {children && <div className="md:shrink-0">{children}</div>}
         </motion.div>
-      </div>
+      </motion.div>
 
       <div className="container-siryc relative">
         <div className="h-px w-full bg-gradient-to-r from-transparent via-white/15 to-transparent" />

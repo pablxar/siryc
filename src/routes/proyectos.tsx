@@ -7,6 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { EditorialHero } from "@/components/site/EditorialHero";
 import { SectionMarker } from "@/components/site/Parallax";
 import { cn } from "@/lib/utils";
+import { KineticMarquee } from "@/components/site/KineticMarquee";
+import imgElectricidad from "@/assets/electricidad.png.asset.json";
 
 export const Route = createFileRoute("/proyectos")({
   head: () => ({
@@ -69,6 +71,7 @@ function ProyectosPage() {
         eyebrow="Casos ejecutados"
         title="Ingeniería documentada, obra por obra."
         subtitle="Datos técnicos, alcance y resultados de proyectos ejecutados en sectores exigentes."
+        image={imgElectricidad.url}
       >
         <div className="flex items-baseline gap-8 text-white/60">
           <div>
@@ -90,6 +93,11 @@ function ProyectosPage() {
         </div>
 
       </EditorialHero>
+
+      <KineticMarquee
+        items={["Centros comerciales", "Corporativo", "Educación", "Gobierno y FFAA"]}
+        tone="light"
+      />
 
       <section className="bg-white py-20">
         <div className="container-siryc">
@@ -113,7 +121,7 @@ function ProyectosPage() {
             ))}
           </div>
 
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="columns-1 gap-8 sm:columns-2 lg:columns-3">
             {filtered.map((p, i) => (
               <motion.article
                 key={p.id}
@@ -123,9 +131,14 @@ function ProyectosPage() {
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ duration: 0.7, delay: (i % 6) * 0.05, ease: [0.22, 1, 0.36, 1] }}
                 whileHover={{ y: -6 }}
-                className="group relative h-full overflow-hidden rounded-3xl border border-black/5 bg-white"
+                className="group relative mb-8 break-inside-avoid overflow-hidden rounded-3xl border border-black/5 bg-white"
               >
-                <div className="relative aspect-[4/5] overflow-hidden bg-[color:var(--color-siryc-dark)]">
+                <div
+                  className={cn(
+                    "relative overflow-hidden bg-[color:var(--color-siryc-dark)]",
+                    i % 3 === 0 ? "aspect-[4/5]" : i % 3 === 1 ? "aspect-square" : "aspect-[3/4]",
+                  )}
+                >
                   {p.imagen_principal_url && (
                     <img
                       src={p.imagen_principal_url}
