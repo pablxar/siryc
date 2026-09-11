@@ -72,7 +72,7 @@ export function EditorialHero({
 
       <motion.div
         style={{ y: contentY, opacity: contentOpacity }}
-        className="container-siryc relative py-14 md:py-20"
+        className="container-siryc relative pb-14 pt-28 md:pb-20 md:pt-36"
       >
         <motion.div
           initial={{ opacity: 0, y: 20 }}

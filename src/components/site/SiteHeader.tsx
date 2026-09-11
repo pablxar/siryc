@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { ArrowRight, Menu, X } from "lucide-react";
+import { ArrowUpRight, Menu, X } from "lucide-react";
 import { Logo } from "./Logo";
 import { cn } from "@/lib/utils";
 
 const NAV = [
-  { to: "/", label: "Inicio" },
   { to: "/nosotros", label: "Nosotros" },
   { to: "/servicios", label: "Servicios" },
   { to: "/proyectos", label: "Proyectos" },
-  { to: "/blog", label: "Blog técnico" },
+  { to: "/blog", label: "Actualidad" },
 ];
 
 export function SiteHeader() {
@@ -29,104 +28,83 @@ export function SiteHeader() {
   }, [pathname]);
 
   return (
-    <div className="sticky top-0 z-50 w-full">
-      {/* Utility bar — colapsa al scroll */}
-      <div
-        className={cn(
-          "hidden overflow-hidden bg-[color:var(--color-siryc-dark)] text-white transition-[max-height,opacity] duration-500 ease-out md:block",
-          scrolled ? "max-h-0 opacity-0" : "max-h-10 opacity-100",
-        )}
-      >
-        <div className="container-siryc flex h-9 items-center justify-end gap-8 text-[11px] font-medium uppercase tracking-wider">
-          <span className="flex items-center gap-2">
-            <span className="font-bold text-[color:var(--color-siryc-red)]">E:</span>
-            ventas@siryc.cl
-          </span>
-        </div>
-      </div>
-
-      {/* Main header */}
-      <header
-        className={cn(
-          "border-b transition-all duration-300 ease-out",
-          scrolled
-            ? "border-black/10 bg-white/85 py-1.5 shadow-[0_8px_24px_-12px_rgba(20,57,142,0.18)] backdrop-blur-xl"
-            : "border-transparent bg-white/95 py-3 backdrop-blur",
-        )}
-      >
-        <div className="container-siryc flex items-center justify-between gap-4">
-          <Link
-            to="/"
-            aria-label="SIRYC — Inicio"
-            className={cn(
-              "flex origin-left items-center transition-transform duration-300 ease-out",
-              scrolled ? "scale-[0.88]" : "scale-100",
-            )}
-          >
-            <Logo variant="dark" />
-          </Link>
-
-          <nav className="hidden items-center gap-8 lg:flex">
-            {NAV.map((item) => {
-              const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
-              return (
-                <Link
-                  key={item.to}
-                  to={item.to}
-                  className={cn(
-                    "text-[11px] font-bold uppercase tracking-widest transition-colors",
-                    active
-                      ? "text-[color:var(--color-siryc-blue)]"
-                      : "text-[color:var(--color-siryc-gray)] hover:text-[color:var(--color-siryc-blue)]",
-                  )}
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
-          </nav>
-
-          <div className="flex items-center gap-2">
-            <Link
-              to="/contacto"
-              className="group hidden items-center gap-2 rounded-full bg-[color:var(--color-siryc-blue)] px-6 py-3.5 text-[11px] font-bold uppercase tracking-widest text-white shadow-[0_10px_30px_-10px_rgba(20,57,142,0.5)] transition-all hover:bg-[color:var(--color-siryc-dark)] md:inline-flex"
-            >
-              Solicitar cotización
-              <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
+    <div className="pointer-events-none fixed inset-x-0 top-0 z-50 pt-3 md:pt-5">
+      <div className="container-siryc">
+        <header
+          className={cn(
+            "pointer-events-auto rounded-2xl border transition-all duration-300 ease-out",
+            scrolled
+              ? "border-black/10 bg-white/90 shadow-[0_18px_50px_-24px_rgba(20,57,142,0.45)] backdrop-blur-xl"
+              : "border-white/60 bg-white/85 shadow-[0_14px_40px_-28px_rgba(0,0,0,0.5)] backdrop-blur-xl",
+          )}
+        >
+          <div className="flex items-center justify-between gap-4 px-4 py-2.5 md:px-6 md:py-3">
+            <Link to="/" aria-label="SIRYC — Inicio" className="flex origin-left items-center">
+              <Logo variant="dark" />
             </Link>
-            <button
-              type="button"
-              onClick={() => setOpen((v) => !v)}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-md text-[color:var(--color-siryc-dark)] lg:hidden"
-              aria-label="Abrir menú"
-            >
-              {open ? <X size={22} /> : <Menu size={22} />}
-            </button>
-          </div>
-        </div>
 
-        {open && (
-          <nav className="border-t border-black/5 bg-white lg:hidden">
-            <div className="container-siryc flex flex-col py-2">
-              {NAV.map((item) => (
-                <Link
-                  key={item.to}
-                  to={item.to}
-                  className="border-b border-black/5 py-3 text-xs font-bold uppercase tracking-widest text-[color:var(--color-siryc-dark)] last:border-0"
-                >
-                  {item.label}
-                </Link>
-              ))}
+            <nav className="hidden items-center gap-9 lg:flex">
+              {NAV.map((item) => {
+                const active = pathname.startsWith(item.to);
+                return (
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    className={cn(
+                      "text-[13px] font-medium transition-colors",
+                      active
+                        ? "text-[color:var(--color-siryc-blue)]"
+                        : "text-[color:var(--color-siryc-gray)] hover:text-[color:var(--color-siryc-blue)]",
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </nav>
+
+            <div className="flex items-center gap-2">
               <Link
                 to="/contacto"
-                className="mt-3 inline-flex justify-center rounded-full bg-[color:var(--color-siryc-blue)] px-4 py-3 text-xs font-bold uppercase tracking-widest text-white"
+                className="group hidden items-center gap-1.5 rounded-xl bg-[color:var(--color-siryc-blue)] px-5 py-3 text-[13px] font-semibold text-white transition-colors hover:bg-[color:var(--color-siryc-dark)] md:inline-flex"
               >
                 Solicitar cotización
+                <ArrowUpRight size={15} className="transition-transform group-hover:translate-x-0.5" />
               </Link>
+              <button
+                type="button"
+                onClick={() => setOpen((v) => !v)}
+                className="inline-flex h-10 w-10 items-center justify-center rounded-xl text-[color:var(--color-siryc-dark)] lg:hidden"
+                aria-label="Abrir menú"
+              >
+                {open ? <X size={22} /> : <Menu size={22} />}
+              </button>
             </div>
-          </nav>
-        )}
-      </header>
+          </div>
+
+          {open && (
+            <nav className="border-t border-black/5 px-4 lg:hidden">
+              <div className="flex flex-col py-2">
+                {NAV.map((item) => (
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    className="border-b border-black/5 py-3 text-sm font-semibold text-[color:var(--color-siryc-dark)] last:border-0"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+                <Link
+                  to="/contacto"
+                  className="my-3 inline-flex justify-center rounded-xl bg-[color:var(--color-siryc-blue)] px-4 py-3 text-sm font-semibold text-white"
+                >
+                  Solicitar cotización
+                </Link>
+              </div>
+            </nav>
+          )}
+        </header>
+      </div>
     </div>
   );
 }
