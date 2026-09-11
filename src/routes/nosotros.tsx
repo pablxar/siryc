@@ -38,12 +38,12 @@ export const Route = createFileRoute("/nosotros")({
 });
 
 const hitos = [
-  { anio: "2004", texto: "Nuestros primeros contratos de mantención." },
-  { anio: "2010", texto: "Nuevos proyectos corporativos y comerciales." },
-  { anio: "2015", texto: "Consolidación del equipo técnico." },
-  { anio: "2018", texto: "Mantención para instalaciones institucionales." },
-  { anio: "2022", texto: "Evolución a SIRYC e integración de electricidad." },
-  { anio: "2026", texto: "Una ingeniería que sigue avanzando." },
+  { anio: "2004", texto: "Fundación como INGEMI. Primeros contratos de mantención en la V Región." },
+  { anio: "2010", texto: "Expansión a proyectos corporativos y centros comerciales." },
+  { anio: "2015", texto: "Certificación ISO 9001 y consolidación del equipo técnico." },
+  { anio: "2018", texto: "Inicio del contrato de mantención con la Armada de Chile." },
+  { anio: "2022", texto: "Evolución a SIRYC. Integración formal de la línea de electricidad." },
+  { anio: "2026", texto: "Más de 250 proyectos ejecutados y contratos institucionales vigentes." },
 ];
 
 const compromisos: { titulo: string; desc: string; Icon: React.ComponentType<IconProps> }[] = [
