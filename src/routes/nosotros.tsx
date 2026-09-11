@@ -9,6 +9,10 @@ import {
   IconBolt,
   IconSnowflake,
   IconShieldCheck,
+  IconBriefcase,
+  IconTool,
+  IconHelmet,
+  IconHeadset,
   IconArrowUpRight,
   IconArrowDown,
   type IconProps,
@@ -66,10 +70,10 @@ const compromisos: { titulo: string; desc: string; Icon: React.ComponentType<Ico
 ];
 
 const equipo = [
-  { nombre: "Gerencia general", cargo: "Dirección y coordinación." },
-  { nombre: "Jefatura técnica", cargo: "Planificación e ingeniería." },
-  { nombre: "Supervisión en terreno", cargo: "Ejecución y control." },
-  { nombre: "Servicio al cliente", cargo: "Seguimiento y atención." },
+  { nombre: "Gerencia general", cargo: "Dirección y coordinación.", Icon: IconBriefcase },
+  { nombre: "Jefatura técnica", cargo: "Planificación e ingeniería.", Icon: IconTool },
+  { nombre: "Supervisión en terreno", cargo: "Ejecución y control.", Icon: IconHelmet },
+  { nombre: "Servicio al cliente", cargo: "Seguimiento y atención.", Icon: IconHeadset },
 ];
 
 const estandares: {
@@ -172,22 +176,20 @@ function NosotrosPage() {
               El compromiso se demuestra en cada intervención.
             </h2>
           </FadeIn>
-          <RevealGroup inView className="mt-12 grid gap-10 md:grid-cols-3 md:gap-0">
+          <RevealGroup inView className="mt-10 grid gap-4 md:mt-12 md:grid-cols-3 md:gap-0">
             {compromisos.map(({ titulo, desc, Icon }, i) => (
               <RevealItem key={titulo}>
-                <div className={`h-full md:px-8 ${i > 0 ? "md:border-l md:border-black/10" : "md:pl-0"}`}>
-                  <div className="flex items-center gap-4">
-                    <Icon size={30} stroke={1.5} className="text-[color:var(--color-siryc-blue)]" />
-                    <span className="font-display text-2xl font-semibold text-[color:var(--color-siryc-blue)]/35">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
+                <div
+                  className={`relative grid min-h-32 grid-cols-[3rem_minmax(0,1fr)] gap-4 overflow-hidden rounded-lg border border-border bg-secondary/55 p-5 md:block md:min-h-0 md:rounded-none md:border-y-0 md:border-r-0 md:bg-transparent md:px-8 md:py-0 ${i > 0 ? "md:border-l" : "md:border-l-0 md:pl-0"}`}
+                >
+                  <span className="absolute inset-y-0 left-0 w-1 bg-primary md:hidden" aria-hidden />
+                  <div className="grid h-12 w-12 shrink-0 place-items-center rounded-md bg-background text-primary shadow-sm md:mb-4 md:bg-secondary md:shadow-none">
+                    <Icon size={25} stroke={1.6} />
                   </div>
-                  <h3 className="mt-4 font-display text-lg font-bold text-[color:var(--color-siryc-dark)]">
-                    {titulo}
-                  </h3>
-                  <p className="mt-2 max-w-[26ch] text-sm leading-relaxed text-[color:var(--color-siryc-gray)]">
-                    {desc}
-                  </p>
+                  <div className="min-w-0">
+                    <h3 className="font-display text-lg font-bold text-foreground">{titulo}</h3>
+                    <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground md:max-w-[26ch]">{desc}</p>
+                  </div>
                 </div>
               </RevealItem>
             ))}
@@ -255,17 +257,17 @@ function NosotrosPage() {
               />
             </div>
           </FadeIn>
-          <RevealGroup inView className="mt-10 grid grid-cols-2 gap-8 lg:grid-cols-4">
-            {equipo.map((m, i) => (
+          <RevealGroup inView className="mt-8 grid grid-cols-2 gap-x-4 gap-y-5 md:mt-10 md:gap-8 lg:grid-cols-4">
+            {equipo.map((m) => (
               <RevealItem key={m.nombre}>
-                <div className="border-t border-black/10 pt-5">
-                  <div className="font-display text-xl font-bold text-[color:var(--color-siryc-blue)]">
-                    {String(i + 1).padStart(2, "0")}
+                <div className="h-full border-t-2 border-primary bg-secondary/40 px-4 py-5 md:border-t md:border-border md:bg-transparent md:px-0">
+                  <div className="mb-5 grid h-10 w-10 place-items-center rounded-md bg-background text-primary shadow-sm md:bg-secondary md:shadow-none">
+                    <m.Icon size={22} stroke={1.6} />
                   </div>
-                  <h3 className="mt-2 font-display text-base font-semibold text-[color:var(--color-siryc-dark)]">
+                  <h3 className="font-display text-base font-semibold leading-snug text-foreground">
                     {m.nombre}
                   </h3>
-                  <p className="mt-1 text-sm text-[color:var(--color-siryc-gray)]">{m.cargo}</p>
+                  <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{m.cargo}</p>
                 </div>
               </RevealItem>
             ))}
@@ -288,23 +290,26 @@ function NosotrosPage() {
               </p>
             </div>
           </FadeIn>
-          <RevealGroup inView className="mt-10 border-t border-black/10">
+          <RevealGroup inView className="mt-8 overflow-hidden rounded-lg border border-border bg-secondary/45 p-3 md:mt-10 md:rounded-none md:border-x-0 md:bg-transparent md:p-0">
             {estandares.map(({ titulo, desc, etiqueta, Icon }, i) => (
               <RevealItem key={titulo}>
-                <div className="group grid grid-cols-1 items-start gap-3 border-b border-black/10 py-7 transition-colors hover:bg-white/60 md:grid-cols-[auto_auto_1fr_1.2fr] md:items-center md:gap-8">
-                  <span className="font-mono text-[11px] tracking-[0.25em] text-[color:var(--color-siryc-blue)]/40">
+                <div className="group grid grid-cols-[2.75rem_minmax(0,1fr)] items-start gap-4 border-b border-border px-2 py-5 transition-colors last:border-b-0 md:grid-cols-[auto_auto_1fr_1.2fr] md:items-center md:gap-8 md:px-0 md:py-7 md:hover:bg-background/60">
+                  <span className="hidden font-mono text-[11px] tracking-[0.25em] text-primary/40 md:block">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <Icon size={26} stroke={1.5} className="text-[color:var(--color-siryc-blue)]" />
-                  <div>
-                    <h3 className="font-display text-base font-semibold text-[color:var(--color-siryc-dark)]">
+                  <div className="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-background text-primary shadow-sm md:contents">
+                    <Icon size={24} stroke={1.6} className="md:text-primary" />
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="font-display text-base font-semibold text-foreground">
                       {titulo}
                     </h3>
-                    <span className="mt-1 inline-block font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--color-siryc-red)]">
+                    <span className="mt-1 inline-block font-mono text-[10px] uppercase tracking-[0.2em] text-destructive">
                       {etiqueta}
                     </span>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground md:hidden">{desc}</p>
                   </div>
-                  <p className="text-sm leading-relaxed text-[color:var(--color-siryc-gray)]">{desc}</p>
+                  <p className="hidden text-sm leading-relaxed text-muted-foreground md:block">{desc}</p>
                 </div>
               </RevealItem>
             ))}
