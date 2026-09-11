@@ -278,19 +278,33 @@ function NosotrosPage() {
         <div className="container-siryc">
           <Eyebrow index="04" label="Respaldo técnico" />
           <FadeIn>
-            <h2 className="font-display text-3xl font-extrabold leading-tight tracking-tight text-[color:var(--color-siryc-dark)] md:text-4xl">
-              Un estándar de trabajo claro.
-            </h2>
+            <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+              <h2 className="font-display text-3xl font-extrabold leading-tight tracking-tight text-[color:var(--color-siryc-dark)] md:text-4xl">
+                Un estándar de trabajo claro.
+              </h2>
+              <p className="max-w-md text-sm leading-relaxed text-[color:var(--color-siryc-gray)]">
+                Cada intervención se ejecuta bajo procedimientos, normativa vigente y personal
+                acreditado, con respaldo documental entregable al cliente.
+              </p>
+            </div>
           </FadeIn>
           <RevealGroup inView className="mt-10 border-t border-black/10">
-            {estandares.map(({ titulo, desc, Icon }) => (
+            {estandares.map(({ titulo, desc, etiqueta, Icon }, i) => (
               <RevealItem key={titulo}>
-                <div className="grid grid-cols-1 items-center gap-2 border-b border-black/10 py-6 md:grid-cols-[auto_1fr_1.2fr] md:gap-8">
+                <div className="group grid grid-cols-1 items-start gap-3 border-b border-black/10 py-7 transition-colors hover:bg-white/60 md:grid-cols-[auto_auto_1fr_1.2fr] md:items-center md:gap-8">
+                  <span className="font-mono text-[11px] tracking-[0.25em] text-[color:var(--color-siryc-blue)]/40">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
                   <Icon size={26} stroke={1.5} className="text-[color:var(--color-siryc-blue)]" />
-                  <h3 className="font-display text-base font-semibold text-[color:var(--color-siryc-dark)]">
-                    {titulo}
-                  </h3>
-                  <p className="text-sm text-[color:var(--color-siryc-gray)]">{desc}</p>
+                  <div>
+                    <h3 className="font-display text-base font-semibold text-[color:var(--color-siryc-dark)]">
+                      {titulo}
+                    </h3>
+                    <span className="mt-1 inline-block font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--color-siryc-red)]">
+                      {etiqueta}
+                    </span>
+                  </div>
+                  <p className="text-sm leading-relaxed text-[color:var(--color-siryc-gray)]">{desc}</p>
                 </div>
               </RevealItem>
             ))}
