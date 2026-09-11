@@ -130,21 +130,21 @@ function HomePage() {
               </p>
             </RevealItem>
             <RevealItem>
-              <div className="mt-12 flex flex-wrap gap-4">
+              <div className="mt-12 flex flex-wrap items-center gap-4">
                 <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
                   <Link
                     to="/contacto"
-                    className="inline-block rounded-full bg-white px-10 py-5 text-sm font-bold text-[color:var(--color-siryc-blue)] transition-shadow hover:shadow-2xl hover:shadow-black/30"
+                    className="inline-block rounded-xl bg-white px-7 py-4 text-sm font-semibold text-[color:var(--color-siryc-blue)] transition-shadow hover:shadow-2xl hover:shadow-black/30"
                   >
-                    Iniciar proyecto
+                    Solicitar cotización ↗
                   </Link>
                 </motion.div>
                 <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
                   <Link
                     to="/servicios"
-                    className="inline-block rounded-full border border-white/30 px-10 py-5 text-sm font-bold text-white transition-colors hover:bg-white/10"
+                    className="inline-block rounded-xl border border-white/30 px-7 py-4 text-sm font-semibold text-white transition-colors hover:bg-white/10"
                   >
-                    Ver servicios
+                    Explorar servicios ↓
                   </Link>
                 </motion.div>
               </div>
