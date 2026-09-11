@@ -15,8 +15,8 @@ import {
 import { FadeIn, RevealGroup, RevealItem } from "@/components/site/FadeIn";
 import bannerWeb from "@/assets/banner-web-siryc.png.asset.json";
 import imgElectricidad from "@/assets/electricidad.png.asset.json";
-import imgRefrigeracion from "@/assets/refrigeracion.png.asset.json";
-import imgClimatizacion from "@/assets/climatizacion.png.asset.json";
+import imgHistoria from "@/assets/nosotros-historia.jpg";
+import imgEquipo from "@/assets/nosotros-equipo.jpg";
 
 export const Route = createFileRoute("/nosotros")({
   head: () => ({
