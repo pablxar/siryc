@@ -38,21 +38,7 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-const pilares = [
-  {
-    titulo: "Ingeniería",
-    desc: "Diseñamos, desarrollamos y ejecutamos proyectos de ingeniería a la medida de cada cliente.",
-  },
-  {
-    titulo: "Electricidad",
-    desc: "Instalación y mantenciones eléctricas, tableros y sistemas de control y detección de incendio, bajo normativa SEC.",
-  },
-  { titulo: "Refrigeración", desc: "Instalación, mantención y reparación de sistemas de frío industrial y comercial." },
-  {
-    titulo: "Climatización",
-    desc: "Instalación, mantención y reparación de equipos para espacios domiciliarios, comerciales e industriales.",
-  },
-];
+const sectores = ["Industria", "Edificios corporativos", "Educación", "Instituciones"];
 
 const especialidades = [
   {
