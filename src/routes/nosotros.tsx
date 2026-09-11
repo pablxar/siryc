@@ -71,21 +71,35 @@ const equipo = [
   { nombre: "Servicio al cliente", cargo: "Seguimiento y atención." },
 ];
 
-const estandares: { titulo: string; desc: string; Icon: React.ComponentType<IconProps> }[] = [
+const estandares: {
+  titulo: string;
+  desc: string;
+  etiqueta: string;
+  Icon: React.ComponentType<IconProps>;
+}[] = [
   {
     titulo: "Gestión de calidad",
-    desc: "Procedimientos y documentación técnica.",
+    etiqueta: "ISO 9001:2015",
+    desc: "Procedimientos documentados, control de obra y registros entregables en cada intervención.",
     Icon: IconCertificate,
   },
   {
     titulo: "Instalaciones eléctricas",
-    desc: "Normativa y requisitos aplicables a cada proyecto.",
+    etiqueta: "Normativa SEC",
+    desc: "Diseño, ejecución y declaración conforme a los requisitos aplicables a cada proyecto.",
     Icon: IconBolt,
   },
   {
     titulo: "Refrigeración responsable",
-    desc: "Buenas prácticas de manejo y mantención.",
+    etiqueta: "Protocolo de Montreal",
+    desc: "Manejo de refrigerantes y mantención según la normativa chilena vigente.",
     Icon: IconSnowflake,
+  },
+  {
+    titulo: "Seguridad y prevención",
+    etiqueta: "Mutual de seguridad",
+    desc: "Personal capacitado, trabajos en altura y procedimientos de prevención de riesgos.",
+    Icon: IconShieldCheck,
   },
 ];
 
