@@ -8,6 +8,7 @@ import {
   IconCertificate,
   IconBolt,
   IconSnowflake,
+  IconShieldCheck,
   IconArrowUpRight,
   IconArrowDown,
   type IconProps,
@@ -15,8 +16,8 @@ import {
 import { FadeIn, RevealGroup, RevealItem } from "@/components/site/FadeIn";
 import bannerWeb from "@/assets/banner-web-siryc.png.asset.json";
 import imgElectricidad from "@/assets/electricidad.png.asset.json";
-import imgRefrigeracion from "@/assets/refrigeracion.png.asset.json";
-import imgClimatizacion from "@/assets/climatizacion.png.asset.json";
+import imgHistoria from "@/assets/nosotros-historia.jpg";
+import imgEquipo from "@/assets/nosotros-equipo.jpg";
 
 export const Route = createFileRoute("/nosotros")({
   head: () => ({
@@ -38,12 +39,12 @@ export const Route = createFileRoute("/nosotros")({
 });
 
 const hitos = [
-  { anio: "2004", texto: "Nuestros primeros contratos de mantención." },
-  { anio: "2010", texto: "Nuevos proyectos corporativos y comerciales." },
-  { anio: "2015", texto: "Consolidación del equipo técnico." },
-  { anio: "2018", texto: "Mantención para instalaciones institucionales." },
-  { anio: "2022", texto: "Evolución a SIRYC e integración de electricidad." },
-  { anio: "2026", texto: "Una ingeniería que sigue avanzando." },
+  { anio: "2004", texto: "Fundación como INGEMI. Primeros contratos de mantención en la V Región." },
+  { anio: "2010", texto: "Expansión a proyectos corporativos y centros comerciales." },
+  { anio: "2015", texto: "Certificación ISO 9001 y consolidación del equipo técnico." },
+  { anio: "2018", texto: "Inicio del contrato de mantención con la Armada de Chile." },
+  { anio: "2022", texto: "Evolución a SIRYC. Integración formal de la línea de electricidad." },
+  { anio: "2026", texto: "Más de 250 proyectos ejecutados y contratos institucionales vigentes." },
 ];
 
 const compromisos: { titulo: string; desc: string; Icon: React.ComponentType<IconProps> }[] = [
@@ -71,21 +72,35 @@ const equipo = [
   { nombre: "Servicio al cliente", cargo: "Seguimiento y atención." },
 ];
 
-const estandares: { titulo: string; desc: string; Icon: React.ComponentType<IconProps> }[] = [
+const estandares: {
+  titulo: string;
+  desc: string;
+  etiqueta: string;
+  Icon: React.ComponentType<IconProps>;
+}[] = [
   {
     titulo: "Gestión de calidad",
-    desc: "Procedimientos y documentación técnica.",
+    etiqueta: "ISO 9001:2015",
+    desc: "Procedimientos documentados, control de obra y registros entregables en cada intervención.",
     Icon: IconCertificate,
   },
   {
     titulo: "Instalaciones eléctricas",
-    desc: "Normativa y requisitos aplicables a cada proyecto.",
+    etiqueta: "Normativa SEC",
+    desc: "Diseño, ejecución y declaración conforme a los requisitos aplicables a cada proyecto.",
     Icon: IconBolt,
   },
   {
     titulo: "Refrigeración responsable",
-    desc: "Buenas prácticas de manejo y mantención.",
+    etiqueta: "Protocolo de Montreal",
+    desc: "Manejo de refrigerantes y mantención según la normativa chilena vigente.",
     Icon: IconSnowflake,
+  },
+  {
+    titulo: "Seguridad y prevención",
+    etiqueta: "Mutual de seguridad",
+    desc: "Personal capacitado, trabajos en altura y procedimientos de prevención de riesgos.",
+    Icon: IconShieldCheck,
   },
 ];
 
@@ -110,11 +125,11 @@ function NosotrosPage() {
       <NosotrosHero />
 
       {/* 01 — Historia */}
-      <section className="bg-[color:var(--color-siryc-light)]/15 py-20 lg:py-24">
+      <section id="historia" className="scroll-mt-24 bg-[color:var(--color-siryc-light)]/15 py-20 lg:py-24">
         <div className="container-siryc">
           <Eyebrow index="01" label="Nuestra historia" />
           <div className="grid gap-12 lg:grid-cols-[0.9fr_1fr] lg:gap-20">
-            <div>
+            <div className="lg:sticky lg:top-28 lg:self-start">
               <FadeIn>
                 <h2 className="font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-[color:var(--color-siryc-dark)] md:text-5xl">
                   Una historia que
@@ -129,7 +144,7 @@ function NosotrosPage() {
               <FadeIn delay={0.1}>
                 <div className="relative mt-10 overflow-hidden rounded-2xl">
                   <img
-                    src={imgRefrigeracion.url}
+                    src={imgHistoria}
                     alt="Técnico SIRYC revisando planos en terreno"
                     loading="lazy"
                     className="h-72 w-full object-cover lg:h-80"
@@ -233,7 +248,7 @@ function NosotrosPage() {
           <FadeIn delay={0.1}>
             <div className="mt-10 overflow-hidden rounded-2xl">
               <img
-                src={imgClimatizacion.url}
+                src={imgEquipo}
                 alt="Equipo técnico de SIRYC coordinando una intervención"
                 loading="lazy"
                 className="h-64 w-full object-cover md:h-96"
@@ -263,19 +278,33 @@ function NosotrosPage() {
         <div className="container-siryc">
           <Eyebrow index="04" label="Respaldo técnico" />
           <FadeIn>
-            <h2 className="font-display text-3xl font-extrabold leading-tight tracking-tight text-[color:var(--color-siryc-dark)] md:text-4xl">
-              Un estándar de trabajo claro.
-            </h2>
+            <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+              <h2 className="font-display text-3xl font-extrabold leading-tight tracking-tight text-[color:var(--color-siryc-dark)] md:text-4xl">
+                Un estándar de trabajo claro.
+              </h2>
+              <p className="max-w-md text-sm leading-relaxed text-[color:var(--color-siryc-gray)]">
+                Cada intervención se ejecuta bajo procedimientos, normativa vigente y personal
+                acreditado, con respaldo documental entregable al cliente.
+              </p>
+            </div>
           </FadeIn>
           <RevealGroup inView className="mt-10 border-t border-black/10">
-            {estandares.map(({ titulo, desc, Icon }) => (
+            {estandares.map(({ titulo, desc, etiqueta, Icon }, i) => (
               <RevealItem key={titulo}>
-                <div className="grid grid-cols-1 items-center gap-2 border-b border-black/10 py-6 md:grid-cols-[auto_1fr_1.2fr] md:gap-8">
+                <div className="group grid grid-cols-1 items-start gap-3 border-b border-black/10 py-7 transition-colors hover:bg-white/60 md:grid-cols-[auto_auto_1fr_1.2fr] md:items-center md:gap-8">
+                  <span className="font-mono text-[11px] tracking-[0.25em] text-[color:var(--color-siryc-blue)]/40">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
                   <Icon size={26} stroke={1.5} className="text-[color:var(--color-siryc-blue)]" />
-                  <h3 className="font-display text-base font-semibold text-[color:var(--color-siryc-dark)]">
-                    {titulo}
-                  </h3>
-                  <p className="text-sm text-[color:var(--color-siryc-gray)]">{desc}</p>
+                  <div>
+                    <h3 className="font-display text-base font-semibold text-[color:var(--color-siryc-dark)]">
+                      {titulo}
+                    </h3>
+                    <span className="mt-1 inline-block font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--color-siryc-red)]">
+                      {etiqueta}
+                    </span>
+                  </div>
+                  <p className="text-sm leading-relaxed text-[color:var(--color-siryc-gray)]">{desc}</p>
                 </div>
               </RevealItem>
             ))}
@@ -351,10 +380,20 @@ function NosotrosHero() {
             Desde 2004, acompañamos la operación de nuestros clientes con experiencia en terreno y
             respaldo técnico.
           </p>
-          <div className="mt-8 inline-flex items-center gap-2 border-b border-white/40 pb-1 text-sm text-white/85">
+          <button
+            type="button"
+            onClick={() =>
+              document.getElementById("historia")?.scrollIntoView({ behavior: "smooth", block: "start" })
+            }
+            className="group mt-8 inline-flex items-center gap-2 border-b border-white/40 pb-1 text-sm text-white/85 transition-colors hover:border-white hover:text-white"
+          >
             Conoce nuestra historia
-            <IconArrowDown size={16} stroke={2} />
-          </div>
+            <IconArrowDown
+              size={16}
+              stroke={2}
+              className="transition-transform group-hover:translate-y-0.5"
+            />
+          </button>
         </motion.div>
       </div>
     </section>
