@@ -5,6 +5,7 @@ import { Logo } from "./Logo";
 import { cn } from "@/lib/utils";
 
 const NAV = [
+  { to: "/", label: "Inicio" },
   { to: "/nosotros", label: "Nosotros" },
   { to: "/servicios", label: "Servicios" },
   { to: "/proyectos", label: "Proyectos" },
@@ -45,7 +46,7 @@ export function SiteHeader() {
 
             <nav className="hidden items-center gap-9 lg:flex">
               {NAV.map((item) => {
-                const active = pathname.startsWith(item.to);
+                const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
                 return (
                   <Link
                     key={item.to}
