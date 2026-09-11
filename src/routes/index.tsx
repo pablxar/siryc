@@ -76,7 +76,7 @@ function HomePage() {
   return (
     <div className="bg-slate-50 text-[color:var(--color-siryc-dark)]">
       {/* HERO */}
-      <section className="relative overflow-hidden bg-[color:var(--color-siryc-blue)] py-24 lg:min-h-[720px] lg:py-36">
+      <section className="relative overflow-hidden bg-[color:var(--color-siryc-blue)] pb-24 pt-36 lg:min-h-[760px] lg:pb-28 lg:pt-52">
         {/* Desktop hero image */}
         <div className="absolute inset-0 z-0 hidden lg:block">
           <img
@@ -153,25 +153,25 @@ function HomePage() {
         </div>
       </section>
 
-      {/* PILARES flotantes */}
-      <section className="container-siryc relative z-20 -mt-14">
-        <RevealGroup inView className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {pilares.map((p, i) => (
-            <RevealItem key={p.titulo}>
-              <motion.div
-                whileHover={{ y: -6 }}
-                transition={{ type: "spring", stiffness: 260, damping: 22 }}
-                className="group h-full rounded-2xl border border-black/5 bg-white p-8 shadow-xl shadow-[color:var(--color-siryc-blue)]/5 transition-colors duration-300 hover:border-[color:var(--color-siryc-blue)]"
-              >
-                <div className="mb-4 font-display text-xs font-bold uppercase tracking-[0.25em] text-[color:var(--color-siryc-blue)]">
-                  {String(i + 1).padStart(2, "0")}
+      {/* SECTORES */}
+      <section className="border-b border-slate-200 bg-slate-50">
+        <div className="container-siryc py-10">
+          <div className="mb-6 flex items-center gap-3">
+            <span className="h-[2px] w-6 bg-[color:var(--color-siryc-red)]" />
+            <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-[color:var(--color-siryc-gray)]">
+              Experiencia en sectores exigentes
+            </span>
+          </div>
+          <RevealGroup inView className="grid grid-cols-2 divide-slate-200 md:grid-cols-4 md:divide-x">
+            {sectores.map((s) => (
+              <RevealItem key={s}>
+                <div className="px-2 py-4 text-center font-display text-lg font-semibold text-[color:var(--color-siryc-dark)] md:text-xl">
+                  {s}
                 </div>
-                <h3 className="font-display text-xl font-bold text-[color:var(--color-siryc-dark)]">{p.titulo}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-[color:var(--color-siryc-gray)]">{p.desc}</p>
-              </motion.div>
-            </RevealItem>
-          ))}
-        </RevealGroup>
+              </RevealItem>
+            ))}
+          </RevealGroup>
+        </div>
       </section>
 
       {/* ESPECIALIDADES — stacked cards on scroll */}
