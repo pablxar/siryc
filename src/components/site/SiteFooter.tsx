@@ -84,11 +84,11 @@ export function SiteFooter() {
           <div className="h-[3px] flex-1 bg-[color:var(--color-siryc-blue)]" />
         </div>
 
-        <div className="mt-6 flex flex-col items-start justify-between gap-2 text-xs text-white/50 md:flex-row md:items-center">
+        <div className="mt-6 flex flex-col items-center justify-between gap-2 text-center text-xs text-white/50 md:flex-row md:items-start md:text-left">
           <span>
             © {new Date().getFullYear()} SIRYC — Servicios de Ingeniería en Electricidad, Refrigeración y Climatización.
           </span>
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 md:justify-start">
             <Link to="/terminos" className="hover:text-white">
               Términos de uso
             </Link>
