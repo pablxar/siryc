@@ -8,6 +8,7 @@ import {
   IconCheck,
   type IconProps,
 } from "@tabler/icons-react";
+import imgElectricidad from "@/assets/electricidad.png.asset.json";
 
 const ACCENT = "#0D47A1";
 
