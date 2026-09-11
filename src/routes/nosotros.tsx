@@ -8,6 +8,7 @@ import {
   IconCertificate,
   IconBolt,
   IconSnowflake,
+  IconShieldCheck,
   IconArrowUpRight,
   IconArrowDown,
   type IconProps,
