@@ -46,10 +46,10 @@ function AreaCard({ area, index }: { area: Area; index: number }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.55, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
-      className="group relative flex min-w-[78%] snap-center flex-col overflow-hidden rounded-2xl border border-black/5 bg-white p-5 shadow-[0_20px_50px_-28px_rgba(20,57,142,0.4)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_28px_60px_-26px_rgba(20,57,142,0.5)] sm:min-w-0 lg:p-6"
+      className="group relative isolate flex min-w-[78%] snap-center flex-col overflow-hidden rounded-2xl border border-black/5 bg-white p-5 shadow-[0_20px_50px_-28px_rgba(20,57,142,0.4)] transition-all duration-300 lg:hover:-translate-y-1 lg:hover:shadow-[0_28px_60px_-26px_rgba(20,57,142,0.5)] sm:min-w-0 lg:p-6"
     >
       {/* accent bar */}
-      <span className="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 bg-[color:var(--color-siryc-red)] transition-transform duration-500 group-hover:scale-x-100" />
+      <span className="pointer-events-none absolute left-0 right-0 top-0 h-[3px] origin-left scale-x-0 rounded-b bg-[color:var(--color-siryc-red)] transition-transform duration-500 lg:group-hover:scale-x-100" />
 
       <div className="flex items-center gap-3">
         <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[color:var(--color-siryc-blue)]/6 text-[color:var(--color-siryc-blue)] transition-colors duration-300 group-hover:bg-[color:var(--color-siryc-blue)] group-hover:text-white">
@@ -79,12 +79,12 @@ export function CoreAreas() {
   return (
     <section className="relative z-20 -mt-12 pb-4 lg:-mt-20">
       <div className="container-siryc">
-        <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-2 sm:overflow-visible lg:grid-cols-4 lg:gap-5">
+        <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-1 pb-10 pt-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-5 lg:grid-cols-4 lg:gap-5">
           {areas.map((a, i) => (
             <AreaCard key={a.titulo} area={a} index={i} />
           ))}
         </div>
-        <p className="mt-1 text-center font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-siryc-gray)] sm:hidden">
+        <p className="-mt-4 text-center font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-siryc-gray)] sm:hidden">
           Desliza para ver más →
         </p>
       </div>
