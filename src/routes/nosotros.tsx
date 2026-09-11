@@ -110,11 +110,11 @@ function NosotrosPage() {
       <NosotrosHero />
 
       {/* 01 — Historia */}
-      <section className="bg-[color:var(--color-siryc-light)]/15 py-20 lg:py-24">
+      <section id="historia" className="scroll-mt-24 bg-[color:var(--color-siryc-light)]/15 py-20 lg:py-24">
         <div className="container-siryc">
           <Eyebrow index="01" label="Nuestra historia" />
           <div className="grid gap-12 lg:grid-cols-[0.9fr_1fr] lg:gap-20">
-            <div>
+            <div className="lg:sticky lg:top-28 lg:self-start">
               <FadeIn>
                 <h2 className="font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-[color:var(--color-siryc-dark)] md:text-5xl">
                   Una historia que
@@ -351,10 +351,20 @@ function NosotrosHero() {
             Desde 2004, acompañamos la operación de nuestros clientes con experiencia en terreno y
             respaldo técnico.
           </p>
-          <div className="mt-8 inline-flex items-center gap-2 border-b border-white/40 pb-1 text-sm text-white/85">
+          <button
+            type="button"
+            onClick={() =>
+              document.getElementById("historia")?.scrollIntoView({ behavior: "smooth", block: "start" })
+            }
+            className="group mt-8 inline-flex items-center gap-2 border-b border-white/40 pb-1 text-sm text-white/85 transition-colors hover:border-white hover:text-white"
+          >
             Conoce nuestra historia
-            <IconArrowDown size={16} stroke={2} />
-          </div>
+            <IconArrowDown
+              size={16}
+              stroke={2}
+              className="transition-transform group-hover:translate-y-0.5"
+            />
+          </button>
         </motion.div>
       </div>
     </section>
