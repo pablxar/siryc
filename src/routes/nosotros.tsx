@@ -129,7 +129,7 @@ function NosotrosPage() {
               <FadeIn delay={0.1}>
                 <div className="relative mt-10 overflow-hidden rounded-2xl">
                   <img
-                    src={imgRefrigeracion.url}
+                    src={imgHistoria}
                     alt="Técnico SIRYC revisando planos en terreno"
                     loading="lazy"
                     className="h-72 w-full object-cover lg:h-80"
@@ -233,7 +233,7 @@ function NosotrosPage() {
           <FadeIn delay={0.1}>
             <div className="mt-10 overflow-hidden rounded-2xl">
               <img
-                src={imgClimatizacion.url}
+                src={imgEquipo}
                 alt="Equipo técnico de SIRYC coordinando una intervención"
                 loading="lazy"
                 className="h-64 w-full object-cover md:h-96"
