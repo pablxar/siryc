@@ -225,37 +225,6 @@ function HomePage() {
       {/* TESTIMONIOS */}
       <Testimonials />
 
-      {/* CTA FINAL */}
-      <section className="container-siryc py-32">
-        <FadeIn>
-          <div className="relative overflow-hidden rounded-[3rem] bg-[color:var(--color-siryc-blue)] p-12 text-center md:p-24">
-            <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-white/10 blur-3xl" />
-            <div className="absolute -bottom-40 -left-20 h-96 w-96 rounded-full bg-[color:var(--color-siryc-red)]/20 blur-3xl" />
-            <div className="relative z-10">
-              <h2 className="mx-auto max-w-3xl font-display text-4xl font-extrabold leading-tight text-white md:text-6xl">
-                ¿Necesitas una cotización?
-              </h2>
-              <p className="mx-auto mt-8 max-w-xl text-lg text-white/75">
-                Nuestro equipo evalúa tu instalación o mantención y entrega una propuesta documentada.
-              </p>
-              <div className="mt-12 flex flex-wrap justify-center gap-4">
-                <Link
-                  to="/contacto"
-                  className="rounded-full bg-[color:var(--color-siryc-red)] px-12 py-5 text-sm font-bold text-white transition-all hover:shadow-2xl hover:shadow-[color:var(--color-siryc-red)]/40"
-                >
-                  Contactar a SIRYC
-                </Link>
-                <Link
-                  to="/proyectos"
-                  className="rounded-full bg-white px-12 py-5 text-sm font-bold text-[color:var(--color-siryc-blue)] transition-colors hover:bg-white/90"
-                >
-                  Ver proyectos
-                </Link>
-              </div>
-            </div>
-          </div>
-        </FadeIn>
-      </section>
       {/* BLOG PREVIEW */}
       <section className="bg-slate-100/60 py-32">
         <div className="container-siryc">
@@ -302,6 +271,38 @@ function HomePage() {
               </FadeIn>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* CTA FINAL — banda institucional */}
+      <section className="relative overflow-hidden bg-[color:var(--color-siryc-blue)]">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-[0.12]"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px)",
+            backgroundSize: "56px 56px",
+            maskImage: "radial-gradient(90% 120% at 90% 50%, #000 10%, transparent 70%)",
+          }}
+        />
+        <div className="container-siryc relative flex flex-col items-start justify-between gap-8 py-20 md:flex-row md:items-center md:py-24">
+          <FadeIn>
+            <div>
+              <h2 className="font-display text-4xl font-extrabold leading-[1.05] text-white md:text-5xl">
+                Hablemos de tu
+                <br />
+                próximo proyecto.
+              </h2>
+              <p className="mt-5 text-white/75">Cuéntanos qué necesita tu instalación.</p>
+            </div>
+          </FadeIn>
+          <Link
+            to="/contacto"
+            className="rounded-xl bg-white px-8 py-4 text-sm font-semibold text-[color:var(--color-siryc-blue)] transition-colors hover:bg-white/90"
+          >
+            Solicitar cotización ↗
+          </Link>
         </div>
       </section>
     </div>
