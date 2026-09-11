@@ -238,12 +238,15 @@ export function OperationalContinuity() {
               <RazonItem key={r.titulo} razon={r} index={i} reduced={reduced} />
             ))}
           </ul>
+        </div>
+      </div>
 
-          <div className="mt-14 grid grid-cols-2 gap-x-6 divide-y divide-slate-100 border-t border-slate-100 sm:grid-cols-4 sm:divide-y-0">
-            {stats.map((s) => (
-              <StatCard key={s.label} stat={s} reduced={reduced} />
-            ))}
-          </div>
+      {/* Cifras — franja horizontal a todo el ancho */}
+      <div className="container-siryc mt-20 lg:mt-24">
+        <div className="grid grid-cols-2 gap-x-8 gap-y-4 border-t border-slate-200 pt-10 sm:grid-cols-4">
+          {stats.map((s) => (
+            <StatCard key={s.label} stat={s} reduced={reduced} />
+          ))}
         </div>
       </div>
     </section>

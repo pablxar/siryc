@@ -39,7 +39,7 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-const sectores = ["Industria", "Edificios corporativos", "Educación", "Instituciones"];
+
 
 const especialidades = [
   {
