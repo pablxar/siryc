@@ -9,6 +9,7 @@ import { StackedSpecialties } from "@/components/site/StackedSpecialties";
 import { HorizontalGallery } from "@/components/site/HorizontalGallery";
 import { OperationalContinuity } from "@/components/site/OperationalContinuity";
 import { Testimonials } from "@/components/site/Testimonials";
+import { CoreAreas } from "@/components/site/CoreAreas";
 
 import bannerWeb from "@/assets/banner-web-siryc.png.asset.json";
 import imgRefrigeracion from "@/assets/refrigeracion.png.asset.json";
@@ -38,7 +39,7 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-const sectores = ["Industria", "Edificios corporativos", "Educación", "Instituciones"];
+
 
 const especialidades = [
   {
@@ -153,29 +154,11 @@ function HomePage() {
         </div>
       </section>
 
-      {/* SECTORES */}
-      <section className="border-b border-slate-200 bg-slate-50">
-        <div className="container-siryc py-10">
-          <div className="mb-6 flex items-center gap-3">
-            <span className="h-[2px] w-6 bg-[color:var(--color-siryc-red)]" />
-            <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-[color:var(--color-siryc-gray)]">
-              Experiencia en sectores exigentes
-            </span>
-          </div>
-          <RevealGroup inView className="grid grid-cols-2 divide-slate-200 md:grid-cols-4 md:divide-x">
-            {sectores.map((s) => (
-              <RevealItem key={s}>
-                <div className="px-2 py-4 text-center font-display text-lg font-semibold text-[color:var(--color-siryc-dark)] md:text-xl">
-                  {s}
-                </div>
-              </RevealItem>
-            ))}
-          </RevealGroup>
-        </div>
-      </section>
+      {/* ÁREAS CLAVE */}
+      <CoreAreas />
 
       {/* ESPECIALIDADES — stacked cards on scroll */}
-      <section className="container-siryc pt-24 pb-2">
+      <section className="container-siryc pt-20 pb-2">
         <div className="mb-6 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
           <FadeIn>
             <div className="max-w-xl">
