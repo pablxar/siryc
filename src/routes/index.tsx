@@ -38,21 +38,7 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-const pilares = [
-  {
-    titulo: "Ingeniería",
-    desc: "Diseñamos, desarrollamos y ejecutamos proyectos de ingeniería a la medida de cada cliente.",
-  },
-  {
-    titulo: "Electricidad",
-    desc: "Instalación y mantenciones eléctricas, tableros y sistemas de control y detección de incendio, bajo normativa SEC.",
-  },
-  { titulo: "Refrigeración", desc: "Instalación, mantención y reparación de sistemas de frío industrial y comercial." },
-  {
-    titulo: "Climatización",
-    desc: "Instalación, mantención y reparación de equipos para espacios domiciliarios, comerciales e industriales.",
-  },
-];
+const sectores = ["Industria", "Edificios corporativos", "Educación", "Instituciones"];
 
 const especialidades = [
   {
@@ -90,7 +76,7 @@ function HomePage() {
   return (
     <div className="bg-slate-50 text-[color:var(--color-siryc-dark)]">
       {/* HERO */}
-      <section className="relative overflow-hidden bg-[color:var(--color-siryc-blue)] py-24 lg:min-h-[720px] lg:py-36">
+      <section className="relative overflow-hidden bg-[color:var(--color-siryc-blue)] pb-24 pt-36 lg:min-h-[760px] lg:pb-28 lg:pt-52">
         {/* Desktop hero image */}
         <div className="absolute inset-0 z-0 hidden lg:block">
           <img
@@ -144,21 +130,21 @@ function HomePage() {
               </p>
             </RevealItem>
             <RevealItem>
-              <div className="mt-12 flex flex-wrap gap-4">
+              <div className="mt-12 flex flex-wrap items-center gap-4">
                 <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
                   <Link
                     to="/contacto"
-                    className="inline-block rounded-full bg-white px-10 py-5 text-sm font-bold text-[color:var(--color-siryc-blue)] transition-shadow hover:shadow-2xl hover:shadow-black/30"
+                    className="inline-block rounded-xl bg-white px-7 py-4 text-sm font-semibold text-[color:var(--color-siryc-blue)] transition-shadow hover:shadow-2xl hover:shadow-black/30"
                   >
-                    Iniciar proyecto
+                    Solicitar cotización ↗
                   </Link>
                 </motion.div>
                 <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
                   <Link
                     to="/servicios"
-                    className="inline-block rounded-full border border-white/30 px-10 py-5 text-sm font-bold text-white transition-colors hover:bg-white/10"
+                    className="inline-block rounded-xl border border-white/30 px-7 py-4 text-sm font-semibold text-white transition-colors hover:bg-white/10"
                   >
-                    Ver servicios
+                    Explorar servicios ↓
                   </Link>
                 </motion.div>
               </div>
@@ -167,25 +153,25 @@ function HomePage() {
         </div>
       </section>
 
-      {/* PILARES flotantes */}
-      <section className="container-siryc relative z-20 -mt-14">
-        <RevealGroup inView className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {pilares.map((p, i) => (
-            <RevealItem key={p.titulo}>
-              <motion.div
-                whileHover={{ y: -6 }}
-                transition={{ type: "spring", stiffness: 260, damping: 22 }}
-                className="group h-full rounded-2xl border border-black/5 bg-white p-8 shadow-xl shadow-[color:var(--color-siryc-blue)]/5 transition-colors duration-300 hover:border-[color:var(--color-siryc-blue)]"
-              >
-                <div className="mb-4 font-display text-xs font-bold uppercase tracking-[0.25em] text-[color:var(--color-siryc-blue)]">
-                  {String(i + 1).padStart(2, "0")}
+      {/* SECTORES */}
+      <section className="border-b border-slate-200 bg-slate-50">
+        <div className="container-siryc py-10">
+          <div className="mb-6 flex items-center gap-3">
+            <span className="h-[2px] w-6 bg-[color:var(--color-siryc-red)]" />
+            <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-[color:var(--color-siryc-gray)]">
+              Experiencia en sectores exigentes
+            </span>
+          </div>
+          <RevealGroup inView className="grid grid-cols-2 divide-slate-200 md:grid-cols-4 md:divide-x">
+            {sectores.map((s) => (
+              <RevealItem key={s}>
+                <div className="px-2 py-4 text-center font-display text-lg font-semibold text-[color:var(--color-siryc-dark)] md:text-xl">
+                  {s}
                 </div>
-                <h3 className="font-display text-xl font-bold text-[color:var(--color-siryc-dark)]">{p.titulo}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-[color:var(--color-siryc-gray)]">{p.desc}</p>
-              </motion.div>
-            </RevealItem>
-          ))}
-        </RevealGroup>
+              </RevealItem>
+            ))}
+          </RevealGroup>
+        </div>
       </section>
 
       {/* ESPECIALIDADES — stacked cards on scroll */}
@@ -239,37 +225,6 @@ function HomePage() {
       {/* TESTIMONIOS */}
       <Testimonials />
 
-      {/* CTA FINAL */}
-      <section className="container-siryc py-32">
-        <FadeIn>
-          <div className="relative overflow-hidden rounded-[3rem] bg-[color:var(--color-siryc-blue)] p-12 text-center md:p-24">
-            <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-white/10 blur-3xl" />
-            <div className="absolute -bottom-40 -left-20 h-96 w-96 rounded-full bg-[color:var(--color-siryc-red)]/20 blur-3xl" />
-            <div className="relative z-10">
-              <h2 className="mx-auto max-w-3xl font-display text-4xl font-extrabold leading-tight text-white md:text-6xl">
-                ¿Necesitas una cotización?
-              </h2>
-              <p className="mx-auto mt-8 max-w-xl text-lg text-white/75">
-                Nuestro equipo evalúa tu instalación o mantención y entrega una propuesta documentada.
-              </p>
-              <div className="mt-12 flex flex-wrap justify-center gap-4">
-                <Link
-                  to="/contacto"
-                  className="rounded-full bg-[color:var(--color-siryc-red)] px-12 py-5 text-sm font-bold text-white transition-all hover:shadow-2xl hover:shadow-[color:var(--color-siryc-red)]/40"
-                >
-                  Contactar a SIRYC
-                </Link>
-                <Link
-                  to="/proyectos"
-                  className="rounded-full bg-white px-12 py-5 text-sm font-bold text-[color:var(--color-siryc-blue)] transition-colors hover:bg-white/90"
-                >
-                  Ver proyectos
-                </Link>
-              </div>
-            </div>
-          </div>
-        </FadeIn>
-      </section>
       {/* BLOG PREVIEW */}
       <section className="bg-slate-100/60 py-32">
         <div className="container-siryc">
@@ -316,6 +271,38 @@ function HomePage() {
               </FadeIn>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* CTA FINAL — banda institucional */}
+      <section className="relative overflow-hidden bg-[color:var(--color-siryc-blue)]">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-[0.12]"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px)",
+            backgroundSize: "56px 56px",
+            maskImage: "radial-gradient(90% 120% at 90% 50%, #000 10%, transparent 70%)",
+          }}
+        />
+        <div className="container-siryc relative flex flex-col items-start justify-between gap-8 py-20 md:flex-row md:items-center md:py-24">
+          <FadeIn>
+            <div>
+              <h2 className="font-display text-4xl font-extrabold leading-[1.05] text-white md:text-5xl">
+                Hablemos de tu
+                <br />
+                próximo proyecto.
+              </h2>
+              <p className="mt-5 text-white/75">Cuéntanos qué necesita tu instalación.</p>
+            </div>
+          </FadeIn>
+          <Link
+            to="/contacto"
+            className="rounded-xl bg-white px-8 py-4 text-sm font-semibold text-[color:var(--color-siryc-blue)] transition-colors hover:bg-white/90"
+          >
+            Solicitar cotización ↗
+          </Link>
         </div>
       </section>
     </div>
