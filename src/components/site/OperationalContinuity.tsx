@@ -182,17 +182,16 @@ function StatCard({ stat, reduced }: { stat: Stat; reduced: boolean }) {
       ref={ref}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className="rounded-xl bg-white p-10 text-center lg:p-12"
+      className="px-2 py-6"
       style={{
-        border: `1px solid ${hover ? ACCENT : "#E8E8E8"}`,
-        transform: hover && !reduced ? "translateY(-4px)" : "translateY(0)",
-        transition: reduced ? "none" : "transform 0.3s ease-out, border-color 0.3s ease-out",
+        transform: hover && !reduced ? "translateY(-3px)" : "translateY(0)",
+        transition: reduced ? "none" : "transform 0.3s ease-out",
       }}
     >
-      <div className="font-display text-4xl font-black tabular-nums text-[color:var(--color-siryc-blue)] lg:text-5xl">
+      <div className="font-display text-4xl font-bold tabular-nums text-[color:var(--color-siryc-blue)] lg:text-5xl">
         {display}
       </div>
-      <div className="mt-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[color:var(--color-siryc-gray)]">
+      <div className="mt-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-[color:var(--color-siryc-gray)]">
         {stat.label}
       </div>
     </div>
@@ -203,23 +202,43 @@ export function OperationalContinuity() {
   const reduced = usePrefersReducedMotion();
 
   return (
-    <section className="border-y border-slate-100 bg-white py-32">
-      <div className="container-siryc grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-24">
+    <section className="border-y border-slate-100 bg-white py-24 lg:py-28">
+      <div className="container-siryc grid grid-cols-1 gap-14 lg:grid-cols-[0.85fr_1fr] lg:gap-20">
+        {/* Photographic panel */}
+        <div className="lg:sticky lg:top-28 lg:self-start">
+          <div className="overflow-hidden rounded-2xl bg-slate-100">
+            <img
+              src={imgElectricidad.url}
+              alt="Técnico SIRYC operando un tablero eléctrico industrial"
+              loading="lazy"
+              className="h-full w-full object-cover"
+            />
+          </div>
+        </div>
+
         <div>
-          <h2 className="font-display text-4xl font-extrabold text-[color:var(--color-siryc-blue)]">
+          <div className="mb-5 flex items-center gap-3">
+            <span className="h-[2px] w-6 bg-[color:var(--color-siryc-red)]" />
+            <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-[color:var(--color-siryc-gray)]">
+              02 / Cómo trabajamos
+            </span>
+          </div>
+          <h2 className="font-display text-4xl font-extrabold leading-[1.05] text-[color:var(--color-siryc-dark)] md:text-5xl">
             Continuidad operativa,
             <br />
             sin improvisación.
           </h2>
+          <p className="mt-4 max-w-xl text-[color:var(--color-siryc-gray)]">
+            Planificación, ejecución y seguimiento técnico documentado en cada intervención.
+          </p>
+
           <ul className="mt-12 space-y-8">
             {razones.map((r, i) => (
               <RazonItem key={r.titulo} razon={r} index={i} reduced={reduced} />
             ))}
           </ul>
-        </div>
 
-        <div className="lg:sticky lg:top-6 lg:self-start">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="mt-14 grid grid-cols-2 gap-x-6 divide-y divide-slate-100 border-t border-slate-100 sm:grid-cols-4 sm:divide-y-0">
             {stats.map((s) => (
               <StatCard key={s.label} stat={s} reduced={reduced} />
             ))}
