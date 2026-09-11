@@ -80,16 +80,13 @@ export function CoreAreas() {
     <section className="relative z-20 -mt-12 pb-4 lg:-mt-20">
       <div className="container-siryc">
         <div className="relative sm:static">
-          {/* Lateral fade to soften the carousel edges on mobile */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-[color:var(--color-siryc-blue)] from-60% to-transparent sm:hidden" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-[color:var(--color-siryc-blue)] from-60% to-transparent sm:hidden" />
-
-          <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-1 pb-10 pt-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-5 lg:grid-cols-4 lg:gap-5">
+          <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-10 pt-2 max-sm:-mx-5 max-sm:px-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-2 sm:overflow-visible sm:pb-5 lg:grid-cols-4 lg:gap-5">
             {areas.map((a, i) => (
               <AreaCard key={a.titulo} area={a} index={i} />
             ))}
           </div>
         </div>
+
         <p className="-mt-4 text-center font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--color-siryc-gray)] sm:hidden">
           Desliza para ver más →
         </p>
