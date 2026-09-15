@@ -117,6 +117,9 @@ function BlogIndex() {
                   <img
                     src={featured.imagen_url || fallbackImages[0]}
                     alt={featured.titulo}
+                    onError={(event) => {
+                      event.currentTarget.src = fallbackImages[0];
+                    }}
                     className="aspect-[16/11] h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.025]"
                   />
                   <span className="absolute left-4 top-4 rounded-full bg-background/90 px-3 py-1.5 font-mono text-[9px] font-bold uppercase tracking-[0.16em] text-foreground backdrop-blur-md">
@@ -170,6 +173,9 @@ function BlogIndex() {
                           src={post.imagen_url || fallbackImages[index % fallbackImages.length]}
                           alt={post.titulo}
                           loading="lazy"
+                          onError={(event) => {
+                            event.currentTarget.src = fallbackImages[index % fallbackImages.length];
+                          }}
                           className="aspect-[4/3] h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.035]"
                         />
                       </div>
