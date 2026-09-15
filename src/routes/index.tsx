@@ -103,15 +103,29 @@ function HomePage() {
           />
         </div>
 
-        {/* Mobile texture */}
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.07] lg:hidden"
-          style={{
-            backgroundImage: "radial-gradient(circle at 2px 2px, white 1px, transparent 0)",
-            backgroundSize: "32px 32px",
-          }}
-        />
-        <div className="absolute right-0 top-0 h-96 w-96 -translate-y-1/3 translate-x-1/3 rounded-full bg-white/5 blur-3xl lg:hidden" />
+        {/* Mobile hero image */}
+        <div className="absolute inset-0 z-0 lg:hidden">
+          <img
+            src={heroMobile.url}
+            alt="Técnico SIRYC en terreno supervisando equipos industriales"
+            className="h-full w-full object-cover object-[center_30%]"
+            loading="eager"
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(180deg, color-mix(in oklab, var(--color-siryc-blue) 85%, transparent) 0%, color-mix(in oklab, var(--color-siryc-blue) 55%, transparent) 40%, color-mix(in oklab, var(--color-siryc-dark) 75%, transparent) 100%)",
+            }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(0deg, color-mix(in oklab, var(--color-siryc-blue) 95%, transparent) 0%, transparent 35%)",
+            }}
+          />
+        </div>
 
         <div className="container-siryc relative z-10">
           <RevealGroup className="max-w-4xl">
