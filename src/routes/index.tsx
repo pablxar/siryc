@@ -12,6 +12,7 @@ import { Testimonials } from "@/components/site/Testimonials";
 import { CoreAreas } from "@/components/site/CoreAreas";
 
 import bannerWeb from "@/assets/banner-web-siryc.png.asset.json";
+import heroMobile from "@/assets/hero-mobile-siryc.png.asset.json";
 import imgRefrigeracion from "@/assets/refrigeracion.png.asset.json";
 import imgClimatizacion from "@/assets/climatizacion.png.asset.json";
 import imgElectricidad from "@/assets/electricidad.png.asset.json";
