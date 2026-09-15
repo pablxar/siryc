@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -7,10 +7,8 @@ import { useServerFn } from "@tanstack/react-start";
 import { notifyLead } from "@/lib/leads.functions";
 
 import { toast } from "sonner";
-import { Mail, Phone, MapPin, Clock, ArrowRight } from "lucide-react";
+import { Mail, Phone, MapPin, Clock, ArrowUpRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { EditorialHero } from "@/components/site/EditorialHero";
-import { SectionMarker } from "@/components/site/Parallax";
 import { FadeIn } from "@/components/site/FadeIn";
 
 type ContactoSearch = { servicio?: string };
@@ -25,7 +23,7 @@ export const Route = createFileRoute("/contacto")({
       {
         name: "description",
         content:
-          "Solicita cotización técnica a SIRYC. Refrigeración, climatización, electricidad industrial y contratos de mantención en Chile.",
+          "Solicita cotización técnica a SIRYC. Refrigeración, climatización, electricidad industrial y contratos de mantención en la Región de Valparaíso, Chile.",
       },
       { property: "og:title", content: "Contacto — SIRYC" },
       { property: "og:description", content: "Tu clima, nuestra ingeniería." },
@@ -44,7 +42,7 @@ const schema = z.object({
   email: z.string().trim().email("Email inválido").max(200),
   telefono: z.string().trim().max(40).optional().or(z.literal("")),
   tipo_servicio: z.string().min(1, "Selecciona un servicio"),
-  segmento: z.string().min(1, "Selecciona un segmento"),
+  segmento: z.string().min(1, "Selecciona un sector"),
   mensaje: z.string().trim().max(2000).optional().or(z.literal("")),
 });
 
@@ -55,6 +53,11 @@ const servicioMap: Record<string, string> = {
   climatizacion: "Climatización",
   electricidad: "Electricidad",
 };
+
+/** Encuadre que cubre toda la Región de Valparaíso (V Región), no solo la ciudad. */
+const MAPA_V_REGION =
+  "https://www.google.com/maps?q=Regi%C3%B3n+de+Valpara%C3%ADso,+Chile&z=8&output=embed";
+const MAPA_V_REGION_LINK = "https://www.google.com/maps/place/Regi%C3%B3n+de+Valpara%C3%ADso,+Chile";
 
 function ContactoPage() {
   const { servicio } = Route.useSearch();
@@ -114,55 +117,90 @@ function ContactoPage() {
   };
 
   return (
-    <div>
-      <EditorialHero
-        index="01"
-        eyebrow="Contacto"
-        title="Hablemos de tu operación."
-        subtitle="Solicita una cotización técnica documentada. Nuestro equipo evalúa tu instalación y entrega una propuesta."
-      >
-        <div className="flex items-center gap-3">
-          <div className="h-[3px] w-10 bg-[color:var(--color-siryc-red)]" />
-          <p className="font-display text-lg font-semibold text-[color:var(--color-siryc-red)]">
-            Tu clima, nuestra ingeniería.
+    <div className="bg-[#f6f7f9]">
+      {/* Portada clara */}
+      <section className="relative overflow-hidden bg-white">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-y-0 right-0 w-1/2 opacity-[0.10]"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, var(--color-siryc-blue) 1px, transparent 1px), linear-gradient(to bottom, var(--color-siryc-blue) 1px, transparent 1px)",
+            backgroundSize: "44px 44px",
+            maskImage: "radial-gradient(90% 80% at 80% 40%, #000 20%, transparent 80%)",
+          }}
+        />
+        <div className="container-siryc relative pb-14 pt-28 md:pb-16 md:pt-32">
+          <div className="mb-4 flex items-center gap-3">
+            <span className="h-[3px] w-8 bg-[color:var(--color-siryc-red)]" />
+            <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-[color:var(--color-siryc-gray)]">
+              Contacto / SIRYC
+            </span>
+          </div>
+          <h1 className="font-display text-[clamp(2rem,5vw,3.6rem)] font-bold leading-[1.03] tracking-tight text-[color:var(--color-siryc-dark)]">
+            Hablemos de tu operación.
+          </h1>
+          <p className="mt-4 max-w-xl text-base leading-relaxed text-[color:var(--color-siryc-gray)]">
+            Cuéntanos qué necesita tu instalación y nuestro equipo revisará tu requerimiento.
           </p>
         </div>
-      </EditorialHero>
+      </section>
 
-      <section className="bg-white py-20">
+      {/* Formulario + contacto directo */}
+      <section className="pb-20 pt-10 md:pt-12">
         <div className="container-siryc">
-          <SectionMarker index="02" label="Solicitud" />
-          <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr]">
+          <div className="grid gap-6 lg:grid-cols-[1.35fr_1fr]">
             <FadeIn>
               <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="rounded-3xl border border-black/5 bg-white p-8 shadow-[0_30px_80px_-30px_rgba(20,57,142,0.25)] md:p-12"
+                className="rounded-3xl border border-black/5 bg-white p-6 shadow-[0_30px_80px_-45px_rgba(20,57,142,0.35)] md:p-10"
               >
-                <div className="mb-8 flex items-center gap-3">
-                  <div className="h-[3px] w-8 bg-[color:var(--color-siryc-blue)]" />
+                <div className="flex items-center gap-3">
+                  <div className="h-[3px] w-8 bg-[color:var(--color-siryc-red)]" />
                   <h2 className="font-display text-2xl font-bold text-[color:var(--color-siryc-dark)] md:text-3xl">
                     Solicitud de cotización
                   </h2>
                 </div>
-                <div className="grid gap-4 md:grid-cols-2">
-                  <Field label="Nombre completo *" error={errors.nombre?.message}>
-                    <input {...register("nombre")} className={inputCls} />
+                <p className="mb-8 mt-2 text-sm text-[color:var(--color-siryc-gray)]">
+                  Los campos con <span className="text-[color:var(--color-siryc-red)]">*</span> son obligatorios.
+                </p>
+
+                <div className="grid gap-5 md:grid-cols-2">
+                  <Field label="Nombre completo" required error={errors.nombre?.message}>
+                    <input
+                      {...register("nombre")}
+                      placeholder="Ingresa tu nombre completo"
+                      className={inputCls}
+                    />
                   </Field>
-                  <Field label="Empresa / Institución" error={errors.empresa?.message}>
-                    <input {...register("empresa")} className={inputCls} />
+                  <Field label="Email" required error={errors.email?.message}>
+                    <input
+                      type="email"
+                      {...register("email")}
+                      placeholder="Ingresa tu email"
+                      className={inputCls}
+                    />
+                  </Field>
+                  <Field label="Empresa / institución" error={errors.empresa?.message}>
+                    <input
+                      {...register("empresa")}
+                      placeholder="Nombre de tu empresa o institución"
+                      className={inputCls}
+                    />
                   </Field>
                   <Field label="Cargo" error={errors.cargo?.message}>
-                    <input {...register("cargo")} className={inputCls} />
-                  </Field>
-                  <Field label="Email *" error={errors.email?.message}>
-                    <input type="email" {...register("email")} className={inputCls} />
+                    <input {...register("cargo")} placeholder="Tu cargo" className={inputCls} />
                   </Field>
                   <Field label="Teléfono" error={errors.telefono?.message}>
-                    <input {...register("telefono")} className={inputCls} />
+                    <input
+                      {...register("telefono")}
+                      placeholder="Ingresa tu teléfono"
+                      className={inputCls}
+                    />
                   </Field>
-                  <Field label="Tipo de servicio *" error={errors.tipo_servicio?.message}>
+                  <Field label="Tipo de servicio" required error={errors.tipo_servicio?.message}>
                     <select {...register("tipo_servicio")} className={inputCls}>
-                      <option value="">Selecciona…</option>
+                      <option value="">Selecciona un servicio</option>
                       <option>Refrigeración</option>
                       <option>Climatización</option>
                       <option>Electricidad</option>
@@ -170,9 +208,9 @@ function ContactoPage() {
                       <option>Proyecto integral</option>
                     </select>
                   </Field>
-                  <Field label="Segmento *" error={errors.segmento?.message} className="md:col-span-2">
+                  <Field label="Sector" required error={errors.segmento?.message} className="md:col-span-2">
                     <select {...register("segmento")} className={inputCls}>
-                      <option value="">Selecciona…</option>
+                      <option value="">Selecciona un sector</option>
                       <option>Corporativo</option>
                       <option>Gobierno / FFAA</option>
                       <option>Educación</option>
@@ -180,16 +218,32 @@ function ContactoPage() {
                     </select>
                   </Field>
                   <Field label="Detalle del requerimiento" error={errors.mensaje?.message} className="md:col-span-2">
-                    <textarea rows={5} {...register("mensaje")} className={inputCls} />
+                    <textarea
+                      rows={5}
+                      {...register("mensaje")}
+                      placeholder="Describe el servicio y dónde se necesita."
+                      className={inputCls}
+                    />
                   </Field>
                 </div>
+
+                <p className="mt-6 text-xs text-[color:var(--color-siryc-gray)]">
+                  Usaremos tus datos para responder esta solicitud.{" "}
+                  <Link
+                    to="/privacidad"
+                    className="font-semibold text-[color:var(--color-siryc-blue)] underline underline-offset-4"
+                  >
+                    Política de privacidad
+                  </Link>
+                </p>
+
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="group mt-8 inline-flex items-center gap-3 rounded-full bg-[color:var(--color-siryc-red)] px-8 py-4 text-sm font-semibold text-white shadow-[0_15px_40px_-15px_rgba(227,6,19,0.55)] transition-all hover:shadow-[0_20px_50px_-15px_rgba(227,6,19,0.7)] disabled:opacity-50"
+                  className="group mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[color:var(--color-siryc-blue)] px-8 py-4 text-sm font-semibold text-white shadow-[0_18px_45px_-18px_rgba(20,57,142,0.75)] transition-all hover:brightness-110 disabled:opacity-50"
                 >
                   {isSubmitting ? "Enviando…" : "Enviar solicitud"}
-                  <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+                  <ArrowUpRight size={16} className="transition-transform group-hover:translate-x-0.5" />
                 </button>
                 {sent && (
                   <p className="mt-5 text-sm text-[color:var(--color-siryc-blue)]">
@@ -201,7 +255,7 @@ function ContactoPage() {
 
             <FadeIn delay={0.1}>
               <div className="space-y-6">
-                <div className="relative overflow-hidden rounded-3xl bg-[color:var(--color-siryc-dark)] p-8 text-white shadow-[0_30px_80px_-30px_rgba(27,35,44,0.6)]">
+                <div className="relative overflow-hidden rounded-3xl bg-[color:var(--color-siryc-dark)] p-7 text-white shadow-[0_30px_80px_-40px_rgba(27,35,44,0.7)] md:p-9">
                   <div
                     aria-hidden
                     className="pointer-events-none absolute inset-0 opacity-[0.06]"
@@ -211,26 +265,53 @@ function ContactoPage() {
                     }}
                   />
                   <div className="relative">
-                    <div className="mb-6 flex items-center gap-3">
+                    <div className="mb-5 flex items-center gap-3">
                       <div className="h-[3px] w-8 bg-[color:var(--color-siryc-red)]" />
-                      <span className="font-mono text-xs uppercase tracking-[0.3em] text-white/60">Directo</span>
+                      <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-white/60">
+                        Contacto directo
+                      </span>
                     </div>
-                    <h3 className="font-display text-2xl font-bold">Contáctanos</h3>
-                    <ul className="mt-6 space-y-4 text-sm text-white/85">
-                      <ContactRow icon={Mail} label="Email" value="ventas@siryc.cl" />
+                    <h3 className="font-display text-2xl font-bold leading-tight md:text-3xl">
+                      También puedes escribirnos.
+                    </h3>
+                    <ul className="mt-7 space-y-1">
+                      <ContactRow
+                        icon={Mail}
+                        label="Email"
+                        value="ventas@siryc.cl"
+                        href="mailto:ventas@siryc.cl"
+                      />
                       <ContactRow icon={MapPin} label="Ubicación" value="V Región, Chile" />
-                      <ContactRow icon={Clock} label="Horario" value="Lun a Vie · 08:30 – 18:00" />
+                      <ContactRow icon={Clock} label="Horario de atención" value="Lun a vie · 08:30–18:00" />
                     </ul>
+                    <div className="mt-7 border-t border-white/10 pt-5 text-sm text-white/70">
+                      Tu clima, nuestra ingeniería.
+                    </div>
                   </div>
                 </div>
 
-                <div className="overflow-hidden rounded-3xl border border-black/5 shadow-lg">
+                <div className="overflow-hidden rounded-3xl border border-black/5 bg-white shadow-[0_25px_60px_-40px_rgba(27,35,44,0.6)]">
                   <iframe
-                    title="Ubicación SIRYC"
-                    src="https://www.google.com/maps?q=Valpara%C3%ADso,+Chile&output=embed"
-                    className="aspect-[4/3] w-full"
+                    title="Región de Valparaíso, Chile — zona de operación SIRYC"
+                    src={MAPA_V_REGION}
+                    className="aspect-[4/3] w-full border-0"
                     loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
                   />
+                  <div className="flex items-center justify-between gap-4 px-5 py-4">
+                    <span className="text-sm font-semibold text-[color:var(--color-siryc-dark)]">
+                      Región de Valparaíso, Chile
+                    </span>
+                    <a
+                      href={MAPA_V_REGION_LINK}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1 text-sm font-semibold text-[color:var(--color-siryc-blue)]"
+                    >
+                      Ver ubicación
+                      <ArrowUpRight size={14} />
+                    </a>
+                  </div>
                 </div>
               </div>
             </FadeIn>
@@ -242,23 +323,25 @@ function ContactoPage() {
 }
 
 const inputCls =
-  "w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm text-[color:var(--color-siryc-dark)] outline-none transition-all focus:border-[color:var(--color-siryc-blue)] focus:ring-4 focus:ring-[color:var(--color-siryc-blue)]/10";
+  "w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm text-[color:var(--color-siryc-dark)] outline-none transition-all placeholder:text-black/35 focus:border-[color:var(--color-siryc-blue)] focus:ring-4 focus:ring-[color:var(--color-siryc-blue)]/10";
 
 function Field({
   label,
+  required,
   error,
   children,
   className,
 }: {
   label: string;
+  required?: boolean;
   error?: string;
   children: React.ReactNode;
   className?: string;
 }) {
   return (
     <label className={`block ${className ?? ""}`}>
-      <span className="mb-2 block font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--color-siryc-gray)]">
-        {label}
+      <span className="mb-2 block text-sm font-medium text-[color:var(--color-siryc-dark)]">
+        {label} {required && <span className="text-[color:var(--color-siryc-red)]">*</span>}
       </span>
       {children}
       {error && <span className="mt-1 block text-xs text-[color:var(--color-siryc-red)]">{error}</span>}
@@ -266,15 +349,35 @@ function Field({
   );
 }
 
-function ContactRow({ icon: Icon, label, value }: { icon: typeof Phone; label: string; value: string }) {
+function ContactRow({
+  icon: Icon,
+  label,
+  value,
+  href,
+}: {
+  icon: typeof Phone;
+  label: string;
+  value: string;
+  href?: string;
+}) {
   return (
-    <li className="flex items-start gap-4 border-b border-white/10 pb-3 last:border-0 last:pb-0">
-      <div className="mt-0.5 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-white/10">
-        <Icon size={15} />
+    <li className="flex items-center gap-4 border-b border-white/10 py-4 last:border-0">
+      <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl border border-white/15 bg-white/5">
+        <Icon size={17} />
       </div>
       <div>
-        <div className="font-mono text-[10px] uppercase tracking-widest text-white/50">{label}</div>
-        <div className="mt-0.5 text-sm text-white">{value}</div>
+        <div className="text-xs text-white/50">{label}</div>
+        {href ? (
+          <a
+            href={href}
+            className="mt-0.5 inline-flex items-center gap-1 text-base font-semibold text-white hover:text-white/80"
+          >
+            {value}
+            <ArrowUpRight size={14} />
+          </a>
+        ) : (
+          <div className="mt-0.5 text-base font-semibold text-white">{value}</div>
+        )}
       </div>
     </li>
   );
