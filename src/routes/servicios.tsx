@@ -159,7 +159,7 @@ function ServiciosPage() {
         </div>
       </section>
 
-      <nav aria-label="Áreas de servicio" className="sticky top-20 z-20 border-b bg-background/95 backdrop-blur-lg">
+      <nav aria-label="Áreas de servicio" className="border-b bg-background">
         <div className="container-siryc overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <div className="flex min-w-max md:grid md:min-w-0 md:grid-cols-4">
             {servicios.map((servicio, index) => (
