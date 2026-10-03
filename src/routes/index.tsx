@@ -40,8 +40,6 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-
-
 const especialidades = [
   {
     titulo: "Refrigeración",
