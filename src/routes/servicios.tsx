@@ -211,7 +211,7 @@ function ServiceSection({ servicio, index }: { servicio: Servicio; index: number
   const reversed = index % 2 === 1;
 
   return (
-    <section id={servicio.id} className={index === 1 ? "scroll-mt-36 bg-secondary/55 py-20 md:py-28" : "scroll-mt-36 py-20 md:py-28"}>
+    <section id={servicio.id} className={index === 1 ? "scroll-mt-28 bg-secondary/55 py-20 md:py-28" : "scroll-mt-28 py-20 md:py-28"}>
       <div className="container-siryc">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-20">
           <FadeIn className={reversed ? "lg:order-2" : ""}>
@@ -267,7 +267,7 @@ function ServiceSection({ servicio, index }: { servicio: Servicio; index: number
 
 function MaintenanceSection() {
   return (
-    <section id="mantencion" className="scroll-mt-36 bg-[color:var(--color-siryc-dark)] py-20 text-primary-foreground md:py-28">
+    <section id="mantencion" className="scroll-mt-28 bg-[color:var(--color-siryc-dark)] py-20 text-primary-foreground md:py-28">
       <div className="container-siryc">
         <div className="grid items-center gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
           <FadeIn>
