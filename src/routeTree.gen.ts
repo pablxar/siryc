@@ -9,45 +9,20 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as ClientesRouteImport } from './routes/clientes'
-import { Route as ContactoRouteImport } from './routes/contacto'
-import { Route as NosotrosRouteImport } from './routes/nosotros'
-import { Route as PrivacidadRouteImport } from './routes/privacidad'
-import { Route as ProyectosRouteImport } from './routes/proyectos'
-import { Route as ServiciosRouteImport } from './routes/servicios'
 import { Route as TerminosRouteImport } from './routes/terminos'
+import { Route as ServiciosRouteImport } from './routes/servicios'
+import { Route as ProyectosRouteImport } from './routes/proyectos'
+import { Route as PrivacidadRouteImport } from './routes/privacidad'
+import { Route as NosotrosRouteImport } from './routes/nosotros'
+import { Route as ContactoRouteImport } from './routes/contacto'
+import { Route as ClientesRouteImport } from './routes/clientes'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ClientesRoute = ClientesRouteImport.update({
-  id: '/clientes',
-  path: '/clientes',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactoRoute = ContactoRouteImport.update({
-  id: '/contacto',
-  path: '/contacto',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const NosotrosRoute = NosotrosRouteImport.update({
-  id: '/nosotros',
-  path: '/nosotros',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacidadRoute = PrivacidadRouteImport.update({
-  id: '/privacidad',
-  path: '/privacidad',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProyectosRoute = ProyectosRouteImport.update({
-  id: '/proyectos',
-  path: '/proyectos',
+const TerminosRoute = TerminosRouteImport.update({
+  id: '/terminos',
+  path: '/terminos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServiciosRoute = ServiciosRouteImport.update({
@@ -55,9 +30,34 @@ const ServiciosRoute = ServiciosRouteImport.update({
   path: '/servicios',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TerminosRoute = TerminosRouteImport.update({
-  id: '/terminos',
-  path: '/terminos',
+const ProyectosRoute = ProyectosRouteImport.update({
+  id: '/proyectos',
+  path: '/proyectos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacidadRoute = PrivacidadRouteImport.update({
+  id: '/privacidad',
+  path: '/privacidad',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NosotrosRoute = NosotrosRouteImport.update({
+  id: '/nosotros',
+  path: '/nosotros',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactoRoute = ContactoRouteImport.update({
+  id: '/contacto',
+  path: '/contacto',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClientesRoute = ClientesRouteImport.update({
+  id: '/clientes',
+  path: '/clientes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogIndexRoute = BlogIndexRouteImport.update({
@@ -162,46 +162,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/clientes': {
-      id: '/clientes'
-      path: '/clientes'
-      fullPath: '/clientes'
-      preLoaderRoute: typeof ClientesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contacto': {
-      id: '/contacto'
-      path: '/contacto'
-      fullPath: '/contacto'
-      preLoaderRoute: typeof ContactoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/nosotros': {
-      id: '/nosotros'
-      path: '/nosotros'
-      fullPath: '/nosotros'
-      preLoaderRoute: typeof NosotrosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacidad': {
-      id: '/privacidad'
-      path: '/privacidad'
-      fullPath: '/privacidad'
-      preLoaderRoute: typeof PrivacidadRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/proyectos': {
-      id: '/proyectos'
-      path: '/proyectos'
-      fullPath: '/proyectos'
-      preLoaderRoute: typeof ProyectosRouteImport
+    '/terminos': {
+      id: '/terminos'
+      path: '/terminos'
+      fullPath: '/terminos'
+      preLoaderRoute: typeof TerminosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/servicios': {
@@ -211,11 +176,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServiciosRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/terminos': {
-      id: '/terminos'
-      path: '/terminos'
-      fullPath: '/terminos'
-      preLoaderRoute: typeof TerminosRouteImport
+    '/proyectos': {
+      id: '/proyectos'
+      path: '/proyectos'
+      fullPath: '/proyectos'
+      preLoaderRoute: typeof ProyectosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacidad': {
+      id: '/privacidad'
+      path: '/privacidad'
+      fullPath: '/privacidad'
+      preLoaderRoute: typeof PrivacidadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nosotros': {
+      id: '/nosotros'
+      path: '/nosotros'
+      fullPath: '/nosotros'
+      preLoaderRoute: typeof NosotrosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contacto': {
+      id: '/contacto'
+      path: '/contacto'
+      fullPath: '/contacto'
+      preLoaderRoute: typeof ContactoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/clientes': {
+      id: '/clientes'
+      path: '/clientes'
+      fullPath: '/clientes'
+      preLoaderRoute: typeof ClientesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog/': {
