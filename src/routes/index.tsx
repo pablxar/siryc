@@ -134,7 +134,8 @@ function HomePage() {
             </RevealItem>
             <RevealItem>
               <h1 className="font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-white md:text-6xl lg:text-5xl">
-                Ingeniería en climatización, refrigeración y electricidad.
+                <span className="block">Ingeniería en climatización,</span>
+                <span className="block">refrigeración y electricidad.</span>
               </h1>
             </RevealItem>
             <RevealItem>
