@@ -143,8 +143,8 @@ function HomePage() {
             </RevealItem>
             <RevealItem>
               <p className="mt-10 max-w-2xl text-lg leading-relaxed text-white/90 md:text-xl">
-                Más de 20 años instalando y manteniendo sistemas técnicos para centros comerciales, edificios
-                corporativos e instituciones de gobierno en Chile.
+                Más de 20 años instalando y manteniendo sistemas técnicos para domicilios, oficinas, centros
+                comerciales, edificios corporativos e instituciones de gobierno en Chile.
               </p>
             </RevealItem>
             <RevealItem>
