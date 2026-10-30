@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "deploy": "vite build && wrangler deploy"
+    "deploy": "vite build && wrangler deploy",
+    "secret:resend": "wrangler secret put RESEND_API_KEY --name siryc-web"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

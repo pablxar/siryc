@@ -23,7 +23,7 @@ La web sigue siendo exactamente la misma (mismo código, mismo diseño). Lo que 
 |---|---|---|
 | `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `VITE_SUPABASE_PROJECT_ID` | `.env` | Se incrustan al compilar. La publishable/anon key es pública por diseño. |
 | `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_PROJECT_ID` | `.env` | Mismos valores. |
-| `RESEND_API_KEY` | Secreto de Cloudflare (`npx wrangler secret put RESEND_API_KEY`) y `.dev.vars` en local | Nunca en git. |
+| `RESEND_API_KEY` | Secreto de Cloudflare (`npm run secret:resend`) y `.dev.vars` en local | Nunca en git. |
 
 ## Comandos
 
