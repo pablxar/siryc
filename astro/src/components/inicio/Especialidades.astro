@@ -1,6 +1,11 @@
 ---
-// 01 · Especialidades: tres fichas (molde Ficha). Celular: carrusel con la vecina asomada.
-import Ficha from "../Ficha.astro";
+// 01 · Especialidades como PILA (scrollytelling, pedido del dueño 2026-10-30): cada especialidad
+// queda fija y la siguiente sube y la tapa; la de atrás se achica y se apaga un poco.
+// Estrategia: pocas cosas importantes, una a la vez, con foco total (qué hacemos).
+// Solo CSS: sticky + animación ligada al scroll (animation-timeline). Sin soporte o con
+// movimiento reducido: la pila igual se apila, sin achicarse.
+import { Picture } from "astro:assets";
+import Flecha from "../Flecha.astro";
 import SeccionTitulo from "../SeccionTitulo.astro";
 import refrigeracion from "../../assets/refrigeracion.png";
 import climatizacion from "../../assets/climatizacion.png";
@@ -28,6 +33,7 @@ const areas = [
     foto: electricidad,
   },
 ];
+const total = areas.length;
 ---
 
 <section class="especialidades" aria-labelledby="esp-t">
@@ -40,71 +46,176 @@ const areas = [
       bajada="Refrigeración, climatización y electricidad instaladas y mantenidas por el mismo equipo de técnicos que llevan más de 20 años en terreno."
       enlace={{ href: "/servicios", texto: "Ver todos los servicios" }}
     />
-  </div>
 
-  <div class="contenedor carril-marco">
-    <ul class="carril" data-revela>
+    <ol class="pila">
       {
         areas.map((a, i) => (
-          <li>
-            <Ficha href={a.href} indice={`0${i + 1} / 03`} titulo={a.titulo} foto={a.foto} enlace="Ver servicio" sizes="(min-width: 1024px) 30vw, 82vw">
-              <span class="ficha-texto">{a.texto}</span>
-            </Ficha>
+          <li class={`pila-item i-${i}`}>
+            <a class={`pila-card corte k-${i}`} href={a.href}>
+              <span class="pila-foto corte" aria-hidden="true">
+                <Picture src={a.foto} formats={["avif", "webp"]} fallbackFormat="webp" widths={[600, 900, 1200]} sizes="(min-width: 1024px) 45vw, 92vw" alt="" />
+              </span>
+              <span class="pila-cuerpo">
+                <span class="cifra pila-num">{`0${i + 1} / 0${total}`}</span>
+                <h3 class="pila-titulo">{a.titulo}</h3>
+                <span class="pila-texto">{a.texto}</span>
+                <span class="pila-pie">
+                  <span class="filete pila-filete" />
+                  <span class="pila-ver">
+                    Ver servicio <Flecha />
+                  </span>
+                </span>
+              </span>
+            </a>
           </li>
         ))
       }
-    </ul>
+    </ol>
   </div>
 </section>
 
 <style>
   .especialidades {
-    padding: 4.5rem 0 5rem;
+    padding: 4.5rem 0 3rem;
   }
-  .carril {
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: 82%;
-    gap: 1rem;
-    /* Llega al borde de la pantalla; el primer y último ítem respetan el margen. */
-    margin: 0 -1rem;
-    padding: 0 1rem 0.25rem;
-    scroll-padding-inline: 1rem;
+  .pila {
+    margin: 0;
+    padding: 0;
     list-style: none;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    overscroll-behavior-x: contain;
+    view-timeline-name: --pila;
   }
-  .carril::-webkit-scrollbar {
-    display: none;
+  .pila-item {
+    position: sticky;
+    /* Debajo de la cabecera; cada una asoma un poco más abajo que la anterior. */
+    top: calc(5.25rem + var(--i, 0) * 0.85rem);
+    padding-bottom: 1.25rem;
   }
-  .carril li {
-    scroll-snap-align: start;
+  .pila-card {
+    --corte: 1.5rem;
+    display: grid;
+    background: var(--color-papel-2);
+    color: var(--color-tinta);
+    text-decoration: none;
+    transform-origin: 50% 0;
   }
-  @media (min-width: 640px) {
-    .carril {
-      margin-inline: -1.5rem;
-      padding-inline: 1.5rem;
-      scroll-padding-inline: 1.5rem;
+  .pila-foto {
+    --corte: 1.5rem;
+    display: block;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+  .pila-foto :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .pila-cuerpo {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1.5rem 1.4rem;
+  }
+  .pila-num {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--color-azul);
+  }
+  .pila-titulo {
+    margin-top: 0.9rem;
+    font-size: clamp(1.6rem, 1.1rem + 2.2vw, 3rem);
+    font-weight: 700;
+    line-height: 1.02;
+    letter-spacing: -0.015em;
+  }
+  .pila-texto {
+    margin-top: 1rem;
+    max-width: 34rem;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-grafito);
+  }
+  .pila-pie {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: auto;
+    padding-top: 1.75rem;
+  }
+  .pila-filete {
+    flex: 1;
+    transform: scaleX(0.18);
+    transition: transform var(--dur-larga) var(--ease-barrido);
+  }
+  .pila-ver {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .pila-card:hover .pila-filete,
+    .pila-card:focus-visible .pila-filete {
+      transform: scaleX(1);
+    }
+    .pila-card:hover :global(.flecha),
+    .pila-card:focus-visible :global(.flecha) {
+      translate: 0.35rem 0;
     }
   }
-  @media (min-width: 720px) {
-    .carril {
-      grid-auto-columns: 46%;
+
+  @media (min-width: 900px) {
+    .pila-item {
+      top: calc(6.5rem + var(--i, 0) * 1.25rem);
+      padding-bottom: 2rem;
+    }
+    .pila-card {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      min-height: min(68svh, 34rem);
+    }
+    .pila-foto {
+      aspect-ratio: auto;
+    }
+    .pila-cuerpo {
+      padding: 2.5rem 2.75rem 2.25rem;
     }
   }
   @media (min-width: 1024px) {
     .especialidades {
-      padding: 6.5rem 0 7rem;
+      padding: 6.5rem 0 4rem;
     }
-    .carril {
-      grid-auto-flow: row;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      margin-inline: 0;
-      padding-inline: 0;
-      overflow: visible;
+  }
+
+  /* La de atrás se achica y se apaga mientras la siguiente sube, sincronizado con la distancia real:
+     cada tarjeta mide --paso (alto mínimo + separación) y se fija 1,25 rem más abajo que la anterior.
+     Solo en escritorio (en celular el alto de cada tarjeta depende del texto: se apilan sin achicarse). */
+  @supports (animation-timeline: view()) {
+    @media (min-width: 900px) and (prefers-reduced-motion: no-preference) {
+      .pila {
+        --paso: calc(min(68svh, 34rem) + 2rem);
+      }
+      .pila-card.k-0,
+      .pila-card.k-1 {
+        animation: pila-atras linear both;
+      }
+      /* animation-timeline va en una regla aparte (selector distinto): el minificador fusionaría ambas
+         en el atajo «animation», que no admite la línea de tiempo, y Chrome descartaría la regla. */
+      .pila > .pila-item > .pila-card {
+        animation-timeline: --pila;
+      }
+      .pila > .pila-item > .pila-card.k-0 {
+        animation-range: contain 0px contain calc(var(--paso) - 7.75rem);
+      }
+      .pila > .pila-item > .pila-card.k-1 {
+        animation-range: contain calc(var(--paso) - 7.75rem) contain calc(2 * var(--paso) - 9rem);
+      }
+    }
+  }
+  @keyframes pila-atras {
+    to {
+      scale: 0.93;
+      filter: brightness(0.82);
     }
   }
 </style>

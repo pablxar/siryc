@@ -1,13 +1,15 @@
 ---
-// Portada: titular editorial grande que sube línea a línea, filete partido que se dibuja
-// y una sola foto protagonista con el corte de la marca. Celular: foto vertical propia arriba.
+// Portada a pantalla completa (pedido del dueño, 2026-10-30: «la imagen en toda la pantalla, como la original»).
+// La foto llena la pantalla; el texto va sobre un panel azul con borde diagonal en el ángulo del corte SIRYC
+// (no un degradado). Entrada: la foto se asienta, el panel barre en diagonal, el titular sube por líneas.
+// Celular: foto vertical propia a pantalla completa y panel desde abajo con el borde diagonal arriba.
 import { getImage } from "astro:assets";
 import Flecha from "../Flecha.astro";
 import banner from "../../assets/banner-web-siryc.png";
 import vertical from "../../assets/hero-mobile-siryc.png";
 
 const formatos = ["avif", "webp"] as const;
-const anchosEscritorio = [900, 1300, 1672];
+const anchosEscritorio = [1000, 1400, 1672];
 const anchosCelular = [480, 720, 887];
 const fuente = async (img: ImageMetadata, anchos: number[], format: "avif" | "webp") => {
   const imgs = await Promise.all(anchos.map((width) => getImage({ src: img, width, format })));
@@ -15,11 +17,20 @@ const fuente = async (img: ImageMetadata, anchos: number[], format: "avif" | "we
 };
 const escritorio = await Promise.all(formatos.map((f) => fuente(banner, anchosEscritorio, f)));
 const celular = await Promise.all(formatos.map((f) => fuente(vertical, anchosCelular, f)));
-const respaldo = await getImage({ src: banner, width: 1300, format: "webp" });
+const respaldo = await getImage({ src: banner, width: 1400, format: "webp" });
 ---
 
 <section class="portada" data-lineas aria-labelledby="portada-t">
-  <div class="contenedor portada-grilla">
+  <picture class="portada-foto">
+    <source media="(max-width: 1023px)" type="image/avif" srcset={celular[0]} sizes="100vw" />
+    <source media="(max-width: 1023px)" type="image/webp" srcset={celular[1]} sizes="100vw" />
+    <source type="image/avif" srcset={escritorio[0]} sizes="100vw" />
+    <source type="image/webp" srcset={escritorio[1]} sizes="100vw" />
+    <img src={respaldo.src} alt="Técnico de SIRYC supervisando una instalación industrial de climatización" width="1672" height="941" fetchpriority="high" decoding="async" />
+  </picture>
+
+  <div class="contenedor portada-contenido">
+    <div class="portada-panel" aria-hidden="true"></div>
     <div class="portada-texto">
       <p class="rotulo sigue">Tu clima, nuestra ingeniería</p>
       <h1 id="portada-t" class="portada-titulo">
@@ -28,65 +39,100 @@ const respaldo = await getImage({ src: banner, width: 1300, format: "webp" });
         <span class="linea i-2"><span>refrigeración y</span></span>
         <span class="linea i-3"><span>electricidad.</span></span>
       </h1>
-      <span class="filete dibuja portada-filete" aria-hidden="true"></span>
+      <span class="filete filete--claro dibuja portada-filete" aria-hidden="true"></span>
       <p class="portada-bajada sigue i-1">
         Más de 20 años instalando y manteniendo sistemas técnicos para domicilios, oficinas, centros comerciales, edificios corporativos e
         instituciones de gobierno en Chile.
       </p>
       <div class="portada-acciones sigue i-2">
-        <a href="/contacto" class="boton corte">Solicitar cotización <Flecha /></a>
+        <a href="/contacto" class="boton corte portada-boton">Solicitar cotización <Flecha /></a>
         <a href="/servicios" class="enlace-flecha">Explorar servicios <Flecha /></a>
       </div>
     </div>
-
-    <figure class="portada-foto corte">
-      <picture>
-        <source media="(max-width: 1023px)" type="image/avif" srcset={celular[0]} sizes="100vw" />
-        <source media="(max-width: 1023px)" type="image/webp" srcset={celular[1]} sizes="100vw" />
-        <source type="image/avif" srcset={escritorio[0]} sizes="50vw" />
-        <source type="image/webp" srcset={escritorio[1]} sizes="50vw" />
-        <img src={respaldo.src} alt="Técnico de SIRYC supervisando una instalación industrial de climatización" width="1672" height="941" fetchpriority="high" decoding="async" />
-      </picture>
-    </figure>
   </div>
 </section>
 
 <style>
   .portada {
-    padding: 5.5rem 0 4rem;
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: flex-end;
+    min-height: max(100svh, 40rem);
+    overflow: hidden;
+    color: var(--color-papel);
+    background: var(--color-tinta);
   }
-  .portada-grilla {
-    display: grid;
-    gap: 2rem;
+  .portada-foto {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+  }
+  .portada-foto img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 60% 22%;
+  }
+
+  /* Panel azul. Celular: es el fondo del bloque de texto (lo cubre siempre, mida lo que mida),
+     arranca 5,5 rem sobre el rótulo y su borde superior va en diagonal («/»). */
+  .portada-panel {
+    --borde: 5.5rem;
+    position: absolute;
+    inset: calc(-1 * var(--borde) - 2rem) 0 0 0;
+    z-index: -1;
+    --final: polygon(0 var(--borde), 100% 0, 100% 100%, 0 100%);
+    background: rgb(20 57 142 / 0.9);
+    clip-path: var(--final);
+  }
+  .portada-contenido {
+    position: relative;
+    isolation: isolate;
+    padding-top: 2rem;
+    padding-bottom: 2.75rem;
   }
   .portada-texto {
-    order: 2;
+    max-width: 34rem;
+  }
+  .portada .rotulo {
+    color: var(--color-niebla);
   }
   .portada-titulo {
-    margin-top: 1rem;
-    font-size: clamp(2.35rem, 1.2rem + 5.2vw, 5.25rem);
+    margin-top: 0.9rem;
+    font-size: clamp(2.3rem, 1.1rem + 4.2vw, 4.75rem);
     font-weight: 700;
     line-height: 0.98;
     letter-spacing: -0.02em;
   }
   .portada-filete {
-    width: min(14rem, 50%);
+    width: min(12rem, 50%);
     height: 4px;
-    margin-top: 1.75rem;
+    margin-top: 1.5rem;
   }
   .portada-bajada {
-    margin-top: 1.5rem;
-    max-width: 38rem;
-    font-size: clamp(1rem, 0.95rem + 0.3vw, 1.175rem);
+    margin-top: 1.25rem;
+    font-size: clamp(0.975rem, 0.9rem + 0.3vw, 1.125rem);
     line-height: 1.6;
-    color: var(--color-grafito);
+    color: var(--color-niebla);
   }
   .portada-acciones {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 1rem 1.75rem;
-    margin-top: 2rem;
+    gap: 0.75rem 1.75rem;
+    margin-top: 1.75rem;
+  }
+  .portada-boton {
+    background: var(--color-papel);
+    color: var(--color-azul);
+  }
+  @media (hover: hover) {
+    .portada-boton:hover {
+      background: var(--color-tinta);
+      color: var(--color-papel);
+    }
   }
   .enlace-flecha {
     display: inline-flex;
@@ -95,7 +141,7 @@ const respaldo = await getImage({ src: banner, width: 1300, format: "webp" });
     min-height: 2.75rem;
     font-size: 0.875rem;
     font-weight: 600;
-    color: var(--color-tinta);
+    color: var(--color-papel);
     text-decoration: none;
   }
   @media (hover: hover) {
@@ -104,67 +150,76 @@ const respaldo = await getImage({ src: banner, width: 1300, format: "webp" });
     }
   }
 
-  .portada-foto {
-    --corte: 2rem;
-    order: 1;
-    margin: 0;
-    height: 52svh;
-    min-height: 18rem;
-    overflow: hidden;
-    background: var(--color-papel-2);
-  }
-  .portada-foto img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 28%;
-  }
-
+  /* Escritorio: panel a la izquierda con el borde en el ángulo del corte («/»). */
   @media (min-width: 1024px) {
     .portada {
-      padding: 7.5rem 0 5rem;
-      min-height: min(100svh, 62rem);
-    }
-    .portada-grilla {
-      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
-      align-items: end;
-      gap: 3.5rem;
-    }
-    .portada-texto {
-      order: 1;
-      padding-bottom: 0.5rem;
-    }
-    .portada-foto {
-      --corte: 3rem;
-      order: 2;
-      height: min(74svh, 46rem);
+      align-items: center;
     }
     .portada-foto img {
-      object-position: 72% center;
+      object-position: 70% center;
+    }
+    .portada-contenido {
+      position: static;
+      isolation: auto;
+    }
+    .portada-panel {
+      inset: 0;
+      --sup: 70%;
+      --inf: 54%;
+      --final: polygon(0 0, var(--sup) 0, var(--inf) 100%, 0 100%);
+    }
+    .portada-contenido {
+      padding-top: 6rem;
+      padding-bottom: 4rem;
+    }
+    .portada-texto {
+      max-width: 30rem;
+    }
+  }
+  @media (min-width: 1280px) {
+    .portada-panel {
+      --sup: 60%;
+      --inf: 44%;
+    }
+    .portada-texto {
+      max-width: 36rem;
     }
   }
 
-  /* La foto entra con un barrido en el ángulo del corte. */
+  /* Entrada: la foto se asienta y el panel barre en diagonal (mismos 4 puntos: interpola). */
   @media (prefers-reduced-motion: no-preference) {
     :global(.js) .portada-foto img {
-      clip-path: polygon(0 0, 0 0, -60% 100%, -60% 100%);
       scale: 1.08;
-      transition:
-        clip-path 1.3s var(--ease-barrido) 0.15s,
-        scale 2s var(--ease-salida) 0.15s;
+      transition: scale 2.2s var(--ease-salida);
       animation: salvavidas-foto 0s 5s forwards;
     }
     :global(.js) .portada.dentro .portada-foto img {
-      clip-path: polygon(0 0, 160% 0, 100% 100%, -60% 100%);
       scale: 1;
       animation: none;
+    }
+    :global(.js) .portada-panel {
+      clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
+      transition: clip-path 1.2s var(--ease-barrido);
+      animation: salvavidas-panel 0s 5s forwards;
+    }
+    :global(.js) .portada.dentro .portada-panel {
+      clip-path: var(--final);
+      animation: none;
+    }
+    @media (min-width: 1024px) {
+      :global(.js) .portada-panel {
+        clip-path: polygon(0 0, 0 0, -16% 100%, 0 100%);
+      }
     }
   }
   @keyframes salvavidas-foto {
     to {
-      clip-path: none;
       scale: 1;
+    }
+  }
+  @keyframes salvavidas-panel {
+    to {
+      clip-path: var(--final);
     }
   }
 </style>

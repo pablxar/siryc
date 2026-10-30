@@ -45,6 +45,32 @@ El sitio en producción sigue siendo el de TanStack (raíz del repo) hasta que e
 - **2026-10-30 · Medición** (build de producción, Lighthouse 13.5 móvil): rendimiento 99, accesibilidad 100,
   buenas prácticas 100, SEO 100; LCP 2,2 s; CLS 0; peso total 285 KB. Sitio actual: 60 / 94 / 100 / 92, LCP 35,9 s, 11 MB.
 
+- **2026-10-30 · Portada a pantalla completa** (pedido del dueño: «la imagen en toda la pantalla, como la original»).
+  Foto completa; el texto va sobre un panel azul con borde diagonal en el ángulo del corte (no un degradado).
+  Celular: el panel es el fondo del bloque de texto, arranca 5,5 rem sobre el rótulo con el borde en diagonal.
+  La cabecera arranca como isla en páginas con foto completa (se lee sobre cualquier foto). Sobre azul, el filete
+  partido es rojo | papel (`.filete--claro`).
+
+## Estrategia de scrollytelling (pedido del dueño 2026-10-30: «me gustan las transiciones de scrollytelling,
+## las tarjetas sticky», con sentido en la presentación de la información)
+
+Un vocabulario corto; cada patrón se usa solo para su tipo de contenido, en todas las páginas:
+
+| Patrón | Para qué | Cómo |
+|---|---|---|
+| **Portada** | Quién somos / de qué trata la página: impacto | Foto completa + panel azul diagonal, titular por líneas |
+| **Pila** | Pocas cosas importantes, una a la vez, con foco total | Tarjetas sticky; la siguiente tapa a la anterior, que se achica a 0,93 y se apaga (sincronizado a la distancia real) |
+| **Título fijo + lectura guiada** | Argumentos o explicación en orden | Titular sticky a la izquierda; cada punto se enciende al llegar a la zona de lectura |
+| **Desfile horizontal** | Evidencia o secuencia (proyectos, historia) | La sección se fija y las fichas pasan de derecha a izquierda; el filete marca el avance |
+| **Grilla quieta** | Catálogo para leer libre (artículos, equipo) | Sin efecto de scroll, solo revelado |
+| **Remate** | Llamado a la acción | Banda azul con corte y filete |
+
+Reglas: solo CSS (sticky + `animation-timeline`), sin librerías. Sin soporte, en pantallas bajas o con movimiento
+reducido: la pila se apila sin achicarse, el desfile pasa a carrusel con el dedo, la lectura guiada se ve completa.
+En celular el desfile es carrusel con el dedo (no se secuestra el scroll vertical).
+Trampa: el minificador fusiona `animation` + `animation-timeline` en el atajo, que Chrome no acepta: la línea de
+tiempo siempre va en una regla aparte con selector distinto.
+
 ## Por confirmar con el dueño
 
 - Cifras publicadas hoy: +20 años, 3.000+ proyectos, 2.000+ mantenciones, 24/7 de respuesta técnica; «SLA definidos

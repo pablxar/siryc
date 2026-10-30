@@ -8,14 +8,16 @@ interface Props {
   title: string;
   description?: string;
   entrada?: boolean;
+  /** La página abre con una foto a pantalla completa. */
+  portadaFoto?: boolean;
 }
-const { title, description, entrada = false } = Astro.props;
+const { title, description, entrada = false, portadaFoto = false } = Astro.props;
 ---
 
 <Base title={title} description={description} entrada={entrada}>
   <a href="#contenido" class="saltar">Saltar al contenido</a>
   {entrada && <Entrada />}
-  <Cabecera />
+  <Cabecera islaSiempre={portadaFoto} />
   <main id="contenido">
     <slot />
   </main>

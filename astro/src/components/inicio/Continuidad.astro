@@ -1,6 +1,7 @@
 ---
-// 02 · Por qué SIRYC: titular fijo a la izquierda (escritorio) y lista editorial numerada
-// que entra al bajar; cada punto dibuja su filete. Abajo, las cifras de trayectoria.
+// 02 · Por qué SIRYC con LECTURA GUIADA: titular fijo a la izquierda (escritorio) y argumentos que
+// se encienden al llegar a la zona de lectura (ligado al scroll). Estrategia: el cómo, en orden.
+// Abajo, las cifras de trayectoria.
 // Cifras y afirmaciones tomadas del sitio actual: a confirmar con el dueño (ver docs).
 import SeccionTitulo from "../SeccionTitulo.astro";
 
@@ -41,7 +42,7 @@ const cifras = [
           <li data-revela>
             <span class="filete cont-filete" aria-hidden="true" />
             <span class="cifra cont-num">{String(i + 1).padStart(2, "0")}</span>
-            <div>
+            <div class="cont-argumento">
               <h3>{p.titulo}</h3>
               <p>{p.texto}</p>
             </div>
@@ -119,6 +120,28 @@ const cifras = [
     }
     :global(.js) .cont-lista li:global(.dentro) .cont-filete {
       transform: scaleX(1);
+    }
+  }
+
+  /* Lectura guiada: cada argumento parte atenuado y se enciende al acercarse al centro. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .cont-argumento,
+      .cont-num {
+        animation: enciende linear both;
+      }
+      /* animation-timeline va en una regla aparte (selector distinto): el minificador fusionaría ambas
+         en el atajo «animation», que no admite la línea de tiempo, y Chrome descartaría la regla. */
+      .cont-lista li > .cont-argumento,
+      .cont-lista li > .cont-num {
+        animation-timeline: view();
+        animation-range: entry 40% cover 42%;
+      }
+    }
+  }
+  @keyframes enciende {
+    from {
+      opacity: 0.3;
     }
   }
 
