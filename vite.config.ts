@@ -12,4 +12,18 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Same Cloudflare Workers build Lovable used in production, now explicit so it
+  // works outside the Lovable sandbox. Output: .output/ (deploy with wrangler).
+  nitro: {
+    preset: "cloudflare-module",
+    cloudflare: {
+      nodeCompat: true,
+      deployConfig: true,
+      wrangler: {
+        name: "siryc-web",
+        // www.siryc.cl redirects to the apex via a Cloudflare Redirect Rule (dashboard).
+        routes: [{ pattern: "siryc.cl", custom_domain: true }],
+      },
+    },
+  },
 });

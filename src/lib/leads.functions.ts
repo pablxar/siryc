@@ -64,19 +64,17 @@ function buildHtml(lead: Lead) {
 export const notifyLead = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => leadSchema.parse(data))
   .handler(async ({ data }) => {
-    const lovableKey = process.env.LOVABLE_API_KEY;
     const resendKey = process.env.RESEND_API_KEY;
-    if (!lovableKey || !resendKey) {
-      console.error("notifyLead: missing LOVABLE_API_KEY or RESEND_API_KEY");
+    if (!resendKey) {
+      console.error("notifyLead: missing RESEND_API_KEY");
       return { sent: false as const };
     }
 
-    const response = await fetch("https://connector-gateway.lovable.dev/resend/emails", {
+    const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${lovableKey}`,
-        "X-Connection-Api-Key": resendKey,
+        Authorization: `Bearer ${resendKey}`,
       },
       body: JSON.stringify({
         from: "SIRYC Web <no-reply@siryc.cl>",
