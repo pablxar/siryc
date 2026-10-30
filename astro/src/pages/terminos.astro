@@ -1,0 +1,101 @@
+---
+// Términos de uso: texto íntegro del sitio actual (los textos legales no se acortan).
+import Sitio from "../layouts/Sitio.astro";
+import Legal from "../components/Legal.astro";
+
+const secciones = [
+  { id: "aceptacion", titulo: "Aceptación" },
+  { id: "uso", titulo: "Uso del sitio" },
+  { id: "propiedad", titulo: "Propiedad intelectual" },
+  { id: "enlaces", titulo: "Enlaces a terceros" },
+  { id: "responsabilidad", titulo: "Limitación de responsabilidad" },
+  { id: "datos", titulo: "Datos personales" },
+  { id: "modificaciones", titulo: "Modificaciones" },
+  { id: "jurisdiccion", titulo: "Jurisdicción" },
+  { id: "contacto", titulo: "Contacto" },
+];
+const n = (id: string) => String(secciones.findIndex((s) => s.id === id) + 1).padStart(2, "0");
+---
+
+<Sitio title="Términos de Uso — SIRYC" description="Condiciones generales que rigen el acceso y la utilización del sitio web de SIRYC.">
+  <Legal
+    lineas={["Términos", "de Uso."]}
+    bajada="Condiciones generales que rigen el acceso y la utilización del sitio web de SIRYC."
+    actualizado="Agosto 2026"
+    secciones={secciones}
+  >
+    <section id="aceptacion">
+      <h2><span class="cifra">{n("aceptacion")}</span>Aceptación</h2>
+      <p>
+        El acceso y uso del sitio <strong>siryc.cl</strong> implica la aceptación de los presentes términos. Si no estás de acuerdo con alguno de
+        ellos, te pedimos no continuar utilizándolo.
+      </p>
+    </section>
+
+    <section id="uso">
+      <h2><span class="cifra">{n("uso")}</span>Uso del sitio</h2>
+      <p>
+        Este sitio se ofrece con fines informativos sobre los servicios de ingeniería en electricidad, refrigeración y climatización de SIRYC. El
+        contenido publicado puede actualizarse, modificarse o retirarse sin previo aviso. Las características técnicas, alcances, plazos y valores
+        de los servicios deben confirmarse mediante una cotización formal por escrito.
+      </p>
+    </section>
+
+    <section id="propiedad">
+      <h2><span class="cifra">{n("propiedad")}</span>Propiedad intelectual</h2>
+      <p>
+        Los textos, imágenes, logotipo, marca SIRYC, fichas técnicas y demás materiales publicados en este sitio son propiedad de SIRYC SpA o de sus
+        respectivos titulares, y están protegidos por la legislación chilena aplicable. Las marcas y modelos de equipos mencionados en el sitio
+        pertenecen a sus respectivos fabricantes. Queda prohibida la reproducción, distribución o uso comercial de los contenidos de este sitio sin
+        autorización expresa.
+      </p>
+    </section>
+
+    <section id="enlaces">
+      <h2><span class="cifra">{n("enlaces")}</span>Enlaces a terceros</h2>
+      <p>
+        El sitio puede incluir enlaces a recursos externos (redes sociales, fabricantes de equipos, plataformas de contacto como WhatsApp). SIRYC no
+        controla ni se responsabiliza del contenido, políticas o disponibilidad de esos sitios.
+      </p>
+    </section>
+
+    <section id="responsabilidad">
+      <h2><span class="cifra">{n("responsabilidad")}</span>Limitación de responsabilidad</h2>
+      <p>
+        El contenido publicado tiene carácter referencial. SIRYC no garantiza que el sitio esté libre de errores, omisiones o interrupciones. Las
+        decisiones técnicas, de mantención o de inversión en proyectos deben basarse en una evaluación específica del caso, realizada por personal
+        técnico calificado de SIRYC mediante visita o cotización formal.
+      </p>
+    </section>
+
+    <section id="datos">
+      <h2><span class="cifra">{n("datos")}</span>Datos personales</h2>
+      <p>
+        El tratamiento de los datos personales que ingresas en los formularios de este sitio se rige por nuestra <a href="/privacidad"
+          >Política de Privacidad</a
+        >, elaborada conforme a la Ley N° 19.628 y a la Ley N° 21.719 que moderniza la protección de datos personales en Chile.
+      </p>
+    </section>
+
+    <section id="modificaciones">
+      <h2><span class="cifra">{n("modificaciones")}</span>Modificaciones</h2>
+      <p>
+        SIRYC puede actualizar estos términos en cualquier momento. La versión vigente será siempre la publicada en esta página, con la fecha de
+        última actualización indicada al inicio.
+      </p>
+    </section>
+
+    <section id="jurisdiccion">
+      <h2><span class="cifra">{n("jurisdiccion")}</span>Jurisdicción</h2>
+      <p>
+        Estos términos se rigen por la legislación de la República de Chile. Cualquier controversia derivada del uso del sitio se someterá a los
+        tribunales competentes de la Región de Valparaíso.
+      </p>
+    </section>
+
+    <section id="contacto">
+      <h2><span class="cifra">{n("contacto")}</span>Contacto</h2>
+      <p>Si tienes consultas sobre estos términos, escríbenos a <a href="mailto:contacto@siryc.cl">contacto@siryc.cl</a>.</p>
+    </section>
+  </Legal>
+</Sitio>

@@ -1,0 +1,285 @@
+---
+// Artículo: portada de texto (titular largo) → cuerpo de lectura con columna lateral FIJA (datos del
+// artículo y llamado a conversar) → «sigue leyendo» en grilla quieta → remate. Un filete fijo arriba
+// marca el avance de lectura (solo CSS, scroll-timeline). Se genera una página por artículo al compilar.
+import type { GetStaticPaths } from "astro";
+import { Picture } from "astro:assets";
+import Sitio from "../../layouts/Sitio.astro";
+import PortadaTexto from "../../components/PortadaTexto.astro";
+import Ficha from "../../components/Ficha.astro";
+import Flecha from "../../components/Flecha.astro";
+import Llamado from "../../components/Llamado.astro";
+import { articulosCompletos, fechaLarga, parrafos, type ArticuloCompleto } from "../../lib/supabase";
+import { fotoReal } from "../../lib/fotos";
+
+export const getStaticPaths = (async () => {
+  const todos = await articulosCompletos();
+  return todos.map((articulo) => ({
+    params: { slug: articulo.slug },
+    props: { articulo, otros: todos.filter((o) => o.slug !== articulo.slug).slice(0, 3) },
+  }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  articulo: ArticuloCompleto;
+  otros: ArticuloCompleto[];
+}
+const { articulo: a, otros } = Astro.props;
+const cuerpo = parrafos(a.contenido);
+const palabras = [a.extracto ?? "", ...cuerpo].join(" ").split(/\s+/).filter(Boolean).length;
+const minutos = Math.max(1, Math.round(palabras / 200));
+// Solo foto real del Storage; sin ella, el artículo es tipográfico (ver lib/fotos.ts).
+const real = fotoReal(a.imagen_url);
+---
+
+<Sitio title={`${a.titulo} | SIRYC`} description={a.extracto ?? a.titulo}>
+  <span class="avance filete" aria-hidden="true"></span>
+
+  <PortadaTexto rotulo={a.categoria ?? "Artículo"} lineas={[a.titulo]} largo>
+    <a slot="antes" href="/blog" class="volver"><Flecha /> Actualidad técnica</a>
+    <p class="rotulo art-datos sigue i-2">
+      <time datetime={a.created_at}>{fechaLarga(a.created_at)}</time> · {minutos} min de lectura
+    </p>
+  </PortadaTexto>
+
+  <article class="articulo" aria-labelledby="portada-t">
+    <div class="contenedor art-grilla">
+      <aside class="art-lado" aria-label="Sobre este artículo">
+        <dl class="art-ficha">
+          <div>
+            <dt class="rotulo">Tema</dt>
+            <dd>{a.categoria ?? "Artículo"}</dd>
+          </div>
+          <div>
+            <dt class="rotulo">Publicado</dt>
+            <dd>{fechaLarga(a.created_at)}</dd>
+          </div>
+          <div>
+            <dt class="rotulo">Lectura</dt>
+            <dd>{minutos} min</dd>
+          </div>
+        </dl>
+        <span class="filete art-filete" aria-hidden="true"></span>
+        <p class="art-pregunta">¿Lo aplicamos a tu instalación?</p>
+        <a href="/contacto" class="art-enlace">Conversemos <Flecha /></a>
+      </aside>
+
+      <div class="art-cuerpo">
+        {
+          real && (
+            <figure class="art-foto corte">
+              <Picture src={real} inferSize formats={["avif", "webp"]} fallbackFormat="webp" widths={[700, 1100]} sizes="(min-width: 1024px) 44rem, 92vw" alt="" />
+            </figure>
+          )
+        }
+        {a.extracto && <p class="art-entrada">{a.extracto}</p>}
+        {cuerpo.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+  </article>
+
+  {
+    otros.length > 0 && (
+      <section class="sigue-leyendo" aria-labelledby="sigue-t">
+        <div class="contenedor">
+          <h2 id="sigue-t" class="rotulo sigue-t">Sigue leyendo</h2>
+          <ul class="sigue-grilla">
+            {otros.map((o, i) => (
+              <li class={`i-${i}`} data-revela>
+                <Ficha href={`/blog/${o.slug}`} indice={o.categoria ?? "Artículo"} titulo={o.titulo} enlace="Leer artículo">
+                  <span class="rotulo sigue-fecha">{fechaLarga(o.created_at)}</span>
+                </Ficha>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  <Llamado lineas={["¿Tu instalación necesita", "una revisión?"]} texto="Cuéntanos qué necesitas. Nuestro equipo te orientará." />
+</Sitio>
+
+<style>
+  /* Avance de lectura: filete fijo arriba que crece con el scroll. Sin soporte o con movimiento reducido no se ve. */
+  .avance {
+    display: none;
+  }
+  @supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .avance {
+        position: fixed;
+        inset: 0 0 auto;
+        z-index: 60;
+        display: block;
+        height: 3px;
+        transform-origin: left;
+        animation: avanza linear both;
+      }
+      :where(html) .avance {
+        animation-timeline: scroll(root);
+      }
+    }
+  }
+  @keyframes avanza {
+    from {
+      transform: scaleX(0);
+    }
+  }
+
+  .volver {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 2.75rem;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-azul);
+  }
+  .volver :global(.flecha) {
+    rotate: 180deg;
+    transition: translate 0.5s var(--ease-salida);
+  }
+  @media (hover: hover) {
+    .volver:hover :global(.flecha) {
+      translate: -0.3rem 0;
+    }
+  }
+  .art-datos {
+    margin-top: 1.25rem;
+  }
+
+  .articulo {
+    padding: 1rem 0 5rem;
+  }
+  .art-grilla {
+    display: grid;
+    gap: 2.5rem;
+  }
+  .art-lado {
+    order: 2;
+  }
+  .art-ficha {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    justify-content: start;
+    gap: 1rem 2rem;
+    margin: 0;
+  }
+  .art-ficha dd {
+    margin: 0.3rem 0 0;
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+  .art-filete {
+    display: block;
+    width: 4.5rem;
+    margin: 1.75rem 0 1.25rem;
+  }
+  .art-pregunta {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.15;
+  }
+  .art-enlace {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 2.75rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-azul);
+  }
+  .art-enlace :global(.flecha) {
+    transition: translate 0.5s var(--ease-salida);
+  }
+  @media (hover: hover) {
+    .art-enlace:hover :global(.flecha) {
+      translate: 0.35rem 0;
+    }
+  }
+
+  .art-cuerpo {
+    max-width: 42rem;
+  }
+  .art-cuerpo p {
+    margin-top: 1.4rem;
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--color-grafito);
+  }
+  .art-cuerpo .art-entrada {
+    margin-top: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 1.05rem + 0.8vw, 1.6rem);
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--color-tinta);
+  }
+  .art-foto {
+    --corte: 1.75rem;
+    margin: 0 0 2.5rem;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+  }
+  .art-foto :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @media (min-width: 1024px) {
+    .articulo {
+      padding: 2rem 0 7rem;
+    }
+    .art-grilla {
+      grid-template-columns: 15rem minmax(0, 42rem);
+      gap: 5rem;
+    }
+    .art-lado {
+      order: 0;
+      position: sticky;
+      top: var(--tope);
+      align-self: start;
+    }
+    .art-ficha {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+  }
+
+  .sigue-leyendo {
+    padding: 4.5rem 0;
+    background: var(--color-papel-2);
+  }
+  .sigue-t {
+    margin-bottom: 1.75rem;
+  }
+  .sigue-grilla {
+    display: grid;
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .sigue-grilla :global(.ficha) {
+    background: var(--color-papel);
+  }
+  .sigue-fecha {
+    display: block;
+  }
+  @media (min-width: 900px) {
+    .sigue-grilla {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .sigue-leyendo {
+      padding: 6rem 0;
+    }
+  }
+</style>

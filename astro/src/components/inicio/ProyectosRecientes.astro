@@ -1,22 +1,13 @@
 ---
 // 03 · Proyectos recientes como DESFILE HORIZONTAL (ver Desfile.astro): la prueba, obra tras obra.
-// Datos de Supabase al compilar; fotos provisorias por segmento.
+// Datos de Supabase al compilar; foto real del Storage o provisoria por segmento (lib/fotos.ts).
 import Desfile from "../Desfile.astro";
 import Ficha from "../Ficha.astro";
 import Cifras from "../Cifras.astro";
 import SeccionTitulo from "../SeccionTitulo.astro";
-import { proyectos, SEGMENTO, type Proyecto } from "../../lib/supabase";
-import refrigeracion from "../../assets/refrigeracion.png";
-import climatizacion from "../../assets/climatizacion.png";
-import electricidad from "../../assets/electricidad.png";
-import banner from "../../assets/banner-web-siryc.png";
+import { proyectos, SEGMENTO } from "../../lib/supabase";
+import { fotoProyecto } from "../../lib/fotos";
 
-const FOTO: Record<NonNullable<Proyecto["categoria"]>, ImageMetadata> = {
-  centro_comercial: climatizacion,
-  gobierno: refrigeracion,
-  corporativo: electricidad,
-  educacion: banner,
-};
 const lista = await proyectos(6);
 const total = lista.length;
 ---
@@ -40,7 +31,7 @@ const total = lista.length;
             rotulo={p.categoria ? SEGMENTO[p.categoria] : undefined}
             titulo={p.titulo}
             destacado={p.cliente_nombre_publico}
-            foto={p.categoria ? FOTO[p.categoria] : undefined}
+            foto={fotoProyecto(p, i)}
             enlace="Ver proyecto"
             contenidoAbajo
             sizes="(min-width: 1024px) 30rem, 82vw"

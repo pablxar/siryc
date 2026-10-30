@@ -1,0 +1,200 @@
+---
+// 02 · Caso destacado: la obra con cliente publicable (Supabase: cliente_nombre_publico). Sobre tinta, como
+// la pausa tipográfica: el nombre del cliente es el titular y sus cifras van grandes. La foto entra con el
+// barrido diagonal del corte al llegar. Textos del sitio actual.
+import { Picture } from "astro:assets";
+import Flecha from "../Flecha.astro";
+import { miles } from "../../data/proyectos-muestra";
+import type { Proyecto } from "../../lib/supabase";
+import { fotoProyecto } from "../../lib/fotos";
+
+interface Props {
+  obra: Proyecto;
+}
+const { obra } = Astro.props;
+const foto = fotoProyecto(obra);
+const cifras = [
+  obra.metros_cuadrados != null && { valor: miles(obra.metros_cuadrados), unidad: "m²", texto: "de superficie" },
+  obra.cantidad_equipos != null && { valor: String(obra.cantidad_equipos), unidad: "", texto: "equipos" },
+  obra.anio != null && { valor: String(obra.anio), unidad: "", texto: "año" },
+].filter(Boolean) as { valor: string; unidad: string; texto: string }[];
+---
+
+<section id="caso" class="caso" aria-labelledby="caso-t">
+  <div class="contenedor caso-grilla">
+    <div class="caso-texto">
+      <header data-lineas>
+        <p class="rotulo sigue"><span class="cifra caso-num">02</span> Caso destacado</p>
+        <h2 id="caso-t">
+          <span class="linea"><span>{obra.cliente_nombre_publico}.</span></span>
+        </h2>
+        <span class="filete filete--claro dibuja caso-filete" aria-hidden="true"></span>
+        <p class="caso-sub sigue i-1">Mantención para instalaciones institucionales.</p>
+        <p class="caso-desc sigue i-2">Un trabajo técnico centrado en la planificación, la documentación y el seguimiento de cada intervención.</p>
+      </header>
+
+      <dl class="caso-cifras">
+        {
+          cifras.map((c, i) => (
+            <div class={`i-${i}`} data-revela>
+              <dt>{c.texto}</dt>
+              <dd class="cifra">
+                {c.valor}
+                {c.unidad && <span> {c.unidad}</span>}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+
+      <a href="/contacto?servicio=mantencion" class="boton corte caso-cta">Consultar por mantención <Flecha /></a>
+    </div>
+
+    <figure class="caso-foto" data-revela>
+      <div class="caso-marco corte">
+        <Picture
+        src={foto}
+        inferSize={typeof foto === "string"}
+        formats={["avif", "webp"]}
+        fallbackFormat="webp"
+        widths={[600, 900, 1300]}
+        sizes="(min-width: 1024px) 50vw, 92vw"
+          alt={`Equipo técnico de SIRYC en labores de mantención: ${obra.titulo}`}
+        />
+      </div>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .caso {
+    padding: 5rem 0;
+    background: var(--color-tinta);
+    color: var(--color-papel);
+    scroll-margin-top: 5rem;
+  }
+  .caso-grilla {
+    display: grid;
+    gap: 3rem;
+  }
+  .caso .rotulo {
+    color: var(--color-niebla);
+  }
+  .caso-num {
+    margin-right: 0.5rem;
+    color: var(--color-papel);
+  }
+  h2 {
+    margin-top: 1rem;
+    font-size: clamp(2.4rem, 1.2rem + 4.4vw, 5rem);
+    font-weight: 700;
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+  }
+  .caso-filete {
+    display: block;
+    width: 9rem;
+    height: 4px;
+    margin-top: 1.5rem;
+    transform-origin: left;
+  }
+  .caso-sub {
+    margin-top: 1.5rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 1rem + 0.8vw, 1.6rem);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  .caso-desc {
+    margin-top: 0.75rem;
+    max-width: 30rem;
+    line-height: 1.6;
+    color: var(--color-niebla);
+  }
+  .caso-cifras {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    justify-content: start;
+    gap: 1.5rem 2.5rem;
+    margin: 2.5rem 0 0;
+    padding-top: 1.75rem;
+    border-top: 1px solid rgb(176 190 197 / 0.25);
+  }
+  .caso-cifras > div {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    gap: 0.4rem;
+  }
+  .caso-cifras dd {
+    margin: 0;
+    font-size: clamp(1.9rem, 1.4rem + 1.8vw, 3rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .caso-cifras dd span {
+    font-size: 0.5em;
+    font-weight: 500;
+  }
+  .caso-cifras dt {
+    font-size: 0.8125rem;
+    color: var(--color-niebla);
+  }
+  .caso-cta {
+    margin-top: 2.5rem;
+    background: var(--color-papel);
+    color: var(--color-azul);
+  }
+  @media (hover: hover) {
+    .caso-cta:hover {
+      background: var(--color-azul);
+      color: var(--color-papel);
+    }
+  }
+  .caso-foto {
+    margin: 0;
+  }
+  .caso-marco {
+    --corte: 2.5rem;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+  }
+  .caso-foto :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  @media (max-width: 479px) {
+    .caso-cifras {
+      column-gap: 1.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .caso {
+      padding: 8rem 0;
+      scroll-margin-top: 9.75rem;
+    }
+    .caso-grilla {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      gap: 5rem;
+      align-items: center;
+    }
+    .caso-marco {
+      aspect-ratio: 4 / 5;
+    }
+  }
+  /* La foto entra con el barrido diagonal del corte (en vez del revelado común); el corte va en el marco interior. */
+  @media (prefers-reduced-motion: no-preference) {
+    .js .caso-foto[data-revela] {
+      opacity: 1;
+      translate: 0 0;
+      clip-path: polygon(0 0, 0 0, -60% 100%, -60% 100%);
+      transition: clip-path 1.4s var(--ease-barrido) 0.15s;
+    }
+    .js .caso-foto[data-revela].dentro {
+      clip-path: polygon(0 0, 160% 0, 100% 100%, -60% 100%);
+    }
+  }
+</style>

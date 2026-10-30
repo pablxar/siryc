@@ -7,16 +7,17 @@ import Entrada from "../components/Entrada.astro";
 interface Props {
   title: string;
   description?: string;
+  noindex?: boolean;
   entrada?: boolean;
   /** La página abre con una foto a pantalla completa. */
   portadaFoto?: boolean;
   /** La página lleva índice de capítulos fijo (sube el tope de lo sticky). */
   conIndice?: boolean;
 }
-const { title, description, entrada = false, portadaFoto = false, conIndice = false } = Astro.props;
+const { title, description, noindex = false, entrada = false, portadaFoto = false, conIndice = false } = Astro.props;
 ---
 
-<Base title={title} description={description} entrada={entrada}>
+<Base title={title} description={description} noindex={noindex} entrada={entrada}>
   <a href="#contenido" class="saltar">Saltar al contenido</a>
   {entrada && <Entrada />}
   <Cabecera islaSiempre={portadaFoto} />

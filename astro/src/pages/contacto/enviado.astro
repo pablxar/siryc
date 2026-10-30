@@ -1,0 +1,18 @@
+---
+// Confirmación para el envío sin JavaScript (con JS la confirmación aparece en la misma página).
+import Sitio from "../../layouts/Sitio.astro";
+import PortadaTexto from "../../components/PortadaTexto.astro";
+import Flecha from "../../components/Flecha.astro";
+---
+
+<Sitio title="Solicitud enviada | SIRYC" description="Recibimos tu solicitud." noindex>
+  <PortadaTexto rotulo="Solicitud enviada" lineas={["Recibimos tu", "solicitud."]} bajada="Te contactaremos a la brevedad. Si es urgente, escríbenos a ventas@siryc.cl.">
+    <a href="/" class="boton corte enviado-volver sigue i-2">Volver al inicio <Flecha /></a>
+  </PortadaTexto>
+</Sitio>
+
+<style>
+  .enviado-volver {
+    margin-top: 2rem;
+  }
+</style>

@@ -1,0 +1,82 @@
+---
+// Proyectos: portada → índice fijo → 01 archivo de obras (grilla quieta + filtro por sector) → 02 caso
+// destacado (tinta, cifras grandes) → 03 cómo cierra un proyecto (título fijo + lectura guiada) → remate.
+// Obras de Supabase al compilar. Los «sectores» del sitio actual quedan en el filtro (con su cuenta).
+import Sitio from "../layouts/Sitio.astro";
+import PortadaFoto from "../components/PortadaFoto.astro";
+import IndiceCapitulos from "../components/IndiceCapitulos.astro";
+import SeccionTitulo from "../components/SeccionTitulo.astro";
+import ListaGuiada from "../components/ListaGuiada.astro";
+import Llamado from "../components/Llamado.astro";
+import Archivo from "../components/proyectos/Archivo.astro";
+import Caso from "../components/proyectos/Caso.astro";
+import { proyectos } from "../lib/supabase";
+import banner from "../assets/banner-web-siryc.png";
+import bannerMovil from "../assets/hero-mobile-siryc.png";
+
+const lista = await proyectos();
+const destacado = lista.find((p) => p.cliente_nombre_publico);
+const cierre = [
+  { titulo: "Alcance técnico", texto: "Definimos el trabajo y sus alcances." },
+  { titulo: "Intervención", texto: "Ejecutamos con personal especializado." },
+  { titulo: "Seguimiento", texto: "Entregamos información detallada del servicio." },
+];
+const capitulos = [
+  { id: "archivo", texto: "Archivo de obras" },
+  ...(destacado ? [{ id: "caso", texto: "Caso destacado" }] : []),
+  { id: "cierre", texto: "Cómo cerramos" },
+];
+---
+
+<Sitio
+  title="Proyectos de ingeniería ejecutados | SIRYC"
+  description="Proyectos SIRYC de climatización, refrigeración y electricidad para empresas, instituciones, educación y comercio en Chile."
+  portadaFoto
+  conIndice
+>
+  <PortadaFoto
+    pagina
+    panel="izquierda"
+    encuadre="derecha"
+    rotulo="Proyectos"
+    lineas={["Nuestra ingeniería,", "en terreno."]}
+    bajada="Proyectos de climatización, refrigeración y electricidad ejecutados en distintos sectores."
+    cta={{ href: "/contacto", texto: "Solicitar cotización" }}
+    secundario={{ href: "#archivo", texto: "Explorar proyectos" }}
+    foto={banner}
+    fotoMovil={bannerMovil}
+    alt="Instalación industrial de climatización ejecutada por SIRYC"
+  />
+
+  <IndiceCapitulos etiqueta="Capítulos de Proyectos" capitulos={capitulos} />
+
+  <Archivo lista={lista} />
+
+  {destacado && <Caso obra={destacado} />}
+
+  <section id="cierre" class="cierre" aria-labelledby="cierre-t">
+    <ListaGuiada puntos={cierre}>
+      <SeccionTitulo
+        slot="cabeza"
+        id="cierre-t"
+        numero={destacado ? "03" : "02"}
+        rotulo="El respaldo detrás de cada proyecto"
+        lineas={["El trabajo termina", "con claridad."]}
+        bajada="Alcance, intervención y seguimiento: información para conocer el estado de cada instalación."
+      />
+    </ListaGuiada>
+  </section>
+
+  <Llamado lineas={["Tu próximo proyecto", "comienza aquí."]} />
+</Sitio>
+
+<style>
+  .cierre {
+    scroll-margin-top: 5rem;
+  }
+  @media (min-width: 1024px) {
+    .cierre {
+      scroll-margin-top: 9.75rem;
+    }
+  }
+</style>

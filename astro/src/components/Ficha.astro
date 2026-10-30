@@ -5,6 +5,7 @@
 // se invierte y se dibuja el filete partido. En táctil la foto ya viene arriba.
 import { Picture } from "astro:assets";
 import Flecha from "./Flecha.astro";
+import type { Foto } from "../lib/fotos";
 
 interface Props {
   href: string;
@@ -12,7 +13,8 @@ interface Props {
   rotulo?: string;
   titulo: string;
   destacado?: string | null;
-  foto?: ImageMetadata;
+  /** Local (importada) o URL del Storage de Supabase. */
+  foto?: Foto;
   enlace?: string;
   /** El contenido se apoya en la base (cifras); si no, va bajo el título (texto). */
   contenidoAbajo?: boolean;
@@ -35,7 +37,7 @@ const {
 
 <a class:list={["ficha corte", { "sin-foto": !foto }]} href={href}>
   <span class="ficha-media corte" aria-hidden="true">
-    {foto && <Picture src={foto} formats={["avif", "webp"]} fallbackFormat="webp" widths={[480, 800, 1200]} sizes={sizes} alt="" />}
+    {foto && <Picture src={foto} inferSize={typeof foto === "string"} formats={["avif", "webp"]} fallbackFormat="webp" widths={[480, 800, 1200]} sizes={sizes} alt="" />}
     <span class="ficha-velo"></span>
   </span>
 

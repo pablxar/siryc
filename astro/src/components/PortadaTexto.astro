@@ -1,0 +1,114 @@
+---
+// Portada de texto para páginas de lectura o de trámite (Blog, Contacto, legales): sin foto, el titular manda.
+// Mismo vocabulario que PortadaFoto (rótulo, líneas que suben, filete que se dibuja) sobre papel, con el
+// isotipo calado a la derecha como marca de agua. Slot opcional bajo la bajada (datos, volver).
+import Isotipo from "./Isotipo.astro";
+
+interface Props {
+  rotulo: string;
+  lineas: string[];
+  bajada?: string;
+  /** Titular largo (un artículo): una sola línea que sube como bloque, tamaño menor. */
+  largo?: boolean;
+}
+const { rotulo, lineas, bajada, largo = false } = Astro.props;
+---
+
+<section class:list={["portada-texto", { largo }]} data-lineas aria-labelledby="portada-t">
+  <div class="contenedor pt-grilla">
+    <div class="pt-texto">
+      <slot name="antes" />
+      <p class="rotulo sigue">{rotulo}</p>
+      <h1 id="portada-t">
+        {lineas.map((l, i) => <span class={`linea i-${i}`}><span>{l}</span></span>)}
+      </h1>
+      <span class="filete dibuja pt-filete" aria-hidden="true"></span>
+      {bajada && <p class="pt-bajada sigue i-1">{bajada}</p>}
+      <slot />
+    </div>
+    <span class="pt-marca" aria-hidden="true"><Isotipo /></span>
+  </div>
+</section>
+
+<style>
+  .portada-texto {
+    position: relative;
+    overflow: clip;
+    padding: 8.5rem 0 3.5rem;
+    background: var(--color-papel);
+  }
+  .pt-grilla {
+    position: relative;
+  }
+  .pt-texto {
+    position: relative;
+    z-index: 1;
+    max-width: 52rem;
+  }
+  h1 {
+    margin-top: 1.1rem;
+    font-size: clamp(2.4rem, 1.2rem + 4.4vw, 5rem);
+    font-weight: 700;
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+  }
+  .largo h1 {
+    font-size: clamp(2rem, 1.2rem + 2.8vw, 3.5rem);
+    line-height: 1.05;
+    text-wrap: balance;
+  }
+  .pt-filete {
+    display: block;
+    width: 9rem;
+    height: 4px;
+    margin-top: 1.75rem;
+    transform-origin: left;
+  }
+  .pt-bajada {
+    margin-top: 1.25rem;
+    max-width: 36rem;
+    font-size: clamp(1rem, 0.95rem + 0.3vw, 1.175rem);
+    line-height: 1.6;
+    color: var(--color-grafito);
+  }
+  /* Isotipo calado: gris muy claro, sin color de marca, para no competir con el titular. */
+  .pt-marca {
+    position: absolute;
+    right: -4rem;
+    bottom: -7rem;
+    width: 22rem;
+    pointer-events: none;
+    --logo-iso: var(--color-papel-2);
+  }
+  .pt-marca :global(.iso-frio),
+  .pt-marca :global(.iso-calor) {
+    fill: var(--color-papel-2);
+  }
+  .pt-marca :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  @media (min-width: 1024px) {
+    .portada-texto {
+      padding: 11rem 0 5rem;
+    }
+    .pt-marca {
+      right: 2rem;
+      bottom: -9rem;
+      width: 30rem;
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .js .pt-marca {
+      animation: marca-entra 1.6s var(--ease-salida) 0.2s both;
+    }
+  }
+  @keyframes marca-entra {
+    from {
+      opacity: 0;
+      rotate: -12deg;
+      scale: 0.92;
+    }
+  }
+</style>

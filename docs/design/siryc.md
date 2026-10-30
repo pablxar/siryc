@@ -85,6 +85,32 @@ tiempo siempre va en una regla aparte con selector distinto.
   (años grandes) → forma de trabajar en pila tipográfica → manifiesto → equipo en grilla → respaldo técnico con
   lectura guiada → remate. Lighthouse móvil: Servicios 99/100/100/100, Nosotros 99/100/100/100.
 
+- **2026-10-30 · Fase 4: Proyectos, Blog, Contacto y legales** (pedido del dueño: «sigue con la fase 4»).
+  - Proyectos: portada → índice → 01 archivo de obras en grilla quieta con filtro por sector (fila de texto con el
+    filete bajo el activo y la cuenta de obras; reacomodo con transición de vista; `?sector=` en la URL) → 02 caso
+    destacado sobre tinta (la obra con `cliente_nombre_publico`, cifras grandes, foto con barrido diagonal) → 03 cómo
+    cerramos un proyecto (lectura guiada) → remate. La sección «Sectores» del sitio actual se fundió en el filtro
+    (repetía lo mismo). Cada ficha lleva a contacto con el sector ya elegido («Cotizar uno similar»).
+  - Blog: portada de texto → lectura destacada (ficha a todo el ancho) → resto en grilla quieta → remate.
+    Artículo: portada de texto con titular largo, columna lateral fija (tema, fecha, minutos, «¿Lo aplicamos a tu
+    instalación?») y filete de avance de lectura fijo arriba (solo CSS, `scroll()`). Una página por artículo al compilar.
+  - Contacto: formulario con la marca (campos sobre papel 2 con el filete al enfocar, opciones como piezas con corte en
+    vez de `select`, mensajes propios con marca roja y texto en tinta, contador del detalle), contacto directo fijo
+    sobre tinta y confirmación con barrido diagonal. `?servicio=` y `?segmento=` dejan la opción elegida. Sin JS:
+    validación del navegador y `/contacto/enviado`. El mapa de Google embebido se cambió por un enlace (sin recursos
+    externos ni cookies de terceros).
+  - Envío: `/api/contacto` es la única ruta en el Worker (adaptador `@astrojs/cloudflare`; todo lo demás estático).
+    Valida con las mismas reglas que la RLS de `leads`, guarda en Supabase con la clave publicable (solo insertar),
+    avisa a ventas por Resend (`RESEND_API_KEY` como secreto del Worker; sin él guarda sin correo). Trampa oculta
+    para robots y rechazo de envíos desde otros sitios (`checkOrigin`). Correo de aviso con la marca.
+  - Legales: texto íntegro del sitio actual (no se acortan) con índice fijo que marca la sección que se lee.
+  - Portada de texto (`PortadaTexto.astro`) para páginas de lectura o trámite: Blog, artículo, Contacto, legales, 404.
+  - Fotos: solo las reales del Storage de Supabase; las de banco que dejó Lovable (Unsplash) no se publican: foto
+    provisoria por segmento en proyectos y artículos sin foto (`lib/fotos.ts`).
+  - URLs sin barra final, como el sitio actual (`build.format: "file"`); `/clientes` redirige (307) a `/proyectos`.
+  - Lighthouse móvil (build de producción): Proyectos 98, Blog 98, artículo 98, Contacto 98, Privacidad 100;
+    accesibilidad, buenas prácticas y SEO 100 en todas. Sin desborde horizontal a 320, 390 y 768 px.
+
 ## Por confirmar con el dueño
 
 - **Contradicción**: Nosotros (hito 2026) dice «Más de 250 proyectos ejecutados»; la portada dice «3.000+ proyectos
@@ -101,6 +127,11 @@ tiempo siempre va en una regla aparte con selector distinto.
   no se migra; hace falta la lista real de clientes que se pueden nombrar.
 - Fotos de proyectos: hoy son provisorias por segmento; idealmente fotos reales de cada obra.
 - Redes sociales: enlaces reales.
+- Política de privacidad (texto del sitio actual) dice que se usa Google Analytics 4 con Tag Manager, pero ni el
+  sitio actual ni el nuevo lo cargan: o se quita ese párrafo o se agrega la medición (decisión legal del dueño).
+- Política de privacidad: falta el domicilio (`⟦por definir: dirección⟧`); los legales usan contacto@siryc.cl y el
+  formulario avisa a ventas@siryc.cl: confirmar que ambos correos existen.
+- Artículos del blog: algunas cifras («entre un 40% y 60%») vienen del contenido cargado en Lovable; confirmar fuente.
 
 ## Laboratorio (solo `astro dev`, nunca en el build)
 
@@ -114,6 +145,8 @@ tiempo siempre va en una regla aparte con selector distinto.
   Corregido con margen superior enorme en el IntersectionObserver (lo que ya pasó cuenta como visto).
 - Ícono de cerrar del menú: la línea corta giraba desde su extremo y armaba un «>». Ahora ambas giran desde el centro.
 - Respaldo PNG de `<Picture>`: generaba archivos de hasta 3 MB. Ahora el respaldo es WebP.
+- Proyectos con la foto horizontal en celular: el recorte dejaba solo el casco y el LCP subía a 2,6 s (rendimiento 94–97).
+  Con la foto vertical del dueño (la misma de la portada): 98 y 2,2 s.
 
 - Revelado con desenfoque (`blur`) en cada bloque, como el sitio actual: deja huecos en blanco al bajar rápido y es
   el efecto más típico de webs hechas con IA.

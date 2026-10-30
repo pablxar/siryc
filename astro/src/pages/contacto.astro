@@ -1,0 +1,659 @@
+---
+// Contacto: portada de texto → formulario (con la marca: campos sobre papel 2 con el filete al enfocar,
+// opciones como piezas con el corte, mensajes propios; nada nativo a la vista) y, al costado FIJO en
+// escritorio, el contacto directo sobre tinta. Envío a /api/contacto (Supabase + Resend).
+// Con JS: validación propia, envío sin recargar y confirmación animada. Sin JS: validación del navegador
+// y envío normal que termina en /contacto/enviado. ?servicio= y ?segmento= dejan la opción ya elegida.
+import Sitio from "../layouts/Sitio.astro";
+import PortadaTexto from "../components/PortadaTexto.astro";
+import Flecha from "../components/Flecha.astro";
+import { SECTORES, SERVICIOS } from "../lib/leads";
+
+const MAPA = "https://www.google.com/maps/place/Regi%C3%B3n+de+Valpara%C3%ADso,+Chile";
+const campos = [
+  { id: "nombre", texto: "Nombre completo", tipo: "text", requerido: true, max: 120, auto: "name" },
+  { id: "email", texto: "Correo", tipo: "email", requerido: true, max: 200, auto: "email" },
+  { id: "empresa", texto: "Empresa o institución", tipo: "text", requerido: false, max: 200, auto: "organization" },
+  { id: "cargo", texto: "Cargo", tipo: "text", requerido: false, max: 120, auto: "organization-title" },
+  { id: "telefono", texto: "Teléfono", tipo: "tel", requerido: false, max: 40, auto: "tel" },
+] as const;
+---
+
+<Sitio
+  title="Contacto — Solicita cotización | SIRYC"
+  description="Solicita cotización técnica a SIRYC. Refrigeración, climatización, electricidad industrial y contratos de mantención en la Región de Valparaíso, Chile."
+>
+  <PortadaTexto rotulo="Contacto" lineas={["Hablemos de", "tu operación."]} bajada="Cuéntanos qué necesita tu instalación y nuestro equipo revisará tu requerimiento." />
+
+  <section class="contacto" aria-label="Solicitud de cotización">
+    <div class="contenedor ct-grilla">
+      <div class="ct-form-marco" id="formulario">
+        <form class="ct-form" action="/api/contacto" method="post" data-form>
+          <header class="ct-cabeza">
+            <p class="rotulo"><span class="cifra ct-num">01</span> Solicitud de cotización</p>
+            <p class="ct-nota">Los campos marcados como opcionales puedes dejarlos en blanco.</p>
+          </header>
+
+          <p class="ct-aviso" role="alert" data-aviso hidden></p>
+
+          <div class="ct-campos">
+            {
+              campos.map((c) => (
+                <div class:list={["campo", { ancho: c.id === "telefono" }]}>
+                  <label for={c.id}>
+                    {c.texto}
+                    {!c.requerido && <span class="campo-op">opcional</span>}
+                  </label>
+                  <span class="campo-control">
+                    <input
+                      id={c.id}
+                      name={c.id}
+                      type={c.tipo}
+                      required={c.requerido}
+                      maxlength={c.max}
+                      minlength={c.id === "nombre" ? 2 : undefined}
+                      autocomplete={c.auto}
+                      inputmode={c.tipo === "tel" ? "tel" : undefined}
+                      aria-describedby={`${c.id}-error`}
+                    />
+                  </span>
+                  <p class="campo-error" id={`${c.id}-error`} data-error={c.id} />
+                </div>
+              ))
+            }
+
+            <fieldset class="opciones ancho" aria-describedby="tipo_servicio-error">
+              <legend>Tipo de servicio</legend>
+              <div class="opciones-lista">
+                {
+                  SERVICIOS.map((s, i) => (
+                    <label class="opcion corte">
+                      <input type="radio" name="tipo_servicio" value={s.id} required={i === 0} />
+                      <span>{s.texto}</span>
+                    </label>
+                  ))
+                }
+              </div>
+              <p class="campo-error" id="tipo_servicio-error" data-error="tipo_servicio"></p>
+            </fieldset>
+
+            <fieldset class="opciones ancho" aria-describedby="segmento-error">
+              <legend>Sector</legend>
+              <div class="opciones-lista">
+                {
+                  SECTORES.map((s, i) => (
+                    <label class="opcion corte">
+                      <input type="radio" name="segmento" value={s.id} required={i === 0} />
+                      <span>{s.texto}</span>
+                    </label>
+                  ))
+                }
+              </div>
+              <p class="campo-error" id="segmento-error" data-error="segmento"></p>
+            </fieldset>
+
+            <div class="campo ancho">
+              <label for="mensaje">Detalle del requerimiento <span class="campo-op">opcional</span></label>
+              <span class="campo-control">
+                <textarea id="mensaje" name="mensaje" rows="5" maxlength="2000" placeholder="Describe el servicio y dónde se necesita." aria-describedby="mensaje-cuenta mensaje-error"></textarea>
+              </span>
+              <p class="campo-cuenta cifra" id="mensaje-cuenta" data-cuenta>0 / 2.000</p>
+              <p class="campo-error" id="mensaje-error" data-error="mensaje"></p>
+            </div>
+          </div>
+
+          <!-- Trampa para robots: oculta para personas y lectores de pantalla. -->
+          <div class="trampa" aria-hidden="true">
+            <label for="sitio">Sitio web</label>
+            <input id="sitio" name="sitio" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+          <input type="hidden" name="origen_pagina" value="/contacto" data-origen />
+
+          <p class="ct-privacidad">Usaremos tus datos solo para responder esta solicitud. <a href="/privacidad">Política de privacidad</a></p>
+
+          <button type="submit" class="boton corte ct-enviar" data-enviar>
+            <span data-enviar-texto>Enviar solicitud</span>
+            <Flecha />
+            <span class="ct-progreso filete filete--claro" aria-hidden="true"></span>
+          </button>
+        </form>
+
+        <div class="ct-listo" tabindex="-1" data-listo hidden>
+          <p class="rotulo">Solicitud enviada</p>
+          <h2>Recibimos tu solicitud.</h2>
+          <span class="filete ct-listo-filete" aria-hidden="true"></span>
+          <p class="ct-listo-texto">Te contactaremos a la brevedad. Si es urgente, escríbenos a <a href="mailto:ventas@siryc.cl">ventas@siryc.cl</a>.</p>
+          <div class="ct-listo-acciones">
+            <a href="/" class="boton corte">Volver al inicio <Flecha /></a>
+            <button type="button" class="ct-otra" data-otra>Enviar otra solicitud</button>
+          </div>
+        </div>
+      </div>
+
+      <aside class="ct-directo corte" aria-labelledby="directo-t">
+        <p class="rotulo"><span class="cifra ct-num ct-num--claro">02</span> Contacto directo</p>
+        <h2 id="directo-t">También puedes escribirnos.</h2>
+        <dl>
+          <div>
+            <dt class="rotulo">Correo</dt>
+            <dd><a href="mailto:ventas@siryc.cl">ventas@siryc.cl <Flecha /></a></dd>
+          </div>
+          <div>
+            <dt class="rotulo">Zona de operación</dt>
+            <dd>
+              <a href={MAPA} target="_blank" rel="noopener noreferrer">Región de Valparaíso, Chile <Flecha /><span class="sr-only"> (abre Google Maps)</span></a>
+            </dd>
+          </div>
+          <div>
+            <dt class="rotulo">Horario de atención</dt>
+            <dd>Lun a vie · 08:30–18:00</dd>
+          </div>
+        </dl>
+        <span class="filete filete--claro ct-directo-filete" aria-hidden="true"></span>
+        <p class="ct-firma">Tu clima, nuestra ingeniería.</p>
+      </aside>
+    </div>
+  </section>
+</Sitio>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>("[data-form]");
+  if (form) {
+    form.noValidate = true;
+    const listo = document.querySelector<HTMLElement>("[data-listo]")!;
+    const aviso = form.querySelector<HTMLElement>("[data-aviso]")!;
+    const enviar = form.querySelector<HTMLButtonElement>("[data-enviar]")!;
+    const enviarTexto = form.querySelector<HTMLElement>("[data-enviar-texto]")!;
+    const mensaje = form.querySelector<HTMLTextAreaElement>("#mensaje")!;
+    const cuenta = form.querySelector<HTMLElement>("[data-cuenta]")!;
+    const reducido = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const parametros = new URLSearchParams(location.search);
+
+    // Origen y opciones ya elegidas desde otra página (?servicio=…, ?segmento=…).
+    form.querySelector<HTMLInputElement>("[data-origen]")!.value = (location.pathname + location.search).slice(0, 200);
+    for (const [param, campo] of [["servicio", "tipo_servicio"], ["segmento", "segmento"]]) {
+      const valor = parametros.get(param);
+      const radio = valor && form.querySelector<HTMLInputElement>(`input[name="${campo}"][value="${CSS.escape(valor)}"]`);
+      if (radio) radio.checked = true;
+    }
+    if (parametros.has("error")) mostrarAviso();
+
+    const miles = (n: number) => n.toLocaleString("es-CL");
+    mensaje.addEventListener("input", () => (cuenta.textContent = `${miles(mensaje.value.length)} / 2.000`));
+
+    function mostrarAviso() {
+      aviso.textContent = "No pudimos enviar tu solicitud. Intenta de nuevo o escríbenos a ventas@siryc.cl.";
+      aviso.hidden = false;
+    }
+
+    // Mensajes propios (los del navegador no llevan la marca).
+    const MENSAJES: Record<string, string> = {
+      nombre: "Escribe tu nombre.",
+      email: "Revisa el correo: falta algo.",
+      tipo_servicio: "Elige el tipo de servicio.",
+      segmento: "Elige el sector.",
+    };
+    function marcar(nombre: string, texto: string) {
+      const error = form!.querySelector<HTMLElement>(`[data-error="${nombre}"]`);
+      if (error) error.textContent = texto;
+      const control = form!.querySelector<HTMLElement>(`#${nombre}`);
+      if (control) control.setAttribute("aria-invalid", String(!!texto));
+      else form!.querySelector(`input[name="${nombre}"]`)?.closest("fieldset")?.toggleAttribute("data-invalido", !!texto);
+    }
+    function validar() {
+      const errores: Record<string, string> = {};
+      for (const el of form!.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>("input:not([type=hidden]):not([name=sitio]), textarea")) {
+        if (el.type === "radio") {
+          if (!form!.querySelector(`input[name="${el.name}"]:checked`)) errores[el.name] = MENSAJES[el.name];
+        } else if (!el.checkValidity()) {
+          errores[el.name] = MENSAJES[el.name] ?? `Máximo ${el.maxLength} caracteres.`;
+        }
+      }
+      for (const nombre of ["nombre", "email", "empresa", "cargo", "telefono", "tipo_servicio", "segmento", "mensaje"]) marcar(nombre, errores[nombre] ?? "");
+      return errores;
+    }
+    // Una vez marcado un error, se corrige en vivo.
+    form.addEventListener("input", (e) => {
+      const el = e.target as HTMLInputElement;
+      if (el.type === "radio" ? el.closest("fieldset")?.hasAttribute("data-invalido") : el.getAttribute("aria-invalid") === "true") validar();
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      aviso.hidden = true;
+      const errores = validar();
+      const primero = Object.keys(errores)[0];
+      if (primero) {
+        (form.querySelector<HTMLElement>(`#${primero}`) ?? form.querySelector<HTMLElement>(`input[name="${primero}"]`))?.focus();
+        return;
+      }
+      enviar.disabled = true;
+      enviar.classList.add("enviando");
+      enviarTexto.textContent = "Enviando…";
+      try {
+        const r = await fetch(form.action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } });
+        const datos = await r.json().catch(() => ({}));
+        if (!r.ok || !datos.ok) {
+          for (const [nombre, texto] of Object.entries(datos.errores ?? {})) marcar(nombre, texto as string);
+          throw new Error(String(r.status));
+        }
+        terminar();
+      } catch {
+        mostrarAviso();
+        aviso.scrollIntoView({ block: "center", behavior: reducido ? "auto" : "smooth" });
+      } finally {
+        enviar.disabled = false;
+        enviar.classList.remove("enviando");
+        enviarTexto.textContent = "Enviar solicitud";
+      }
+    });
+
+    // Confirmación: el formulario se retira y la respuesta entra con el barrido diagonal del corte.
+    function terminar() {
+      const mostrar = () => {
+        form!.hidden = true;
+        listo.hidden = false;
+        listo.focus();
+        listo.scrollIntoView({ block: "center", behavior: reducido ? "auto" : "smooth" });
+      };
+      if (reducido) return mostrar();
+      form!.animate([{ opacity: 1, translate: "0 0" }, { opacity: 0, translate: "0 -1rem" }], { duration: 350, easing: "ease-in", fill: "forwards" }).finished.then(() => {
+        mostrar();
+        listo.animate([{ clipPath: "polygon(0 0, 0 0, -60% 100%, -60% 100%)" }, { clipPath: "polygon(0 0, 160% 0, 100% 100%, -60% 100%)" }], {
+          duration: 1000,
+          easing: "cubic-bezier(0.65, 0, 0.35, 1)",
+        });
+      });
+    }
+    listo.querySelector("[data-otra]")!.addEventListener("click", () => {
+      form.reset();
+      cuenta.textContent = "0 / 2.000";
+      form.getAnimations().forEach((a) => a.cancel());
+      listo.hidden = true;
+      form.hidden = false;
+      form.querySelector<HTMLInputElement>("#nombre")!.focus();
+    });
+  }
+</script>
+
+<style>
+  .contacto {
+    padding: 1rem 0 5rem;
+  }
+  .ct-grilla {
+    display: grid;
+    gap: 3rem;
+  }
+  .ct-form-marco {
+    scroll-margin-top: 6rem;
+  }
+  .ct-num {
+    margin-right: 0.5rem;
+    color: var(--color-azul);
+  }
+  .ct-nota {
+    margin-top: 0.6rem;
+    font-size: 0.875rem;
+    color: var(--color-atenuado);
+  }
+  .ct-aviso {
+    position: relative;
+    margin-top: 1.5rem;
+    padding: 1rem 1.25rem 1rem 1.6rem;
+    background: var(--color-papel-2);
+    font-weight: 600;
+  }
+  .ct-aviso::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background: var(--color-rojo);
+  }
+
+  .ct-campos {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  @media (min-width: 640px) {
+    .ct-campos {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.75rem 1.5rem;
+    }
+    .ancho {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .campo label,
+  .opciones legend {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    margin-bottom: 0.6rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+  .campo-op {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-atenuado);
+  }
+  /* Campo: papel 2 con una línea base; al enfocar, el filete partido se dibuja encima de la línea. */
+  .campo-control {
+    position: relative;
+    display: block;
+  }
+  .campo-control::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-rojo) 0 calc(50% - 3px), transparent calc(50% - 3px) calc(50% + 3px), var(--color-azul) calc(50% + 3px) 100%);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.7s var(--ease-barrido);
+    pointer-events: none;
+  }
+  .campo-control:focus-within::after {
+    transform: scaleX(1);
+  }
+  .campo input,
+  .campo textarea {
+    display: block;
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.8rem 1rem;
+    background: var(--color-papel-2);
+    border: 0;
+    border-radius: 0;
+    box-shadow: inset 0 -2px 0 var(--color-niebla);
+    font-size: 1rem;
+    color: var(--color-tinta);
+    outline: none;
+    transition: background-color 0.4s var(--ease-salida);
+  }
+  .campo textarea {
+    resize: vertical;
+    line-height: 1.55;
+  }
+  .campo input:focus,
+  .campo textarea:focus {
+    background: #dde2e6;
+  }
+  .campo textarea::placeholder {
+    color: var(--color-atenuado);
+  }
+  /* Autocompletado del navegador sin el amarillo/azul de fábrica. */
+  .campo input:-webkit-autofill {
+    -webkit-text-fill-color: var(--color-tinta);
+    box-shadow:
+      inset 0 -2px 0 var(--color-niebla),
+      inset 0 0 0 100rem var(--color-papel-2);
+  }
+  .campo [aria-invalid="true"] {
+    box-shadow: inset 0 -3px 0 var(--color-rojo);
+  }
+  .campo-cuenta {
+    margin-top: 0.4rem;
+    font-size: 0.75rem;
+    text-align: right;
+    color: var(--color-atenuado);
+  }
+  /* Error: texto en tinta (el rojo no es para texto) con una marca roja delante. */
+  .campo-error {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+  }
+  .campo-error:not(:empty) {
+    margin-top: 0.5rem;
+  }
+  .campo-error:not(:empty)::before {
+    content: "";
+    flex: none;
+    width: 0.9rem;
+    height: 3px;
+    background: var(--color-rojo);
+  }
+
+  .opciones {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+  }
+  .opciones-lista {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  /* Opción: pieza con el corte. Elegida: azul. El radio real queda debajo (accesible y con teclado). */
+  .opcion {
+    --corte: 0.55rem;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.6rem 1.1rem;
+    background: var(--color-papel-2);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      background-color 0.45s var(--ease-salida),
+      color 0.45s var(--ease-salida);
+  }
+  .opcion input {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .opcion:has(input:checked) {
+    background: var(--color-azul);
+    color: var(--color-papel);
+  }
+  .opcion:has(input:focus-visible) {
+    background: var(--color-tinta);
+    color: var(--color-papel);
+  }
+  .opciones[data-invalido] .opcion {
+    box-shadow: inset 0 -3px 0 var(--color-rojo);
+  }
+  @media (hover: hover) {
+    .opcion:hover:not(:has(input:checked)) {
+      background: #d6dce1;
+    }
+  }
+
+  .trampa {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  .ct-privacidad {
+    margin-top: 2rem;
+    font-size: 0.8125rem;
+    color: var(--color-grafito);
+  }
+  .ct-privacidad a,
+  .ct-listo-texto a {
+    font-weight: 600;
+    color: var(--color-azul);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+  .ct-enviar {
+    position: relative;
+    justify-content: center;
+    width: 100%;
+    min-height: 3.25rem;
+    margin-top: 1.25rem;
+    font-size: 0.9375rem;
+  }
+  .ct-enviar :global(.flecha) {
+    transition: translate 0.5s var(--ease-salida);
+  }
+  @media (hover: hover) {
+    .ct-enviar:hover :global(.flecha) {
+      translate: 0.35rem 0;
+    }
+  }
+  .ct-enviar:disabled {
+    cursor: progress;
+  }
+  /* Enviando: el filete recorre la base del botón. */
+  .ct-progreso {
+    position: absolute;
+    inset: auto 0 0;
+    height: 3px;
+    opacity: 0;
+  }
+  .enviando .ct-progreso {
+    opacity: 1;
+    animation: progreso 1.2s var(--ease-barrido) infinite;
+  }
+  @keyframes progreso {
+    from {
+      transform: scaleX(0);
+      transform-origin: left;
+    }
+    50% {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+    51% {
+      transform-origin: right;
+    }
+    to {
+      transform: scaleX(0);
+      transform-origin: right;
+    }
+  }
+
+  .ct-listo {
+    padding: 2.5rem 0 1rem;
+    outline: none;
+  }
+  .ct-listo h2 {
+    margin-top: 1rem;
+    font-size: clamp(2.2rem, 1.3rem + 3.2vw, 3.75rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .ct-listo-filete {
+    display: block;
+    width: 9rem;
+    height: 4px;
+    margin-top: 1.5rem;
+  }
+  .ct-listo-texto {
+    margin-top: 1.25rem;
+    max-width: 32rem;
+    line-height: 1.6;
+    color: var(--color-grafito);
+  }
+  .ct-listo-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 2rem;
+    margin-top: 2rem;
+  }
+  .ct-otra {
+    min-height: 2.75rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-azul);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  .ct-directo {
+    --corte: 1.75rem;
+    align-self: start;
+    padding: 2rem 1.75rem;
+    background: var(--color-tinta);
+    color: var(--color-papel);
+  }
+  .ct-directo .rotulo {
+    color: var(--color-niebla);
+  }
+  .ct-num--claro {
+    color: var(--color-papel);
+  }
+  .ct-directo h2 {
+    margin-top: 1rem;
+    font-size: clamp(1.6rem, 1.3rem + 1vw, 2.1rem);
+    font-weight: 700;
+    line-height: 1.08;
+  }
+  .ct-directo dl {
+    display: grid;
+    gap: 1.25rem;
+    margin: 2rem 0 0;
+  }
+  .ct-directo dd {
+    margin: 0.35rem 0 0;
+    font-size: 1.0625rem;
+    font-weight: 600;
+  }
+  .ct-directo dd a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 2.75rem;
+  }
+  .ct-directo dd a :global(.flecha) {
+    transition: translate 0.5s var(--ease-salida);
+  }
+  @media (hover: hover) {
+    .ct-directo dd a:hover :global(.flecha) {
+      translate: 0.35rem 0;
+    }
+  }
+  .ct-directo-filete {
+    display: block;
+    width: 4.5rem;
+    margin-top: 2rem;
+  }
+  .ct-firma {
+    margin-top: 1rem;
+    font-family: var(--font-display);
+    font-size: 0.9375rem;
+    color: var(--color-niebla);
+  }
+
+  @media (min-width: 1024px) {
+    .contacto {
+      padding: 2rem 0 8rem;
+    }
+    .ct-grilla {
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+      gap: 4rem;
+    }
+    .ct-directo {
+      position: sticky;
+      top: var(--tope);
+      padding: 2.5rem 2.25rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .campo-control::after,
+    .opcion {
+      transition-duration: 0.01ms;
+    }
+    .enviando .ct-progreso {
+      animation: none;
+      transform: none;
+    }
+  }
+</style>

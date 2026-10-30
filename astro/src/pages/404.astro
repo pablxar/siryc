@@ -1,0 +1,38 @@
+---
+// Página no encontrada: misma portada de texto, con salidas a lo principal.
+import Sitio from "../layouts/Sitio.astro";
+import PortadaTexto from "../components/PortadaTexto.astro";
+import Flecha from "../components/Flecha.astro";
+---
+
+<Sitio title="Página no encontrada | SIRYC" description="La página que buscas no existe o cambió de dirección." noindex>
+  <PortadaTexto rotulo="Error 404" lineas={["Esta página", "no existe."]} bajada="Puede que haya cambiado de dirección. Sigue por aquí:">
+    <ul class="salidas sigue i-2">
+      <li><a href="/" class="boton corte">Ir al inicio <Flecha /></a></li>
+      <li><a href="/servicios">Servicios</a></li>
+      <li><a href="/proyectos">Proyectos</a></li>
+      <li><a href="/contacto">Contacto</a></li>
+    </ul>
+  </PortadaTexto>
+</Sitio>
+
+<style>
+  .salidas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.75rem;
+    margin: 2rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .salidas a:not(.boton) {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    font-weight: 600;
+    color: var(--color-azul);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+</style>

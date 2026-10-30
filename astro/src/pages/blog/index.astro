@@ -1,0 +1,154 @@
+---
+// Blog: portada de texto → 01 lectura destacada (la más reciente, a todo el ancho) → 02 el resto en
+// GRILLA QUIETA de fichas sin foto (barren la tinta) → remate. Artículos de Supabase al compilar.
+// Sin fotos de banco: el blog es tipográfico hasta que el dueño suba fotos reales al Storage.
+import Sitio from "../../layouts/Sitio.astro";
+import PortadaTexto from "../../components/PortadaTexto.astro";
+import SeccionTitulo from "../../components/SeccionTitulo.astro";
+import Ficha from "../../components/Ficha.astro";
+import Llamado from "../../components/Llamado.astro";
+import { articulos, fechaLarga } from "../../lib/supabase";
+
+const lista = await articulos();
+const [destacado, ...resto] = lista;
+const n2 = (n: number) => String(n).padStart(2, "0");
+---
+
+<Sitio
+  title="Blog técnico de climatización | SIRYC"
+  description="Análisis técnico sobre climatización industrial, normativa chilena, eficiencia energética y mantención preventiva."
+>
+  <PortadaTexto
+    rotulo="Actualidad técnica"
+    lineas={["Conocimiento para", "una mejor operación."]}
+    bajada="Análisis y criterios técnicos para quienes administran edificios e instalaciones."
+  >
+    <p class="rotulo blog-areas sigue i-2">Refrigeración / Climatización / Electricidad</p>
+  </PortadaTexto>
+
+  {
+    destacado ? (
+      <section class="blog" aria-labelledby="dest-t">
+        <div class="contenedor">
+          <SeccionTitulo id="dest-t" numero="01" rotulo="Lectura destacada" lineas={["Lo más reciente."]} />
+          <div class="destacado" data-revela>
+            <Ficha
+              href={`/blog/${destacado.slug}`}
+              indice={destacado.categoria ?? "Artículo"}
+              rotulo={fechaLarga(destacado.created_at)}
+              titulo={destacado.titulo}
+              nivel="h3"
+              enlace="Leer artículo"
+            >
+              {destacado.extracto && <span class="ficha-texto">{destacado.extracto}</span>}
+            </Ficha>
+          </div>
+
+          {resto.length > 0 && (
+            <>
+              <div class="blog-resto">
+                <SeccionTitulo id="resto-t" numero="02" rotulo="Artículos" lineas={["Más lecturas técnicas."]} />
+              </div>
+              <ul class="blog-grilla" aria-labelledby="resto-t">
+                {resto.map((a, i) => (
+                  <li class={`i-${i % 3}`} data-revela>
+                    <Ficha
+                      href={`/blog/${a.slug}`}
+                      indice={`${n2(i + 2)} · ${a.categoria ?? "Artículo"}`}
+                      titulo={a.titulo}
+                      enlace="Leer artículo"
+                    >
+                      {a.extracto && <span class="ficha-texto blog-extracto">{a.extracto}</span>}
+                      <span class="rotulo blog-fecha">{fechaLarga(a.created_at)}</span>
+                    </Ficha>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </div>
+      </section>
+    ) : (
+      <section class="blog">
+        <p class="contenedor blog-vacio">Aún no hay artículos publicados.</p>
+      </section>
+    )
+  }
+
+  <Llamado lineas={["Entender tu instalación", "también es cuidarla."]} texto="Conversemos sobre lo que necesita tu operación." />
+</Sitio>
+
+<style>
+  .blog-areas {
+    margin-top: 1.5rem;
+  }
+  .blog {
+    padding: 2.5rem 0 5rem;
+  }
+  /* Destacada: la misma ficha, a todo el ancho, con el titular grande y el extracto a la derecha. */
+  .destacado :global(.ficha-titulo) {
+    max-width: 22ch;
+    font-size: clamp(1.75rem, 1.2rem + 2vw, 3rem);
+    line-height: 1.05;
+  }
+  .destacado :global(.ficha-texto) {
+    display: block;
+    max-width: 40rem;
+    font-size: 1.0625rem;
+  }
+  /* Escritorio: titular a la izquierda y extracto a la derecha, apoyado en la base (sin vacío al costado). */
+  @media (min-width: 1024px) {
+    .destacado :global(.ficha-cuerpo) {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      column-gap: 4rem;
+      min-height: 24rem;
+      padding: 2.5rem;
+    }
+    .destacado :global(.ficha-top),
+    .destacado :global(.ficha-pie) {
+      grid-column: 1 / -1;
+    }
+    .destacado :global(.ficha-contenido) {
+      align-self: end;
+    }
+  }
+  .blog-resto {
+    margin-top: 5rem;
+  }
+  .blog-grilla {
+    display: grid;
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .blog-extracto {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .blog-fecha {
+    display: block;
+    margin-top: 1rem;
+  }
+  .blog-vacio {
+    padding: 3rem 0;
+    color: var(--color-grafito);
+  }
+  @media (min-width: 900px) {
+    .blog-grilla {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .blog {
+      padding: 4rem 0 7rem;
+    }
+    .blog-resto {
+      margin-top: 7rem;
+    }
+  }
+</style>

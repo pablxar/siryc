@@ -1,0 +1,251 @@
+---
+// 01 · Archivo de obras: GRILLA QUIETA (catálogo para leer libre) con filtro por sector. El filtro es una fila
+// de texto con el filete bajo el activo, como la navegación; cada sector muestra cuántas obras tiene (así no
+// hace falta una sección aparte de «sectores»). Al filtrar, las fichas se reacomodan con una transición de
+// vista (si el navegador la tiene). Sin JS: todas las obras, sin filtro.
+// Cada ficha lleva a contacto con el sector ya elegido: «cotiza uno similar».
+import Ficha from "../Ficha.astro";
+import Cifras from "../Cifras.astro";
+import SeccionTitulo from "../SeccionTitulo.astro";
+import { SEGMENTO, type Proyecto } from "../../lib/supabase";
+import { fotoProyecto } from "../../lib/fotos";
+
+interface Props {
+  lista: Proyecto[];
+}
+const { lista } = Astro.props;
+
+const SECTORES = [
+  { id: "corporativo", texto: "Corporativo" },
+  { id: "gobierno", texto: "Gobierno y FFAA" },
+  { id: "educacion", texto: "Educación" },
+  { id: "centro_comercial", texto: "Centros comerciales" },
+] as const;
+const cuenta = (id: string) => lista.filter((p) => p.categoria === id).length;
+const sectores = SECTORES.filter((s) => cuenta(s.id) > 0);
+const n2 = (n: number) => String(n).padStart(2, "0");
+---
+
+<section id="archivo" class="archivo" aria-labelledby="archivo-t">
+  <div class="contenedor">
+    <SeccionTitulo
+      id="archivo-t"
+      numero="01"
+      rotulo="Archivo de obras"
+      lineas={["Cada instalación", "tiene una historia."]}
+      bajada="Superficie, equipos y año de cada obra. Filtra por sector."
+    />
+
+    <div class="filtro" data-filtro hidden>
+      <p class="rotulo filtro-t" id="filtro-t">Sector</p>
+      <ul class="filtro-lista" aria-labelledby="filtro-t">
+        <li>
+          <button type="button" data-sector="todos" aria-pressed="true">
+            Todos <span class="cifra filtro-n">{n2(lista.length)}</span><span class="filete" aria-hidden="true"></span>
+          </button>
+        </li>
+        {
+          sectores.map((s) => (
+            <li>
+              <button type="button" data-sector={s.id} aria-pressed="false">
+                {s.texto} <span class="cifra filtro-n">{n2(cuenta(s.id))}</span>
+                <span class="filete" aria-hidden="true" />
+              </button>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="sr-only" aria-live="polite" data-filtro-estado></p>
+    </div>
+
+    <ul class="archivo-grilla">
+      {
+        lista.map((p, i) => (
+          <li id={p.id} class={`obra i-${i % 2}`} data-revela data-sector={p.categoria ?? ""}>
+            <Ficha
+              href={`/contacto?segmento=${p.categoria ?? ""}`}
+              indice={n2(i + 1)}
+              rotulo={p.categoria ? SEGMENTO[p.categoria] : undefined}
+              titulo={p.titulo}
+              destacado={p.cliente_nombre_publico}
+              foto={fotoProyecto(p, i)}
+              enlace="Cotizar uno similar"
+              contenidoAbajo
+              sizes="(min-width: 1024px) 38rem, 92vw"
+            >
+              {p.descripcion && <span class="ficha-texto obra-desc">{p.descripcion}</span>}
+              <Cifras metros={p.metros_cuadrados} equipos={p.cantidad_equipos} anio={p.anio} />
+            </Ficha>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<script>
+  const filtro = document.querySelector<HTMLElement>("[data-filtro]");
+  const obras = [...document.querySelectorAll<HTMLElement>(".obra")];
+  if (filtro && obras.length) {
+    filtro.hidden = false;
+    const botones = [...filtro.querySelectorAll<HTMLButtonElement>("button[data-sector]")];
+    const estado = filtro.querySelector<HTMLElement>("[data-filtro-estado]")!;
+    const reducido = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Nombre de transición por obra (CSSOM, no atributo style: compatible con CSP).
+    obras.forEach((o, i) => (o.style.viewTransitionName = `obra-${i}`));
+
+    const aplicar = (sector: string) => {
+      let visibles = 0;
+      for (const o of obras) {
+        const ver = sector === "todos" || o.dataset.sector === sector;
+        o.hidden = !ver;
+        if (ver) visibles++;
+      }
+      for (const b of botones) b.setAttribute("aria-pressed", String(b.dataset.sector === sector));
+      estado.textContent = `${visibles} ${visibles === 1 ? "obra" : "obras"}`;
+    };
+    const elegir = (sector: string) => {
+      const url = new URL(location.href);
+      if (sector === "todos") url.searchParams.delete("sector");
+      else url.searchParams.set("sector", sector);
+      history.replaceState(null, "", url);
+      if (!reducido && document.startViewTransition) document.startViewTransition(() => aplicar(sector));
+      else aplicar(sector);
+    };
+
+    for (const b of botones) b.addEventListener("click", () => elegir(b.dataset.sector!));
+    const inicial = new URLSearchParams(location.search).get("sector");
+    if (inicial && botones.some((b) => b.dataset.sector === inicial)) aplicar(inicial);
+  }
+</script>
+
+<style>
+  .archivo {
+    padding: 4.5rem 0 4.5rem;
+    scroll-margin-top: 5rem;
+  }
+  .filtro {
+    display: grid;
+    gap: 0.75rem;
+    margin-bottom: 2.5rem;
+  }
+  .filtro[hidden] {
+    display: none;
+  }
+  .filtro-lista {
+    display: flex;
+    gap: 0.25rem 1.75rem;
+    margin: 0 -1rem;
+    padding: 0 1rem;
+    overflow-x: auto;
+    list-style: none;
+    scrollbar-width: none;
+  }
+  .filtro-lista::-webkit-scrollbar {
+    display: none;
+  }
+  .filtro button {
+    position: relative;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    min-height: 2.75rem;
+    padding: 0.6rem 0 0.75rem;
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: var(--color-atenuado);
+    white-space: nowrap;
+    transition: color 0.4s var(--ease-salida);
+  }
+  .filtro-n {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-atenuado);
+  }
+  .filtro button .filete {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.25rem;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.7s var(--ease-barrido);
+  }
+  .filtro button[aria-pressed="true"] {
+    color: var(--color-tinta);
+  }
+  .filtro button[aria-pressed="true"] .filtro-n {
+    color: var(--color-azul);
+  }
+  .filtro button[aria-pressed="true"] .filete {
+    transform: scaleX(1);
+  }
+  @media (hover: hover) {
+    .filtro button:hover {
+      color: var(--color-tinta);
+    }
+  }
+
+  .archivo-grilla {
+    display: grid;
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .obra {
+    scroll-margin-top: 6rem;
+  }
+  .obra[hidden] {
+    display: none;
+  }
+  .obra-desc {
+    display: block;
+    margin-bottom: 1.5rem;
+  }
+  /* Sobre papel: la ficha va en papel 2 (por defecto). Llegando desde la portada (#id), la obra se marca. */
+  .obra:target :global(.ficha) {
+    outline: 2px solid var(--color-azul);
+    outline-offset: 4px;
+  }
+  @media (min-width: 768px) {
+    .archivo-grilla {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .archivo {
+      padding: 7rem 0 6rem;
+      scroll-margin-top: 9.75rem;
+    }
+    .obra {
+      scroll-margin-top: 11rem;
+    }
+  }
+
+  /* Reacomodo al filtrar: las obras que se quedan se deslizan; las que entran suben desde el corte. */
+  :global(::view-transition-group(*)) {
+    animation-duration: 0.7s;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  :global(::view-transition-new(*):only-child) {
+    animation: obra-entra 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  :global(::view-transition-old(*):only-child) {
+    animation: obra-sale 0.35s ease-in both;
+  }
+  @keyframes obra-entra {
+    from {
+      opacity: 0;
+      translate: 0 1.5rem;
+    }
+  }
+  @keyframes obra-sale {
+    to {
+      opacity: 0;
+      scale: 0.96;
+    }
+  }
+</style>

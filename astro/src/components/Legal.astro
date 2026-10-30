@@ -1,0 +1,204 @@
+---
+// Molde de las páginas legales: portada de texto, índice FIJO a la izquierda en escritorio (el filete marca
+// la sección que se lee) y el texto completo a la derecha. Los textos legales no se acortan.
+// Cada sección del slot es un <section id> con su <h2>; el índice se arma con `secciones`.
+import PortadaTexto from "./PortadaTexto.astro";
+
+interface Props {
+  rotulo?: string;
+  lineas: string[];
+  bajada: string;
+  actualizado: string;
+  secciones: { id: string; titulo: string }[];
+}
+const { rotulo = "Legal", lineas, bajada, actualizado, secciones } = Astro.props;
+---
+
+<PortadaTexto rotulo={rotulo} lineas={lineas} bajada={bajada}>
+  <p class="rotulo legal-fecha sigue i-2">Última actualización · {actualizado}</p>
+</PortadaTexto>
+
+<div class="legal">
+  <div class="contenedor legal-grilla">
+    <nav class="legal-indice" aria-label="Secciones" data-legal-indice>
+      <ol>
+        {
+          secciones.map((s, i) => (
+            <li>
+              <a href={`#${s.id}`} data-seccion={s.id}>
+                <span class="cifra">{String(i + 1).padStart(2, "0")}</span>
+                {s.titulo}
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+    <div class="legal-texto">
+      <slot />
+    </div>
+  </div>
+</div>
+
+<script>
+  const indice = document.querySelector("[data-legal-indice]");
+  if (indice) {
+    const enlaces = new Map([...indice.querySelectorAll<HTMLAnchorElement>("[data-seccion]")].map((a) => [a.dataset.seccion!, a]));
+    const obs = new IntersectionObserver(
+      (entradas) => {
+        for (const e of entradas) {
+          if (!e.isIntersecting) continue;
+          for (const a of enlaces.values()) a.removeAttribute("aria-current");
+          enlaces.get(e.target.id)?.setAttribute("aria-current", "true");
+        }
+      },
+      { rootMargin: "-30% 0px -60% 0px" },
+    );
+    for (const id of enlaces.keys()) {
+      const s = document.getElementById(id);
+      if (s) obs.observe(s);
+    }
+  }
+</script>
+
+<style>
+  .legal-fecha {
+    margin-top: 1.5rem;
+  }
+  .legal {
+    padding: 1rem 0 6rem;
+  }
+  .legal-grilla {
+    display: grid;
+    gap: 2.5rem;
+  }
+  .legal-indice {
+    display: none;
+  }
+  .legal-texto {
+    max-width: 46rem;
+  }
+  .legal-texto :global(section) {
+    padding: 2.5rem 0;
+    scroll-margin-top: 6rem;
+  }
+  .legal-texto :global(section:first-child) {
+    padding-top: 0;
+  }
+  .legal-texto :global(h2) {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    font-size: clamp(1.4rem, 1.15rem + 0.9vw, 1.9rem);
+    font-weight: 700;
+    line-height: 1.15;
+  }
+  .legal-texto :global(h2 .cifra) {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-azul);
+  }
+  .legal-texto :global(p),
+  .legal-texto :global(li) {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-grafito);
+  }
+  .legal-texto :global(p) {
+    margin-top: 1rem;
+  }
+  .legal-texto :global(ul) {
+    display: grid;
+    gap: 0.5rem;
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .legal-texto :global(li) {
+    position: relative;
+    padding-left: 1.5rem;
+  }
+  .legal-texto :global(li)::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.8em;
+    width: 0.75rem;
+    height: 2px;
+    background: var(--color-azul);
+  }
+  .legal-texto :global(strong) {
+    color: var(--color-tinta);
+  }
+  .legal-texto :global(a) {
+    font-weight: 600;
+    color: var(--color-azul);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+  .legal-texto :global(code) {
+    font-size: 0.9em;
+    color: var(--color-tinta);
+  }
+
+  @media (min-width: 1024px) {
+    .legal {
+      padding: 2rem 0 8rem;
+    }
+    .legal-grilla {
+      grid-template-columns: 16rem minmax(0, 46rem);
+      gap: 5rem;
+    }
+    .legal-indice {
+      display: block;
+      position: sticky;
+      top: var(--tope);
+      align-self: start;
+    }
+    .legal-indice ol {
+      display: grid;
+      gap: 0.15rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .legal-indice a {
+      position: relative;
+      display: flex;
+      gap: 0.75rem;
+      padding: 0.45rem 0 0.45rem 1rem;
+      font-size: 0.875rem;
+      line-height: 1.35;
+      color: var(--color-atenuado);
+      transition: color 0.4s var(--ease-salida);
+    }
+    .legal-indice .cifra {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding-top: 0.1rem;
+    }
+    /* Activa: tinta y el filete partido vertical a la izquierda (rojo arriba, azul abajo). */
+    .legal-indice a::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.4rem;
+      bottom: 0.4rem;
+      width: 3px;
+      background: linear-gradient(var(--color-rojo) 0 calc(50% - 2px), transparent calc(50% - 2px) calc(50% + 2px), var(--color-azul) calc(50% + 2px) 100%);
+      transform: scaleY(0);
+      transition: transform 0.6s var(--ease-barrido);
+    }
+    .legal-indice a[aria-current] {
+      color: var(--color-tinta);
+    }
+    .legal-indice a[aria-current]::before {
+      transform: scaleY(1);
+    }
+    @media (hover: hover) {
+      .legal-indice a:hover {
+        color: var(--color-tinta);
+      }
+    }
+  }
+</style>
