@@ -1,0 +1,191 @@
+---
+// Propuesta B · «Índice editorial». Sin caja: filas separadas por filetes, con el
+// número y el título grandes. Con puntero fino, un bloque de tinta barre la fila
+// en diagonal (ángulo del corte), el texto se invierte y la foto sube en su ranura.
+// En táctil la miniatura ya está a la vista.
+import { Picture } from "astro:assets";
+import Flecha from "../Flecha.astro";
+import { miles, type ProyectoMuestra } from "../../data/proyectos-muestra";
+
+interface Props {
+  p: ProyectoMuestra;
+  i: number;
+  href?: string;
+}
+const { p, i, href = "#" } = Astro.props;
+---
+
+<li class:list={["fila-celda", `i-${i % 6}`]} data-revela>
+  <a class="fila" href={href}>
+    <span class="fila-num cifra">{String(i + 1).padStart(2, "0")}</span>
+
+    <span class="fila-texto">
+      <h3 class="fila-titulo">{p.titulo}</h3>
+      <span class="fila-meta">
+        {p.segmento} · {p.anio}{p.cliente && <> · <strong>{p.cliente}</strong></>}
+      </span>
+    </span>
+
+    <span class="fila-dato cifra">{miles(p.metros)}<span> m²</span></span>
+
+    <span class="fila-foto corte" aria-hidden="true">
+      <Picture src={p.foto} formats={["avif", "webp"]} widths={[240, 480]} sizes="12rem" alt="" />
+    </span>
+
+    <Flecha class="fila-flecha" />
+  </a>
+</li>
+
+<style>
+  .fila-celda {
+    list-style: none;
+    border-top: 1px solid var(--color-niebla);
+  }
+  .fila-celda:last-child {
+    border-bottom: 1px solid var(--color-niebla);
+  }
+  .fila {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "num  foto"
+      "texto texto"
+      "dato flecha";
+    align-items: center;
+    gap: 1rem 1.25rem;
+    padding: 1.5rem 0;
+    color: var(--color-tinta);
+    text-decoration: none;
+  }
+  .fila-num {
+    grid-area: num;
+    align-self: start;
+    font-size: 2.25rem;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--color-azul);
+  }
+  .fila-texto {
+    grid-area: texto;
+  }
+  .fila-titulo {
+    font-size: clamp(1.3rem, 1rem + 1.4vw, 2.25rem);
+    font-weight: 700;
+    line-height: 1.08;
+  }
+  .fila-meta {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--color-atenuado);
+  }
+  .fila-meta strong {
+    font-weight: 600;
+    color: var(--color-azul);
+  }
+  .fila-dato {
+    grid-area: dato;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  .fila-dato span {
+    font-size: 0.6em;
+  }
+  .fila-foto {
+    --corte: 0.9rem;
+    grid-area: foto;
+    justify-self: end;
+    display: block;
+    width: 7.5rem;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+  .fila-foto :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .fila :global(.fila-flecha) {
+    grid-area: flecha;
+    justify-self: end;
+  }
+
+  @media (min-width: 900px) {
+    .fila {
+      grid-template-columns: 5.5rem minmax(0, 1fr) 9rem 12rem 2rem;
+      grid-template-areas: "num texto dato foto flecha";
+      gap: 2rem;
+      padding: 1.75rem 1.25rem;
+    }
+    .fila-num {
+      font-size: 3rem;
+    }
+    .fila-dato {
+      justify-self: end;
+    }
+    .fila-foto {
+      width: 12rem;
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    /* Bloque de tinta que barre la fila en diagonal. */
+    .fila::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: var(--color-tinta);
+      clip-path: polygon(0 0, 0 0, -12% 100%, -12% 100%);
+      transition: clip-path var(--dur) var(--ease-barrido);
+    }
+    .fila-foto {
+      /* Mismos 6 puntos que el corte, aplastados contra la base: así interpola. */
+      clip-path: polygon(0 100%, calc(100% - var(--corte)) 100%, 100% 100%, 100% 100%, var(--corte) 100%, 0 100%);
+      transition: clip-path var(--dur) var(--ease-salida) 0.12s;
+    }
+    .fila-foto :global(img) {
+      scale: 1.12;
+      transition: scale 1.4s var(--ease-salida);
+    }
+    .fila,
+    .fila-num,
+    .fila-meta,
+    .fila-meta strong {
+      transition: color 0.5s var(--ease-salida);
+    }
+
+    .fila:hover::before,
+    .fila:focus-visible::before {
+      clip-path: polygon(0 0, 112% 0, 100% 100%, -12% 100%);
+    }
+    .fila:hover,
+    .fila:focus-visible {
+      color: var(--color-papel);
+    }
+    .fila:hover .fila-num,
+    .fila:focus-visible .fila-num,
+    .fila:hover .fila-meta,
+    .fila:focus-visible .fila-meta,
+    .fila:hover .fila-meta strong,
+    .fila:focus-visible .fila-meta strong {
+      color: var(--color-niebla);
+    }
+    /* Al abrirse, la foto toma el corte de la marca. */
+    .fila:hover .fila-foto,
+    .fila:focus-visible .fila-foto {
+      clip-path: polygon(0 0, calc(100% - var(--corte)) 0, 100% var(--corte-alto), 100% 100%, var(--corte) 100%, 0 calc(100% - var(--corte-alto)));
+    }
+    .fila:hover .fila-foto :global(img),
+    .fila:focus-visible .fila-foto :global(img) {
+      scale: 1;
+    }
+    .fila:hover :global(.fila-flecha),
+    .fila:focus-visible :global(.fila-flecha) {
+      translate: 0.4rem 0;
+    }
+  }
+</style>

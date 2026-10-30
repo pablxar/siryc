@@ -1,0 +1,185 @@
+---
+// Propuesta C · «Panel sobre foto». La foto es protagonista con el corte de la marca;
+// abajo, un panel de tinta con índice y título. Con puntero fino el panel sube
+// (solo transform) y muestra descripción y cifras; la foto se asienta lentamente.
+// En táctil el panel va abierto bajo la foto.
+import { Picture } from "astro:assets";
+import Flecha from "../Flecha.astro";
+import { miles, indice, type ProyectoMuestra } from "../../data/proyectos-muestra";
+
+interface Props {
+  p: ProyectoMuestra;
+  i: number;
+  total: number;
+  href?: string;
+}
+const { p, i, total, href = "#" } = Astro.props;
+---
+
+<li class:list={["panel-celda", `i-${i % 6}`]} data-revela>
+  <a class="panel corte" href={href}>
+    <span class="panel-foto" aria-hidden="true">
+      <Picture src={p.foto} formats={["avif", "webp"]} widths={[400, 700, 1000]} sizes="(min-width: 1024px) 24vw, (min-width: 640px) 46vw, 92vw" alt="" />
+    </span>
+
+    <span class="panel-hoja">
+      <span class="panel-cabeza">
+        <span class="cifra panel-num">{indice(i, total)}</span>
+        <h3 class="panel-titulo">{p.titulo}</h3>
+      </span>
+      <span class="panel-mas">
+        <span class="filete panel-filete"></span>
+        <span class="panel-desc">{p.descripcion}</span>
+        <span class="panel-datos cifra">
+          <span>{miles(p.metros)}<small> m²</small></span>
+          <span>{p.equipos}<small> equipos</small></span>
+          <span>{p.anio}</span>
+        </span>
+        <span class="panel-ver">Ver proyecto <Flecha /></span>
+      </span>
+    </span>
+  </a>
+</li>
+
+<style>
+  .panel-celda {
+    list-style: none;
+  }
+  .panel {
+    --corte: 1.5rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--color-tinta);
+    color: var(--color-papel);
+    text-decoration: none;
+    overflow: hidden;
+  }
+  .panel-foto {
+    display: block;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+  .panel-foto :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .panel-hoja {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 1.4rem 1.4rem 1.5rem;
+    background: var(--color-tinta);
+  }
+  .panel-num {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--color-niebla);
+  }
+  .panel-titulo {
+    margin-top: 0.6rem;
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1.15;
+  }
+  .panel-mas {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.1rem;
+  }
+  .panel-desc {
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: var(--color-niebla);
+  }
+  .panel-datos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.25rem;
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+  .panel-datos small {
+    font-size: 0.7em;
+    font-weight: 500;
+    color: var(--color-niebla);
+  }
+  .panel-ver {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+  }
+
+  /* Puntero fino: foto a toda la card y panel que sube desde la base. */
+  @media (hover: hover) and (pointer: fine) {
+    .panel {
+      aspect-ratio: 4 / 5.2;
+    }
+    .panel-foto {
+      position: absolute;
+      inset: 0;
+      aspect-ratio: auto;
+    }
+    .panel-foto :global(img) {
+      scale: 1.06;
+      transition: scale 1.6s var(--ease-salida);
+    }
+    .panel-hoja {
+      --corte: 1.1rem;
+      position: absolute;
+      inset: auto 0 0 0;
+      /* Corte sup. derecho del panel, eco del de la card. */
+      clip-path: polygon(0 0, calc(100% - var(--corte)) 0, 100% var(--corte-alto), 100% 100%, 0 100%);
+      /* Asoma solo la cabeza (índice + título, 2 líneas). */
+      translate: 0 calc(100% - 7.6rem);
+      transition: translate var(--dur-larga) var(--ease-salida);
+    }
+    .panel-cabeza {
+      display: block;
+      min-height: 5rem;
+    }
+    .panel-titulo {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .panel-mas {
+      opacity: 0;
+      transition: opacity 0.5s var(--ease-salida);
+    }
+    .panel-filete {
+      transform: scaleX(0);
+      transition: transform var(--dur-larga) var(--ease-barrido) 0.15s;
+    }
+
+    .panel:hover .panel-hoja,
+    .panel:focus-visible .panel-hoja {
+      translate: 0 0;
+    }
+    .panel:hover .panel-mas,
+    .panel:focus-visible .panel-mas {
+      opacity: 1;
+      transition-delay: 0.18s;
+    }
+    .panel:hover .panel-filete,
+    .panel:focus-visible .panel-filete {
+      transform: scaleX(1);
+    }
+    .panel:hover .panel-foto :global(img),
+    .panel:focus-visible .panel-foto :global(img) {
+      scale: 1;
+    }
+    .panel:hover :global(.flecha),
+    .panel:focus-visible :global(.flecha) {
+      translate: 0.35rem 0;
+    }
+  }
+</style>

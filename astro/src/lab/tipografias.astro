@@ -1,0 +1,235 @@
+---
+import Base from "../layouts/Base.astro";
+import LabCabecera from "./LabCabecera.astro";
+import Flecha from "../components/Flecha.astro";
+
+const opciones = [
+  {
+    letra: "A",
+    clase: "par-a",
+    nombre: "Exo 2 + Inter",
+    nota: "Lo que define el brandbook y usa la web hoy.",
+    si: "Respeta el manual: Exo 2 da el tono técnico en titulares e Inter se lee muy bien en párrafos largos y formularios.",
+    no: "Son dos familias: hay que cuidar que el texto no se vea como de otra marca.",
+  },
+  {
+    letra: "B",
+    clase: "par-b",
+    nombre: "Solo Exo 2",
+    nota: "Una familia para todo.",
+    si: "Máxima coherencia con el logotipo; la web entera suena a SIRYC.",
+    no: "En párrafos largos y tamaños chicos Exo 2 cansa más que Inter (letras más angulosas).",
+  },
+  {
+    letra: "C",
+    clase: "par-c",
+    nombre: "Solo Inter",
+    nota: "Exo 2 queda solo dentro del logo.",
+    si: "La lectura más limpia y neutra; carga una sola fuente.",
+    no: "Pierde personalidad: es la tipografía de miles de sitios.",
+  },
+];
+---
+
+<Base title="Laboratorio · Tipografías | SIRYC" noindex>
+  <LabCabecera actual="tipografias" />
+
+  <main class="lab">
+    <section class="lab-intro" data-revela>
+      <p class="rotulo">Paso 2 · Elige la tipografía</p>
+      <h1>El mismo bloque, tres voces.</h1>
+      <p class="lab-bajada">Ambas fuentes van alojadas en el propio sitio (nada de Google Fonts al cargar). Mi recomendación: A, porque ya es decisión del brandbook.</p>
+    </section>
+
+    <div class="opciones">
+      {
+        opciones.map((o, i) => (
+          <section class:list={["opcion", o.clase, `i-${i}`]} data-revela aria-labelledby={`op-${o.letra}`}>
+            <header class="opcion-cabeza">
+              <span class="cifra opcion-letra">{o.letra}</span>
+              <div>
+                <h2 id={`op-${o.letra}`} class="opcion-nombre">{o.nombre}</h2>
+                <p class="opcion-nota">{o.nota}</p>
+              </div>
+            </header>
+
+            <div class="muestra">
+              <p class="rotulo">01 / 03 · Climatización</p>
+              <p class="m-titulo">Ingeniería que sostiene la operación de tu edificio.</p>
+              <p class="m-texto">
+                Más de 20 años en refrigeración industrial, climatización y electricidad para centros comerciales, edificios corporativos e instituciones en Chile.
+              </p>
+              <p class="m-cifras">
+                <span>12.000<small> m²</small></span>
+                <span>48<small> equipos</small></span>
+                <span>2020</span>
+              </p>
+              <span class="boton corte">Solicitar cotización <Flecha /></span>
+            </div>
+
+            <dl class="opcion-pros">
+              <dt class="rotulo">Por qué sí</dt>
+              <dd>{o.si}</dd>
+              <dt class="rotulo">Por qué no</dt>
+              <dd>{o.no}</dd>
+            </dl>
+          </section>
+        ))
+      }
+    </div>
+  </main>
+</Base>
+
+<style>
+  .lab {
+    max-width: 82.5rem;
+    margin: 0 auto;
+    padding: 0 1rem 6rem;
+  }
+  @media (min-width: 640px) {
+    .lab {
+      padding-inline: 1.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .lab {
+      padding-inline: 2.5rem;
+    }
+  }
+  .lab-intro {
+    padding: 3.5rem 0 3rem;
+  }
+  .lab-intro h1 {
+    margin-top: 1rem;
+    max-width: 18ch;
+    font-size: clamp(2.4rem, 1.5rem + 4vw, 5rem);
+    font-weight: 700;
+    line-height: 0.98;
+  }
+  .lab-bajada {
+    margin-top: 1.5rem;
+    max-width: 56ch;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--color-grafito);
+  }
+
+  .opciones {
+    display: grid;
+    border-top: 1px solid var(--color-niebla);
+  }
+  @media (min-width: 1024px) {
+    .opciones {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .opcion + .opcion {
+      border-left: 1px solid var(--color-niebla);
+    }
+  }
+  .opcion {
+    padding: 2.5rem 0;
+    border-bottom: 1px solid var(--color-niebla);
+  }
+  @media (min-width: 1024px) {
+    .opcion {
+      padding: 2.5rem 2rem;
+      border-bottom: 0;
+    }
+    .opcion:first-child {
+      padding-left: 0;
+    }
+    .opcion:last-child {
+      padding-right: 0;
+    }
+  }
+  .opcion-cabeza {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .opcion-letra {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 0.85;
+    color: var(--color-azul);
+  }
+  .opcion-nombre {
+    font-family: var(--font-sans);
+    font-size: 1.125rem;
+    font-weight: 700;
+  }
+  .opcion-nota {
+    margin-top: 0.2rem;
+    font-size: 0.875rem;
+    color: var(--color-atenuado);
+  }
+
+  .muestra {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    margin-top: 2rem;
+    padding: 2rem 0;
+    border-block: 1px solid var(--color-niebla);
+  }
+  .m-titulo {
+    font-size: clamp(1.9rem, 1.4rem + 1.4vw, 2.6rem);
+    font-weight: 700;
+    line-height: 1.04;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  .m-texto {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-grafito);
+  }
+  .m-cifras {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 1.6rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .m-cifras small {
+    font-size: 0.6em;
+    font-weight: 500;
+  }
+  .muestra .boton {
+    align-self: flex-start;
+    margin-top: 0.5rem;
+  }
+
+  /* A · Exo 2 titulares + Inter texto */
+  .par-a .m-titulo,
+  .par-a .m-cifras {
+    font-family: var(--font-display);
+  }
+  .par-a .m-texto,
+  .par-a .rotulo,
+  .par-a .boton {
+    font-family: var(--font-sans);
+  }
+  /* B · Solo Exo 2 */
+  .par-b .muestra * {
+    font-family: var(--font-display);
+  }
+  /* C · Solo Inter */
+  .par-c .muestra * {
+    font-family: var(--font-sans);
+  }
+  .par-c .m-titulo {
+    letter-spacing: -0.03em;
+  }
+
+  .opcion-pros {
+    margin-top: 1.5rem;
+  }
+  .opcion-pros dd {
+    margin: 0.35rem 0 1rem;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--color-grafito);
+  }
+</style>

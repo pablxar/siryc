@@ -1,0 +1,172 @@
+@import "tailwindcss";
+@import "@fontsource-variable/exo-2";
+@import "@fontsource-variable/inter";
+
+/*
+  Sistema SIRYC (2026-10-30, pedido del dueño: rediseño senior, nada genérico).
+  - Forma: «corte SIRYC», esquinas opuestas cortadas en diagonal como los remates
+    de las letras S/R/Y/C del logotipo (sup. derecha + inf. izquierda, ~60°).
+  - Firma: «filete partido», rojo | respiro | azul, como el arco calor/frío del isotipo.
+  - Color: tinta #1B232C sobre papel técnico (nunca blanco puro). Acento único: azul
+    #14398E. El rojo solo vive dentro del filete partido (nunca texto: 4,27:1).
+  - Tipografía del brandbook: Exo 2 (titulares) + Inter (texto); ver /tipografias.
+*/
+
+@theme {
+  --color-papel: #eef0f2;
+  --color-papel-2: #e3e7ea;
+  --color-tinta: #1b232c;
+  --color-grafito: #484a4c;
+  --color-atenuado: #5e6670;
+  --color-azul: #14398e;
+  --color-rojo: #e30613;
+  --color-niebla: #b0bec5;
+
+  --font-display: "Exo 2 Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --ease-salida: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-barrido: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+:root {
+  /* Corte: ancho del corte horizontal; el alto sale del ángulo del logo (≈60°). */
+  --corte: 1.25rem;
+  --corte-alto: calc(var(--corte) * 1.7);
+  --dur: 0.9s;
+  --dur-larga: 1.2s;
+  --escalon: 0.08s;
+  color-scheme: light;
+}
+
+@layer base {
+  html {
+    background: var(--color-papel);
+    color: var(--color-tinta);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  ::selection {
+    background: var(--color-azul);
+    color: var(--color-papel);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-azul);
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  /* Corte SIRYC: sup. derecha + inf. izquierda. */
+  .corte {
+    clip-path: polygon(
+      0 0,
+      calc(100% - var(--corte)) 0,
+      100% var(--corte-alto),
+      100% 100%,
+      var(--corte) 100%,
+      0 calc(100% - var(--corte-alto))
+    );
+  }
+  .corte-sm {
+    --corte: 0.6rem;
+  }
+
+  /* Filete partido: rojo | respiro | azul. Se dibuja con scaleX desde la izquierda. */
+  .filete {
+    display: block;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      var(--color-rojo) 0 calc(50% - 3px),
+      transparent calc(50% - 3px) calc(50% + 3px),
+      var(--color-azul) calc(50% + 3px) 100%
+    );
+    transform-origin: left center;
+  }
+
+  /* Números de índice y datos: cifras tabulares. */
+  .cifra {
+    font-family: var(--font-display);
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+
+  .rotulo {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-atenuado);
+  }
+
+  /* Botón con el corte de la marca. */
+  .boton {
+    --corte: 0.55rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 2.75rem;
+    padding: 0.8rem 1.4rem;
+    background: var(--color-azul);
+    color: var(--color-papel);
+    font-weight: 600;
+    font-size: 0.875rem;
+    transition: background-color 0.5s var(--ease-salida);
+  }
+  @media (hover: hover) {
+    .boton:hover {
+      background: var(--color-tinta);
+    }
+  }
+}
+
+/* ─── Revelado al entrar en pantalla ───────────────────────────────────────
+   Solo con JS y movimiento permitido. Sin JS o con movimiento reducido todo
+   se ve en su estado final. Salvavidas: a los 5 s se muestra igual. */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-revela] {
+    opacity: 0;
+    translate: 0 1.5rem;
+    clip-path: inset(0 0 12% 0);
+    transition:
+      opacity var(--dur) var(--ease-salida),
+      translate var(--dur) var(--ease-salida),
+      clip-path var(--dur-larga) var(--ease-salida);
+    transition-delay: calc(var(--i, 0) * var(--escalon));
+    animation: salvavidas 0s 5s forwards;
+  }
+  .js [data-revela].dentro {
+    opacity: 1;
+    translate: 0 0;
+    clip-path: inset(0 0 0 0);
+    animation: none;
+  }
+}
+@keyframes salvavidas {
+  to {
+    opacity: 1;
+    translate: 0 0;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* Escalonado sin estilos en línea (CSP): clase i-N. */
+.i-1 { --i: 1; }
+.i-2 { --i: 2; }
+.i-3 { --i: 3; }
+.i-4 { --i: 4; }
+.i-5 { --i: 5; }

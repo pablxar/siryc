@@ -1,0 +1,87 @@
+---
+import logo from "../assets/logo-gris.svg";
+
+interface Props {
+  actual: "cards" | "tipografias";
+}
+const { actual } = Astro.props;
+const enlaces = [
+  { href: "/cards", texto: "Cards", id: "cards" },
+  { href: "/tipografias", texto: "Tipografías", id: "tipografias" },
+] as const;
+---
+
+<header class="lab-cabecera">
+  <a href="/cards" class="lab-logo"><img src={logo.src} alt="SIRYC" width="170" height="43" /></a>
+  <span class="rotulo">Laboratorio · solo en desarrollo</span>
+  <nav aria-label="Laboratorio">
+    {
+      enlaces.map((e) => (
+        <a href={e.href} class:list={["lab-enlace", { activo: actual === e.id }]} aria-current={actual === e.id ? "page" : undefined}>
+          {e.texto}
+          <span class="filete" />
+        </a>
+      ))
+    }
+  </nav>
+</header>
+
+<style>
+  .lab-cabecera {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.5rem;
+    max-width: 82.5rem;
+    margin: 0 auto;
+    padding: 1.25rem 1rem;
+  }
+  @media (min-width: 640px) {
+    .lab-cabecera {
+      padding: 1.5rem 1.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .lab-cabecera {
+      padding: 1.75rem 2.5rem;
+    }
+  }
+  .lab-logo img {
+    display: block;
+    height: 2.1rem;
+    width: auto;
+  }
+  nav {
+    display: flex;
+    gap: 1.5rem;
+    margin-left: auto;
+  }
+  .lab-enlace {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    min-height: 2.75rem;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-atenuado);
+    text-decoration: none;
+    transition: color 0.4s var(--ease-salida);
+  }
+  .lab-enlace .filete {
+    transform: scaleX(0);
+    transition: transform var(--dur) var(--ease-barrido);
+  }
+  .lab-enlace.activo {
+    color: var(--color-tinta);
+  }
+  .lab-enlace.activo .filete {
+    transform: scaleX(1);
+  }
+  @media (hover: hover) {
+    .lab-enlace:hover {
+      color: var(--color-tinta);
+    }
+  }
+</style>

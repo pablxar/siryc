@@ -1,0 +1,19 @@
+---
+// Provisorio mientras se construye el rediseño: la portada real llega en la fase 2.
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="SIRYC · rediseño en construcción" noindex>
+  <main class="mx-auto max-w-3xl px-4 py-24 sm:px-6">
+    <p class="rotulo">Rediseño en Astro</p>
+    <h1 class="mt-4 text-5xl font-bold leading-none">En construcción.</h1>
+    {
+      import.meta.env.DEV && (
+        <p class="mt-6 text-grafito">
+          Laboratorio: <a class="font-semibold text-azul underline" href="/cards">/cards</a> ·{" "}
+          <a class="font-semibold text-azul underline" href="/tipografias">/tipografias</a>
+        </p>
+      )
+    }
+  </main>
+</Base>

@@ -1,0 +1,335 @@
+---
+import Base from "../layouts/Base.astro";
+import LabCabecera from "./LabCabecera.astro";
+import Flecha from "../components/Flecha.astro";
+import FichaTecnica from "../components/cards/FichaTecnica.astro";
+import FilaIndice from "../components/cards/FilaIndice.astro";
+import PanelFoto from "../components/cards/PanelFoto.astro";
+import { proyectos } from "../data/proyectos-muestra";
+
+const total = proyectos.length;
+const propuestas = [
+  {
+    letra: "A",
+    nombre: "Ficha técnica",
+    recomendada: true,
+    si: [
+      "Habla como ingeniería: índice, segmento y tres cifras reales (m², equipos, año) al primer vistazo.",
+      "El barrido diagonal usa el mismo ángulo que los cortes del logotipo; nadie más lo tiene.",
+      "Sirve igual para proyectos, servicios y artículos: un solo molde para toda la web.",
+    ],
+    no: [
+      "Con puntero, la foto se ve recién al pasar encima: en escritorio la grilla en reposo es sobria, casi sin imagen.",
+    ],
+  },
+  {
+    letra: "B",
+    nombre: "Índice editorial",
+    recomendada: false,
+    si: [
+      "Cero cajas: tipografía grande, filetes y aire. Lo más lejano a una plantilla.",
+      "Escala bien con muchos proyectos y se lee rápido en celular.",
+    ],
+    no: [
+      "Las fotos quedan chicas; si los proyectos reales tienen buenas fotos, se desaprovechan.",
+      "Pide titulares cortos: los títulos largos de hoy ocupan dos líneas.",
+    ],
+  },
+  {
+    letra: "C",
+    nombre: "Panel sobre foto",
+    recomendada: false,
+    si: [
+      "La foto manda: ideal cuando haya fotografía propia de obras e instalaciones.",
+      "El panel que sube es solo movimiento del compositor (fluido aun en equipos lentos).",
+    ],
+    no: [
+      "Hoy depende de fotos provisorias o de stock: con malas fotos, la card pierde.",
+      "La descripción queda oculta en escritorio hasta pasar encima.",
+    ],
+  },
+];
+---
+
+<Base title="Laboratorio · Cards | SIRYC" noindex>
+  <LabCabecera actual="cards" />
+
+  <main class="lab">
+    <section class="lab-intro" data-revela>
+      <p class="rotulo">Paso 1 · Elige una card</p>
+      <h1>Tres formas de mostrar un proyecto.</h1>
+      <p class="lab-bajada">
+        Mismos datos reales en las tres. Pasa el puntero (o el teclado con Tab) por cada una; en el celular el estado ya viene abierto. Dime la letra.
+      </p>
+    </section>
+
+    <!-- Sistema base -->
+    <section class="sistema" aria-labelledby="sistema-t">
+      <h2 id="sistema-t" class="rotulo">Sistema base</h2>
+      <div class="sistema-fila">
+        <figure data-revela>
+          <span class="muestra-corte corte"></span>
+          <figcaption><strong>Corte SIRYC</strong> Esquinas opuestas en diagonal, como los remates de S/R/Y/C.</figcaption>
+        </figure>
+        <figure data-revela class="i-1">
+          <span class="muestra-filete"><span class="filete"></span></span>
+          <figcaption><strong>Filete partido</strong> Rojo y azul con respiro, como el arco calor/frío del isotipo.</figcaption>
+        </figure>
+        <figure data-revela class="i-2">
+          <span class="muestra-colores">
+            <span class="c-papel"></span><span class="c-papel2"></span><span class="c-niebla"></span><span class="c-azul"></span><span class="c-tinta"></span>
+          </span>
+          <figcaption><strong>Un acento</strong> Azul sobre papel técnico y tinta. Sin blanco puro.</figcaption>
+        </figure>
+        <figure data-revela class="i-3">
+          <a href="#a" class="boton corte">Solicitar cotización <Flecha /></a>
+          <figcaption><strong>Botón</strong> Mismo corte, sin sombras ni brillos.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    {
+      propuestas.map((pr) => (
+        <section class="propuesta" id={pr.letra.toLowerCase()} aria-labelledby={`t-${pr.letra}`}>
+          <header class="propuesta-cabeza" data-revela>
+            <span class="propuesta-letra cifra">{pr.letra}</span>
+            <div>
+              <h2 id={`t-${pr.letra}`}>
+                {pr.nombre}
+                {pr.recomendada && <span class="propuesta-reco">Mi recomendación</span>}
+              </h2>
+              <div class="propuesta-pros">
+                <div>
+                  <p class="rotulo">Por qué sí</p>
+                  <ul>{pr.si.map((t) => <li>{t}</li>)}</ul>
+                </div>
+                <div>
+                  <p class="rotulo">Por qué no</p>
+                  <ul>{pr.no.map((t) => <li>{t}</li>)}</ul>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          {pr.letra === "A" && (
+            <ul class="grilla-a">
+              {proyectos.map((p, i) => <FichaTecnica p={p} i={i} total={total} />)}
+            </ul>
+          )}
+          {pr.letra === "B" && (
+            <ul class="lista-b">
+              {proyectos.map((p, i) => <FilaIndice p={p} i={i} />)}
+            </ul>
+          )}
+          {pr.letra === "C" && (
+            <ul class="grilla-c">
+              {proyectos.map((p, i) => <PanelFoto p={p} i={i} total={total} />)}
+            </ul>
+          )}
+        </section>
+      ))
+    }
+
+    <p class="lab-nota">Fotos provisorias (las del sitio actual). Esta página no se publica: solo existe en <code>astro dev</code>.</p>
+  </main>
+</Base>
+
+<style>
+  .lab {
+    max-width: 82.5rem;
+    margin: 0 auto;
+    padding: 0 1rem 6rem;
+  }
+  @media (min-width: 640px) {
+    .lab {
+      padding-inline: 1.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .lab {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  .lab-intro {
+    padding: 3.5rem 0 3rem;
+  }
+  .lab-intro h1 {
+    margin-top: 1rem;
+    max-width: 18ch;
+    font-size: clamp(2.4rem, 1.5rem + 4vw, 5rem);
+    font-weight: 700;
+    line-height: 0.98;
+  }
+  .lab-bajada {
+    margin-top: 1.5rem;
+    max-width: 52ch;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--color-grafito);
+  }
+
+  .sistema {
+    padding: 2rem 0 4rem;
+    border-top: 1px solid var(--color-niebla);
+  }
+  .sistema-fila {
+    display: grid;
+    gap: 2rem;
+    margin-top: 1.5rem;
+  }
+  @media (min-width: 640px) {
+    .sistema-fila {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1024px) {
+    .sistema-fila {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  .sistema figure {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .sistema figcaption {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--color-grafito);
+  }
+  .sistema figcaption strong {
+    display: block;
+    margin-bottom: 0.2rem;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--color-tinta);
+  }
+  .muestra-corte {
+    --corte: 1.5rem;
+    display: block;
+    height: 6.5rem;
+    background: var(--color-azul);
+  }
+  .muestra-filete {
+    display: flex;
+    align-items: center;
+    height: 6.5rem;
+  }
+  .muestra-filete .filete {
+    width: 100%;
+    height: 4px;
+  }
+  .muestra-colores {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    height: 6.5rem;
+  }
+  .c-papel { background: var(--color-papel); box-shadow: inset 0 0 0 1px var(--color-niebla); }
+  .c-papel2 { background: var(--color-papel-2); }
+  .c-niebla { background: var(--color-niebla); }
+  .c-azul { background: var(--color-azul); }
+  .c-tinta { background: var(--color-tinta); }
+  .sistema .boton {
+    align-self: flex-start;
+    margin-block: 2rem 1.75rem;
+  }
+
+  .propuesta {
+    padding: 3rem 0 5rem;
+    border-top: 1px solid var(--color-niebla);
+  }
+  .propuesta-cabeza {
+    display: grid;
+    gap: 1rem 2rem;
+    margin-bottom: 2.5rem;
+  }
+  @media (min-width: 900px) {
+    .propuesta-cabeza {
+      grid-template-columns: 7rem 1fr;
+    }
+  }
+  .propuesta-letra {
+    font-size: clamp(4rem, 3rem + 4vw, 7rem);
+    font-weight: 700;
+    line-height: 0.85;
+    color: var(--color-azul);
+  }
+  .propuesta h2 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 1rem;
+    font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.75rem);
+    font-weight: 700;
+    line-height: 1.05;
+  }
+  .propuesta-reco {
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-azul);
+  }
+  .propuesta-pros {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    max-width: 62rem;
+  }
+  @media (min-width: 640px) {
+    .propuesta-pros {
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+    }
+  }
+  .propuesta-pros ul {
+    margin-top: 0.6rem;
+    padding: 0;
+    list-style: none;
+  }
+  .propuesta-pros li {
+    padding: 0.55rem 0;
+    border-top: 1px solid var(--color-niebla);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--color-grafito);
+  }
+
+  .grilla-a,
+  .grilla-c,
+  .lista-b {
+    margin: 0;
+    padding: 0;
+  }
+  .grilla-a {
+    display: grid;
+    gap: 1.25rem;
+  }
+  @media (min-width: 720px) {
+    .grilla-a {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+  }
+  .grilla-c {
+    display: grid;
+    gap: 1.25rem;
+  }
+  @media (min-width: 640px) {
+    .grilla-c {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1100px) {
+    .grilla-c {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .lab-nota {
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-niebla);
+    font-size: 0.8125rem;
+    color: var(--color-atenuado);
+  }
+</style>
