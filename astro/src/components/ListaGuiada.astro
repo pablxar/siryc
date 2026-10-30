@@ -1,0 +1,119 @@
+---
+// Patrón TÍTULO FIJO + LECTURA GUIADA: argumentos o explicación en orden. El titular queda fijo a la
+// izquierda (escritorio) y cada punto se enciende al llegar a la zona de lectura; su filete se dibuja.
+// Slot «cabeza» para el titular (SeccionTitulo) y slot por defecto para lo que va bajo la lista.
+interface Punto {
+  titulo: string;
+  texto: string;
+  etiqueta?: string;
+}
+interface Props {
+  puntos: Punto[];
+  fondo?: "papel" | "papel-2";
+}
+const { puntos, fondo = "papel-2" } = Astro.props;
+---
+
+<div class:list={["guia", `fondo-${fondo}`]}>
+  <div class="contenedor guia-grilla">
+    <div class="guia-cabeza">
+      <slot name="cabeza" />
+    </div>
+    <ol class="guia-lista">
+      {
+        puntos.map((p, i) => (
+          <li data-revela>
+            <span class="filete guia-filete" aria-hidden="true" />
+            <span class="cifra guia-num guiada">{String(i + 1).padStart(2, "0")}</span>
+            <div class="guiada">
+              {p.etiqueta && <p class="rotulo guia-etiqueta">{p.etiqueta}</p>}
+              <h3>{p.titulo}</h3>
+              <p class="guia-texto">{p.texto}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+  <slot />
+</div>
+
+<style>
+  .guia {
+    padding: 4.5rem 0 5rem;
+  }
+  .fondo-papel-2 {
+    background: var(--color-papel-2);
+  }
+  .guia-grilla {
+    display: grid;
+    gap: 1rem;
+  }
+  .guia-lista {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .guia-lista li {
+    position: relative;
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 1rem;
+    padding: 1.5rem 0 1.6rem;
+    border-top: 1px solid var(--color-niebla);
+  }
+  .guia-filete {
+    position: absolute;
+    top: -2px;
+    left: 0;
+    width: 7rem;
+  }
+  .guia-num {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-azul);
+  }
+  .guia-etiqueta {
+    margin-bottom: 0.4rem;
+    color: var(--color-azul);
+  }
+  .guia-lista h3 {
+    font-size: clamp(1.2rem, 1rem + 0.8vw, 1.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+  }
+  .guia-texto {
+    margin-top: 0.5rem;
+    max-width: 36rem;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-grafito);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .guia-filete {
+      transform: scaleX(0);
+      transition: transform 1.1s var(--ease-barrido) 0.25s;
+    }
+    :global(.js) .guia-lista li:global(.dentro) .guia-filete {
+      transform: scaleX(1);
+    }
+  }
+  @media (min-width: 1024px) {
+    .guia {
+      padding: 7rem 0;
+    }
+    .guia-grilla {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 4rem;
+      align-items: start;
+    }
+    .guia-cabeza {
+      position: sticky;
+      top: calc(var(--tope) + 1rem);
+    }
+    .guia-lista li {
+      grid-template-columns: 4.5rem 1fr;
+      padding: 1.9rem 0 2rem;
+    }
+  }
+</style>

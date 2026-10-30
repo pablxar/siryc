@@ -1,0 +1,96 @@
+---
+// Servicios: portada → índice fijo de capítulos → 3 capítulos (foto fija + lectura guiada) →
+// contratos de mantención (escena de pasos) → remate. Textos tomados del sitio actual.
+import Sitio from "../layouts/Sitio.astro";
+import PortadaFoto from "../components/PortadaFoto.astro";
+import IndiceCapitulos from "../components/IndiceCapitulos.astro";
+import Capitulo from "../components/servicios/Capitulo.astro";
+import Mantencion from "../components/servicios/Mantencion.astro";
+import Llamado from "../components/Llamado.astro";
+import planos from "../assets/nosotros-historia.jpg";
+import refrigeracion from "../assets/refrigeracion.png";
+import climatizacion from "../assets/climatizacion.png";
+import electricidad from "../assets/electricidad.png";
+
+const servicios = [
+  {
+    id: "refrigeracion",
+    area: "Refrigeración",
+    lineas: ["El frío que tu", "operación necesita."],
+    subtitulo: "Refrigeración industrial",
+    descripcion: "Instalamos, mantenemos y reparamos sistemas que sostienen la continuidad de cada proceso.",
+    alcance: [
+      "Mantención preventiva y correctiva",
+      "Cambio de compresores y componentes críticos",
+      "Detección y reparación de fugas",
+      "Plantas de agua fría (chillers)",
+      "Sistemas para data centers y salas eléctricas",
+      "Migración a refrigerantes ecológicos",
+    ],
+    foto: refrigeracion,
+    alt: "Técnico de SIRYC midiendo presiones en un sistema de refrigeración industrial",
+  },
+  {
+    id: "climatizacion",
+    area: "Climatización",
+    lineas: ["El ambiente adecuado,", "en cada espacio."],
+    subtitulo: "Climatización y aire acondicionado",
+    descripcion: "Soluciones eficientes para espacios residenciales, comerciales e industriales.",
+    alcance: [
+      "Instalación residencial y comercial",
+      "Sistemas VRF de volumen variable",
+      "Proyectos llave en mano",
+      "Climatización de centros comerciales y oficinas",
+      "Sistemas de ventilación industrial",
+      "Control de calidad de aire interior",
+    ],
+    foto: climatizacion,
+    alt: "Técnico de SIRYC instalando una unidad de aire acondicionado",
+  },
+  {
+    id: "electricidad",
+    area: "Electricidad",
+    lineas: ["Energía para", "seguir operando."],
+    subtitulo: "Electricidad industrial",
+    descripcion: "Instalaciones y mantención eléctrica para cada etapa de un proyecto.",
+    alcance: [
+      "Instalaciones eléctricas industriales y comerciales",
+      "Tableros y paneles de distribución",
+      "Sistemas de control centralizado",
+      "Mantención eléctrica preventiva",
+      "Cumplimiento normativa SEC",
+    ],
+    foto: electricidad,
+    alt: "Técnico de SIRYC trabajando en un tablero eléctrico",
+  },
+];
+const capitulos = [...servicios.map((s) => ({ id: s.id, texto: s.area })), { id: "mantencion", texto: "Mantención" }];
+---
+
+<Sitio
+  title="Servicios de ingeniería técnica | SIRYC"
+  description="Refrigeración industrial, climatización, electricidad y contratos de mantención para operaciones corporativas e institucionales."
+  portadaFoto
+  conIndice
+>
+  <PortadaFoto
+    pagina
+    panel="derecha"
+    encuadre="izquierda"
+    rotulo="Servicios"
+    lineas={["Tres", "especialidades.", "Una solución", "integral."]}
+    bajada="Ingeniería, instalación y mantención en refrigeración, climatización y electricidad."
+    cta={{ href: "/contacto", texto: "Solicitar cotización" }}
+    secundario={{ href: "#refrigeracion", texto: "Ver especialidades" }}
+    foto={planos}
+    alt="Técnico revisando planos en una sala de máquinas de climatización"
+  />
+
+  <IndiceCapitulos etiqueta="Áreas de servicio" capitulos={capitulos} />
+
+  {servicios.map((s, i) => <Capitulo {...s} numero={i + 1} total={capitulos.length} invertido={i % 2 === 1} fondo={i % 2 === 1 ? "papel-2" : "papel"} />)}
+
+  <Mantencion />
+
+  <Llamado lineas={["¿Qué necesita", "tu instalación?"]} texto="Cuéntanos tu requerimiento. Nuestro equipo te orientará." />
+</Sitio>

@@ -1,0 +1,131 @@
+---
+// Índice de capítulos de una página larga. Escritorio: barra fija bajo la cabecera que marca con el
+// filete partido el capítulo que se está leyendo (IntersectionObserver, una clase por cambio).
+// Celular: tira horizontal con el dedo, no fija (la pantalla es poca).
+interface Capitulo {
+  id: string;
+  texto: string;
+}
+interface Props {
+  capitulos: Capitulo[];
+  etiqueta: string;
+}
+const { capitulos, etiqueta } = Astro.props;
+---
+
+<nav class="indice" aria-label={etiqueta} data-indice>
+  <div class="contenedor">
+    <ol>
+      {
+        capitulos.map((c, i) => (
+          <li>
+            <a href={`#${c.id}`} data-capitulo={c.id}>
+              <span class="cifra indice-num">{String(i + 1).padStart(2, "0")}</span>
+              {c.texto}
+              <span class="filete" />
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</nav>
+
+<style>
+  .indice {
+    position: relative;
+    z-index: 40;
+    background: var(--color-papel);
+    border-bottom: 1px solid var(--color-niebla);
+  }
+  ol {
+    display: flex;
+    gap: 1.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  ol::-webkit-scrollbar {
+    display: none;
+  }
+  a {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 3.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    white-space: nowrap;
+    color: var(--color-atenuado);
+    text-decoration: none;
+    transition: color 0.4s var(--ease-salida);
+  }
+  .indice-num {
+    font-size: 0.75rem;
+    color: var(--color-azul);
+  }
+  a .filete {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    transform: scaleX(0);
+    transition: transform var(--dur) var(--ease-barrido);
+  }
+  a.activo {
+    color: var(--color-tinta);
+  }
+  a.activo .filete {
+    transform: scaleX(1);
+  }
+  @media (hover: hover) {
+    a:hover {
+      color: var(--color-tinta);
+    }
+  }
+  @media (min-width: 1024px) {
+    .indice {
+      position: sticky;
+      top: 5.25rem;
+      background: rgb(238 240 242 / 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    ol {
+      gap: 2.5rem;
+    }
+  }
+</style>
+
+<script>
+  const nav = document.querySelector<HTMLElement>("[data-indice]");
+  if (nav && "IntersectionObserver" in window) {
+    const enlaces = new Map(
+      [...nav.querySelectorAll<HTMLAnchorElement>("[data-capitulo]")].map((a) => [a.dataset.capitulo!, a]),
+    );
+    let actual: HTMLAnchorElement | undefined;
+    const io = new IntersectionObserver(
+      (entradas) => {
+        for (const e of entradas) {
+          if (!e.isIntersecting) continue;
+          const a = enlaces.get(e.target.id);
+          if (!a || a === actual) continue;
+          actual?.classList.remove("activo");
+          a.classList.add("activo");
+          a.setAttribute("aria-current", "true");
+          actual?.removeAttribute("aria-current");
+          actual = a;
+        }
+      },
+      // Franja de lectura: el capítulo que cruza el centro de la pantalla.
+      { rootMargin: "-45% 0px -50% 0px" },
+    );
+    enlaces.forEach((_, id) => {
+      const s = document.getElementById(id);
+      if (s) io.observe(s);
+    });
+  }
+</script>

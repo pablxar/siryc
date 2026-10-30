@@ -10,15 +10,17 @@ interface Props {
   entrada?: boolean;
   /** La página abre con una foto a pantalla completa. */
   portadaFoto?: boolean;
+  /** La página lleva índice de capítulos fijo (sube el tope de lo sticky). */
+  conIndice?: boolean;
 }
-const { title, description, entrada = false, portadaFoto = false } = Astro.props;
+const { title, description, entrada = false, portadaFoto = false, conIndice = false } = Astro.props;
 ---
 
 <Base title={title} description={description} entrada={entrada}>
   <a href="#contenido" class="saltar">Saltar al contenido</a>
   {entrada && <Entrada />}
   <Cabecera islaSiempre={portadaFoto} />
-  <main id="contenido">
+  <main id="contenido" class:list={{ "con-indice": conIndice }}>
     <slot />
   </main>
   <Pie />

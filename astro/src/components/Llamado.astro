@@ -1,18 +1,28 @@
 ---
-// Remate: banda azul (el acento) con el corte en la esquina y el filete partido.
-import Flecha from "../Flecha.astro";
+// Patrón REMATE: banda azul (el acento) con el corte en la esquina y el filete partido.
+import Flecha from "./Flecha.astro";
+
+interface Props {
+  lineas?: string[];
+  texto?: string;
+  cta?: { href: string; texto: string };
+}
+const {
+  lineas = ["Hablemos de tu", "próximo proyecto."],
+  texto = "Cuéntanos qué necesita tu instalación.",
+  cta = { href: "/contacto", texto: "Solicitar cotización" },
+} = Astro.props;
 ---
 
 <section class="llamado corte" aria-labelledby="llamado-t" data-lineas>
   <div class="contenedor llamado-fila">
     <div>
       <h2 id="llamado-t">
-        <span class="linea"><span>Hablemos de tu</span></span>
-        <span class="linea i-1"><span>próximo proyecto.</span></span>
+        {lineas.map((l, i) => <span class={`linea i-${i}`}><span>{l}</span></span>)}
       </h2>
-      <p class="sigue i-1">Cuéntanos qué necesita tu instalación.</p>
+      <p class="sigue i-1">{texto}</p>
     </div>
-    <a href="/contacto" class="boton corte llamado-boton sigue i-2">Solicitar cotización <Flecha /></a>
+    <a href={cta.href} class="boton corte llamado-boton sigue i-2">{cta.texto} <Flecha /></a>
   </div>
   <span class="filete filete--claro dibuja llamado-filete" aria-hidden="true"></span>
 </section>

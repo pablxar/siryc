@@ -1,11 +1,6 @@
 ---
-// 01 · Especialidades como PILA (scrollytelling, pedido del dueño 2026-10-30): cada especialidad
-// queda fija y la siguiente sube y la tapa; la de atrás se achica y se apaga un poco.
-// Estrategia: pocas cosas importantes, una a la vez, con foco total (qué hacemos).
-// Solo CSS: sticky + animación ligada al scroll (animation-timeline). Sin soporte o con
-// movimiento reducido: la pila igual se apila, sin achicarse.
-import { Picture } from "astro:assets";
-import Flecha from "../Flecha.astro";
+// 01 · Especialidades como PILA (ver Pila.astro): pocas cosas importantes, una a la vez (qué hacemos).
+import Pila from "../Pila.astro";
 import SeccionTitulo from "../SeccionTitulo.astro";
 import refrigeracion from "../../assets/refrigeracion.png";
 import climatizacion from "../../assets/climatizacion.png";
@@ -15,6 +10,7 @@ const areas = [
   {
     titulo: "Refrigeración",
     href: "/servicios#refrigeracion",
+    enlace: "Ver servicio",
     texto:
       "Mantención preventiva y correctiva a los sistemas de frío para que operen sin interrupciones, con respuesta técnica garantizada ante cualquier falla.",
     foto: refrigeracion,
@@ -22,18 +18,19 @@ const areas = [
   {
     titulo: "Climatización y aire acondicionado",
     href: "/servicios#climatizacion",
+    enlace: "Ver servicio",
     texto: "Desde una vivienda hasta un centro comercial completo, con el mismo estándar de instalación en cada escala de proyecto.",
     foto: climatizacion,
   },
   {
     titulo: "Electricidad industrial",
     href: "/servicios#electricidad",
+    enlace: "Ver servicio",
     texto:
       "Instalaciones, tableros, sistemas de control centralizado, detección de incendio y mantención eléctrica preventiva. Todo bajo normativas y registros técnicos documentados.",
     foto: electricidad,
   },
 ];
-const total = areas.length;
 ---
 
 <section class="especialidades" aria-labelledby="esp-t">
@@ -46,31 +43,7 @@ const total = areas.length;
       bajada="Refrigeración, climatización y electricidad instaladas y mantenidas por el mismo equipo de técnicos que llevan más de 20 años en terreno."
       enlace={{ href: "/servicios", texto: "Ver todos los servicios" }}
     />
-
-    <ol class="pila">
-      {
-        areas.map((a, i) => (
-          <li class={`pila-item i-${i}`}>
-            <a class={`pila-card corte k-${i}`} href={a.href}>
-              <span class="pila-foto corte" aria-hidden="true">
-                <Picture src={a.foto} formats={["avif", "webp"]} fallbackFormat="webp" widths={[600, 900, 1200]} sizes="(min-width: 1024px) 45vw, 92vw" alt="" />
-              </span>
-              <span class="pila-cuerpo">
-                <span class="cifra pila-num">{`0${i + 1} / 0${total}`}</span>
-                <h3 class="pila-titulo">{a.titulo}</h3>
-                <span class="pila-texto">{a.texto}</span>
-                <span class="pila-pie">
-                  <span class="filete pila-filete" />
-                  <span class="pila-ver">
-                    Ver servicio <Flecha />
-                  </span>
-                </span>
-              </span>
-            </a>
-          </li>
-        ))
-      }
-    </ol>
+    <Pila items={areas} />
   </div>
 </section>
 
@@ -78,144 +51,9 @@ const total = areas.length;
   .especialidades {
     padding: 4.5rem 0 3rem;
   }
-  .pila {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    view-timeline-name: --pila;
-  }
-  .pila-item {
-    position: sticky;
-    /* Debajo de la cabecera; cada una asoma un poco más abajo que la anterior. */
-    top: calc(5.25rem + var(--i, 0) * 0.85rem);
-    padding-bottom: 1.25rem;
-  }
-  .pila-card {
-    --corte: 1.5rem;
-    display: grid;
-    background: var(--color-papel-2);
-    color: var(--color-tinta);
-    text-decoration: none;
-    transform-origin: 50% 0;
-  }
-  .pila-foto {
-    --corte: 1.5rem;
-    display: block;
-    aspect-ratio: 16 / 10;
-    overflow: hidden;
-  }
-  .pila-foto :global(img) {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .pila-cuerpo {
-    display: flex;
-    flex-direction: column;
-    padding: 1.5rem 1.5rem 1.4rem;
-  }
-  .pila-num {
-    font-size: 0.8125rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    color: var(--color-azul);
-  }
-  .pila-titulo {
-    margin-top: 0.9rem;
-    font-size: clamp(1.6rem, 1.1rem + 2.2vw, 3rem);
-    font-weight: 700;
-    line-height: 1.02;
-    letter-spacing: -0.015em;
-  }
-  .pila-texto {
-    margin-top: 1rem;
-    max-width: 34rem;
-    font-size: 1rem;
-    line-height: 1.6;
-    color: var(--color-grafito);
-  }
-  .pila-pie {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-top: auto;
-    padding-top: 1.75rem;
-  }
-  .pila-filete {
-    flex: 1;
-    transform: scaleX(0.18);
-    transition: transform var(--dur-larga) var(--ease-barrido);
-  }
-  .pila-ver {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-  }
-  @media (hover: hover) and (pointer: fine) {
-    .pila-card:hover .pila-filete,
-    .pila-card:focus-visible .pila-filete {
-      transform: scaleX(1);
-    }
-    .pila-card:hover :global(.flecha),
-    .pila-card:focus-visible :global(.flecha) {
-      translate: 0.35rem 0;
-    }
-  }
-
-  @media (min-width: 900px) {
-    .pila-item {
-      top: calc(6.5rem + var(--i, 0) * 1.25rem);
-      padding-bottom: 2rem;
-    }
-    .pila-card {
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-      min-height: min(68svh, 34rem);
-    }
-    .pila-foto {
-      aspect-ratio: auto;
-    }
-    .pila-cuerpo {
-      padding: 2.5rem 2.75rem 2.25rem;
-    }
-  }
   @media (min-width: 1024px) {
     .especialidades {
       padding: 6.5rem 0 4rem;
-    }
-  }
-
-  /* La de atrás se achica y se apaga mientras la siguiente sube, sincronizado con la distancia real:
-     cada tarjeta mide --paso (alto mínimo + separación) y se fija 1,25 rem más abajo que la anterior.
-     Solo en escritorio (en celular el alto de cada tarjeta depende del texto: se apilan sin achicarse). */
-  @supports (animation-timeline: view()) {
-    @media (min-width: 900px) and (prefers-reduced-motion: no-preference) {
-      .pila {
-        --paso: calc(min(68svh, 34rem) + 2rem);
-      }
-      .pila-card.k-0,
-      .pila-card.k-1 {
-        animation: pila-atras linear both;
-      }
-      /* animation-timeline va en una regla aparte (selector distinto): el minificador fusionaría ambas
-         en el atajo «animation», que no admite la línea de tiempo, y Chrome descartaría la regla. */
-      .pila > .pila-item > .pila-card {
-        animation-timeline: --pila;
-      }
-      .pila > .pila-item > .pila-card.k-0 {
-        animation-range: contain 0px contain calc(var(--paso) - 7.75rem);
-      }
-      .pila > .pila-item > .pila-card.k-1 {
-        animation-range: contain calc(var(--paso) - 7.75rem) contain calc(2 * var(--paso) - 9rem);
-      }
-    }
-  }
-  @keyframes pila-atras {
-    to {
-      scale: 0.93;
-      filter: brightness(0.82);
     }
   }
 </style>

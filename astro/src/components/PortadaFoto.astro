@@ -1,0 +1,262 @@
+---
+// Portada a pantalla completa, molde de todas las páginas (pedido del dueño, 2026-10-30: «la imagen en toda
+// la pantalla, como la original»). La foto llena la pantalla; el texto va sobre un panel azul con borde diagonal
+// en el ángulo del corte SIRYC (no un degradado). Entrada: la foto se asienta, el panel barre en diagonal y el
+// titular sube por líneas. Celular: foto vertical (si hay) y panel como fondo del texto con el borde diagonal.
+// En páginas interiores mide 88svh para que asome el capítulo siguiente.
+import { getImage } from "astro:assets";
+import Flecha from "./Flecha.astro";
+
+interface Enlace {
+  href: string;
+  texto: string;
+}
+interface Props {
+  rotulo: string;
+  lineas: string[];
+  bajada: string;
+  cta: Enlace;
+  secundario?: Enlace;
+  foto: ImageMetadata;
+  fotoMovil?: ImageMetadata;
+  alt: string;
+  /** Qué parte de la foto se privilegia al recortar. */
+  encuadre?: "centro" | "derecha" | "izquierda";
+  pagina?: boolean;
+  /** Lado del panel azul en escritorio: donde NO está el sujeto de la foto. */
+  panel?: "izquierda" | "derecha";
+}
+const { rotulo, lineas, bajada, cta, secundario, foto, fotoMovil, alt, encuadre = "derecha", pagina = false, panel = "izquierda" } = Astro.props;
+
+const formatos = ["avif", "webp"] as const;
+const anchos = (img: ImageMetadata, lista: number[]) => [...new Set(lista.map((w) => Math.min(w, img.width)))];
+const fuente = async (img: ImageMetadata, lista: number[], format: "avif" | "webp") => {
+  const ws = anchos(img, lista);
+  const imgs = await Promise.all(ws.map((width) => getImage({ src: img, width, format })));
+  return imgs.map((g, k) => `${g.src} ${ws[k]}w`).join(", ");
+};
+const escritorio = await Promise.all(formatos.map((f) => fuente(foto, [1000, 1400, 1920], f)));
+const movil = fotoMovil ?? foto;
+const celular = await Promise.all(formatos.map((f) => fuente(movil, [480, 720, 960], f)));
+const respaldo = await getImage({ src: foto, width: Math.min(1400, foto.width), format: "webp" });
+---
+
+<section class:list={["portada", `encuadre-${encuadre}`, { "portada--pagina": pagina, "con-movil": !!fotoMovil, "panel-derecha": panel === "derecha" }]} data-lineas aria-labelledby="portada-t">
+  <picture class="portada-foto">
+    <source media="(max-width: 1023px)" type="image/avif" srcset={celular[0]} sizes="100vw" />
+    <source media="(max-width: 1023px)" type="image/webp" srcset={celular[1]} sizes="100vw" />
+    <source type="image/avif" srcset={escritorio[0]} sizes="100vw" />
+    <source type="image/webp" srcset={escritorio[1]} sizes="100vw" />
+    <img src={respaldo.src} alt={alt} width={foto.width} height={foto.height} fetchpriority="high" decoding="async" />
+  </picture>
+
+  <div class="contenedor portada-contenido">
+    <div class="portada-panel" aria-hidden="true"></div>
+    <div class="portada-texto">
+      <p class="rotulo sigue">{rotulo}</p>
+      <h1 id="portada-t" class="portada-titulo">
+        {lineas.map((l, i) => <span class={`linea i-${i}`}><span>{l}</span></span>)}
+      </h1>
+      <span class="filete filete--claro dibuja portada-filete" aria-hidden="true"></span>
+      <p class="portada-bajada sigue i-1">{bajada}</p>
+      <div class="portada-acciones sigue i-2">
+        <a href={cta.href} class="boton corte portada-boton">{cta.texto} <Flecha /></a>
+        {secundario && <a href={secundario.href} class="enlace-flecha">{secundario.texto} <Flecha /></a>}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .portada {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: flex-end;
+    min-height: max(100svh, 40rem);
+    overflow: hidden;
+    color: var(--color-papel);
+    background: var(--color-tinta);
+  }
+  .portada-foto {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+  }
+  .portada-foto img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 60% 22%;
+  }
+  .encuadre-centro .portada-foto img { object-position: center 30%; }
+  .encuadre-izquierda .portada-foto img { object-position: 25% 30%; }
+  .portada--pagina {
+    min-height: max(88svh, 38rem);
+  }
+  .portada--pagina .portada-titulo {
+    font-size: clamp(2.2rem, 1rem + 3.6vw, 4rem);
+  }
+
+  /* Panel azul. Celular: es el fondo del bloque de texto (lo cubre siempre, mida lo que mida),
+     arranca 5,5 rem sobre el rótulo y su borde superior va en diagonal («/»). */
+  .portada-panel {
+    --borde: 5.5rem;
+    position: absolute;
+    inset: calc(-1 * var(--borde) - 2rem) 0 0 0;
+    z-index: -1;
+    --final: polygon(0 var(--borde), 100% 0, 100% 100%, 0 100%);
+    background: rgb(20 57 142 / 0.9);
+    clip-path: var(--final);
+  }
+  .portada-contenido {
+    position: relative;
+    isolation: isolate;
+    padding-top: 2rem;
+    padding-bottom: 2.75rem;
+  }
+  .portada-texto {
+    max-width: 34rem;
+  }
+  .portada .rotulo {
+    color: var(--color-niebla);
+  }
+  .portada-titulo {
+    margin-top: 0.9rem;
+    font-size: clamp(2.3rem, 1.1rem + 4.2vw, 4.75rem);
+    font-weight: 700;
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+  }
+  .portada-filete {
+    width: min(12rem, 50%);
+    height: 4px;
+    margin-top: 1.5rem;
+  }
+  .portada-bajada {
+    margin-top: 1.25rem;
+    font-size: clamp(0.975rem, 0.9rem + 0.3vw, 1.125rem);
+    line-height: 1.6;
+    color: var(--color-niebla);
+  }
+  .portada-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.75rem;
+    margin-top: 1.75rem;
+  }
+  .portada-boton {
+    background: var(--color-papel);
+    color: var(--color-azul);
+  }
+  @media (hover: hover) {
+    .portada-boton:hover {
+      background: var(--color-tinta);
+      color: var(--color-papel);
+    }
+  }
+  .enlace-flecha {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 2.75rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-papel);
+    text-decoration: none;
+  }
+  @media (hover: hover) {
+    .enlace-flecha:hover :global(.flecha) {
+      translate: 0.35rem 0;
+    }
+  }
+
+  /* Escritorio: panel a la izquierda con el borde en el ángulo del corte («/»). */
+  @media (min-width: 1024px) {
+    .portada {
+      align-items: center;
+    }
+    .portada-foto img {
+      object-position: 70% center;
+    }
+    .encuadre-centro .portada-foto img { object-position: center; }
+    .encuadre-izquierda .portada-foto img { object-position: 25% center; }
+    .portada-contenido {
+      position: static;
+      isolation: auto;
+    }
+    .portada-panel {
+      inset: 0;
+      --sup: 70%;
+      --inf: 54%;
+      --final: polygon(0 0, var(--sup) 0, var(--inf) 100%, 0 100%);
+    }
+    .portada-contenido {
+      padding-top: 6rem;
+      padding-bottom: 4rem;
+    }
+    .portada-texto {
+      max-width: 30rem;
+    }
+  }
+  /* Panel a la derecha: mismo borde «/» (arriba más a la derecha que abajo) y texto alineado a la derecha del contenedor. */
+  @media (min-width: 1024px) {
+    .panel-derecha .portada-panel {
+      --final: polygon(calc(100% - var(--inf)) 0, 100% 0, 100% 100%, calc(100% - var(--sup)) 100%);
+    }
+    .panel-derecha .portada-texto {
+      margin-left: auto;
+    }
+  }
+  @media (min-width: 1280px) {
+    .portada-panel {
+      --sup: 60%;
+      --inf: 44%;
+    }
+    .portada-texto {
+      max-width: 36rem;
+    }
+  }
+
+  /* Entrada: la foto se asienta y el panel barre en diagonal (mismos 4 puntos: interpola). */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .portada-foto img {
+      scale: 1.08;
+      transition: scale 2.2s var(--ease-salida);
+      animation: salvavidas-foto 0s 5s forwards;
+    }
+    :global(.js) .portada.dentro .portada-foto img {
+      scale: 1;
+      animation: none;
+    }
+    :global(.js) .portada-panel {
+      clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
+      transition: clip-path 1.2s var(--ease-barrido);
+      animation: salvavidas-panel 0s 5s forwards;
+    }
+    :global(.js) .portada.dentro .portada-panel {
+      clip-path: var(--final);
+      animation: none;
+    }
+    @media (min-width: 1024px) {
+      :global(.js) .portada-panel {
+        clip-path: polygon(0 0, 0 0, -16% 100%, 0 100%);
+      }
+      :global(.js) .panel-derecha .portada-panel {
+        clip-path: polygon(116% 0, 100% 0, 100% 100%, 100% 100%);
+      }
+    }
+  }
+  @keyframes salvavidas-foto {
+    to {
+      scale: 1;
+    }
+  }
+  @keyframes salvavidas-panel {
+    to {
+      clip-path: var(--final);
+    }
+  }
+</style>

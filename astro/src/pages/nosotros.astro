@@ -1,0 +1,192 @@
+---
+// Nosotros: portada → índice fijo → 01 historia (desfile horizontal) → 02 forma de trabajar (pila)
+// → manifiesto → 03 equipo (grilla quieta) → 04 respaldo técnico (título fijo + lectura guiada) → remate.
+// Textos tomados del sitio actual (hitos, ISO y cifras por confirmar con el dueño: ver docs/design).
+import Sitio from "../layouts/Sitio.astro";
+import PortadaFoto from "../components/PortadaFoto.astro";
+import IndiceCapitulos from "../components/IndiceCapitulos.astro";
+import SeccionTitulo from "../components/SeccionTitulo.astro";
+import Desfile from "../components/Desfile.astro";
+import Pila from "../components/Pila.astro";
+import ListaGuiada from "../components/ListaGuiada.astro";
+import Manifiesto from "../components/nosotros/Manifiesto.astro";
+import Equipo from "../components/nosotros/Equipo.astro";
+import Llamado from "../components/Llamado.astro";
+import equipoFoto from "../assets/nosotros-equipo.jpg";
+
+const hitos = [
+  { anio: "2004", texto: "Fundación como INGEMI. Primeros contratos de mantención en la V Región." },
+  { anio: "2010", texto: "Expansión a proyectos corporativos y centros comerciales." },
+  { anio: "2015", texto: "Certificación ISO 9001 y consolidación del equipo técnico." },
+  { anio: "2018", texto: "Inicio del contrato de mantención con la Armada de Chile." },
+  { anio: "2022", texto: "Evolución a SIRYC. Integración formal de la línea de electricidad." },
+  { anio: "2026", texto: "Más de 250 proyectos ejecutados y contratos institucionales vigentes." },
+];
+const compromisos = [
+  { titulo: "Rigor técnico", texto: "Planificamos cada trabajo según las necesidades de la instalación." },
+  { titulo: "Trazabilidad", texto: "Documentamos las intervenciones y su seguimiento." },
+  { titulo: "Continuidad", texto: "Construimos relaciones de trabajo a largo plazo." },
+];
+const equipo = [
+  { nombre: "Gerencia general", funcion: "Dirección y coordinación." },
+  { nombre: "Jefatura técnica", funcion: "Planificación e ingeniería." },
+  { nombre: "Supervisión en terreno", funcion: "Ejecución y control." },
+  { nombre: "Servicio al cliente", funcion: "Seguimiento y atención." },
+];
+const estandares = [
+  {
+    titulo: "Gestión de calidad",
+    etiqueta: "ISO 9001:2015",
+    texto: "Procedimientos documentados, control de obra y registros entregables en cada intervención.",
+  },
+  {
+    titulo: "Instalaciones eléctricas",
+    etiqueta: "Normativa SEC",
+    texto: "Diseño, ejecución y declaración conforme a los requisitos aplicables a cada proyecto.",
+  },
+  {
+    titulo: "Refrigeración responsable",
+    etiqueta: "Protocolo de Montreal",
+    texto: "Manejo de refrigerantes y mantención según la normativa chilena vigente.",
+  },
+  {
+    titulo: "Seguridad y prevención",
+    etiqueta: "Mutual de seguridad",
+    texto: "Personal capacitado, trabajos en altura y procedimientos de prevención de riesgos.",
+  },
+];
+const capitulos = [
+  { id: "historia", texto: "Historia" },
+  { id: "forma-de-trabajar", texto: "Forma de trabajar" },
+  { id: "equipo", texto: "Equipo" },
+  { id: "respaldo", texto: "Respaldo técnico" },
+];
+---
+
+<Sitio
+  title="Nosotros — SIRYC"
+  description="Desde 2004 entregando ingeniería en refrigeración, climatización y electricidad. Conoce nuestra historia, equipo y estándar de trabajo."
+  portadaFoto
+  conIndice
+>
+  <PortadaFoto
+    pagina
+    panel="izquierda"
+    encuadre="derecha"
+    rotulo="Nosotros"
+    lineas={["La ingeniería", "tiene un equipo", "detrás."]}
+    bajada="Desde 2004, acompañamos la operación de nuestros clientes con experiencia en terreno y respaldo técnico."
+    cta={{ href: "/contacto", texto: "Solicitar cotización" }}
+    secundario={{ href: "#historia", texto: "Conoce nuestra historia" }}
+    foto={equipoFoto}
+    alt="Equipo técnico de SIRYC revisando una tablet junto a equipos de climatización en una azotea"
+  />
+
+  <IndiceCapitulos etiqueta="Capítulos de Nosotros" capitulos={capitulos} />
+
+  <Desfile n={hitos.length} ancho={22} id="historia" etiqueta="hist-t">
+    <SeccionTitulo
+      slot="cabeza"
+      id="hist-t"
+      numero="01"
+      rotulo="Nuestra historia"
+      lineas={["Una historia que", "sigue en marcha."]}
+      bajada="Crecimos en terreno. Hoy integramos refrigeración, climatización y electricidad bajo una misma forma de trabajar."
+    />
+    {
+      hitos.map((h, i) => (
+        <li class={`i-${Math.min(i, 5)}`}>
+          <article class="hito corte">
+            <span class="cifra hito-anio">{h.anio}</span>
+            <span class="filete hito-filete" aria-hidden="true" />
+            <p>{h.texto}</p>
+          </article>
+        </li>
+      ))
+    }
+  </Desfile>
+
+  <section id="forma-de-trabajar" class="seccion" aria-labelledby="forma-t">
+    <div class="contenedor">
+      <SeccionTitulo id="forma-t" numero="02" rotulo="Nuestra forma de trabajar" lineas={["El compromiso se", "demuestra en cada", "intervención."]} />
+      <Pila items={compromisos} />
+    </div>
+  </section>
+
+  <Manifiesto lineas={["El respaldo de un equipo", "que planifica, documenta", "y acompaña."]} firma="Tu clima, nuestra ingeniería." />
+
+  <section id="equipo" class="seccion" aria-labelledby="equipo-t">
+    <div class="contenedor">
+      <SeccionTitulo
+        id="equipo-t"
+        numero="03"
+        rotulo="Nuestro equipo"
+        lineas={["Personas que hacen", "que todo funcione."]}
+        bajada="Coordinación técnica y acompañamiento en cada etapa."
+      />
+      <Equipo areas={equipo} />
+    </div>
+  </section>
+
+  <section id="respaldo" class="respaldo" aria-labelledby="resp-t">
+    <ListaGuiada puntos={estandares}>
+      <SeccionTitulo
+        slot="cabeza"
+        id="resp-t"
+        numero="04"
+        rotulo="Respaldo técnico"
+        lineas={["Un estándar de", "trabajo claro."]}
+        bajada="Cada intervención se ejecuta bajo procedimientos, normativa vigente y personal acreditado, con respaldo documental entregable al cliente."
+      />
+    </ListaGuiada>
+  </section>
+
+  <Llamado lineas={["Conversemos sobre", "tu operación."]} />
+</Sitio>
+
+<style>
+  .seccion {
+    padding: 4.5rem 0 4rem;
+    scroll-margin-top: 5rem;
+  }
+  #historia,
+  .respaldo {
+    scroll-margin-top: 5rem;
+  }
+  @media (min-width: 1024px) {
+    .seccion {
+      padding: 7rem 0 6rem;
+      scroll-margin-top: 9.75rem;
+    }
+    #historia,
+    .respaldo {
+      scroll-margin-top: 9.75rem;
+    }
+  }
+
+  .hito {
+    --corte: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 15rem;
+    padding: 1.5rem;
+    background: var(--color-papel-2);
+  }
+  .hito-anio {
+    font-size: clamp(3rem, 2.2rem + 3vw, 5rem);
+    font-weight: 700;
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    color: var(--color-azul);
+  }
+  .hito-filete {
+    width: 4.5rem;
+    margin: 1.25rem 0 1rem;
+  }
+  .hito p {
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--color-grafito);
+  }
+</style>

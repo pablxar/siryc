@@ -1,0 +1,200 @@
+---
+// 04 · Contratos de mantención como ESCENA DE PASOS (scrollytelling): un proceso en orden.
+// Escritorio: la sección queda fija y los tres pasos se encienden uno tras otro con el scroll; una línea
+// vertical (filete) marca el avance y cada paso hecho queda encendido. Solo CSS (sticky + animation-timeline).
+// Celular, pantallas bajas, sin soporte o movimiento reducido: lista completa, sin fijar.
+import Flecha from "../Flecha.astro";
+
+const pasos = ["Planificación de visitas", "Informes de cada intervención", "Seguimiento de la instalación"];
+---
+
+<section id="mantencion" class="mantencion" aria-labelledby="mant-t">
+  <div class="escena">
+    <div class="escena-fija">
+      <div class="contenedor escena-grilla">
+        <header data-lineas>
+          <p class="rotulo sigue"><span class="cifra mant-num">04 / 04</span> Contratos de mantención</p>
+          <h2 id="mant-t">
+            <span class="linea"><span>La continuidad</span></span>
+            <span class="linea i-1"><span>se planifica.</span></span>
+          </h2>
+          <span class="filete filete--claro dibuja mant-filete" aria-hidden="true"></span>
+          <p class="mant-texto sigue i-1">
+            Contratos anuales o semestrales con visitas programadas, trazabilidad técnica y respuesta garantizada para empresas e instituciones.
+          </p>
+          <a href="/contacto?servicio=mantencion" class="boton corte mant-cta sigue i-2">Solicitar propuesta <Flecha /></a>
+        </header>
+
+        <div class="pasos-marco">
+          <span class="pasos-riel" aria-hidden="true"><span class="pasos-avance"></span></span>
+          <ol class="pasos">
+            {
+              pasos.map((p, i) => (
+                <li class={`paso p-${i}`}>
+                  <span class="cifra paso-num">Paso {String(i + 1).padStart(2, "0")}</span>
+                  <span class="paso-texto">{p}</span>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .mantencion {
+    background: var(--color-tinta);
+    color: var(--color-papel);
+    scroll-margin-top: 5rem;
+  }
+  .escena-fija {
+    padding: 4.5rem 0 5rem;
+  }
+  .escena-grilla {
+    display: grid;
+    gap: 3rem;
+  }
+  .mantencion .rotulo {
+    color: var(--color-niebla);
+  }
+  .mant-num {
+    margin-right: 0.5rem;
+    color: var(--color-papel);
+  }
+  h2 {
+    margin-top: 1rem;
+    font-size: clamp(2.1rem, 1.3rem + 3.2vw, 4rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .mant-filete {
+    width: 9rem;
+    height: 4px;
+    margin-top: 1.5rem;
+  }
+  .mant-texto {
+    margin-top: 1.25rem;
+    max-width: 30rem;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--color-niebla);
+  }
+  .mant-cta {
+    margin-top: 2rem;
+    background: var(--color-papel);
+    color: var(--color-azul);
+  }
+  @media (hover: hover) {
+    .mant-cta:hover {
+      background: var(--color-azul);
+      color: var(--color-papel);
+    }
+  }
+
+  .pasos-marco {
+    position: relative;
+    display: grid;
+    grid-template-columns: 4px 1fr;
+    gap: 1.5rem;
+  }
+  .pasos-riel {
+    position: relative;
+    display: block;
+    background: rgb(176 190 197 / 0.25);
+  }
+  .pasos-avance {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(var(--color-rojo) 0 50%, var(--color-papel) 50% 100%);
+    transform-origin: top;
+    transform: scaleY(1);
+  }
+  .pasos {
+    display: grid;
+    gap: 2.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .paso {
+    display: grid;
+    gap: 0.4rem;
+  }
+  .paso-num {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--color-niebla);
+  }
+  .paso-texto {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 1.1rem + 2vw, 2.75rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+  }
+
+  @media (min-width: 1024px) {
+    .escena-grilla {
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+      gap: 5rem;
+      align-items: center;
+    }
+  }
+
+  /* Escena fija: 3 pasos repartidos en el recorrido; cada uno se enciende en su tramo y queda encendido. */
+  @media (min-width: 1024px) and (min-height: 44rem) and (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .escena {
+        height: 260svh;
+        view-timeline-name: --pasos;
+      }
+      .escena-fija {
+        position: sticky;
+        top: 0;
+        display: flex;
+        align-items: center;
+        height: 100svh;
+        padding: calc(var(--tope) - 0.5rem) 0 2rem;
+      }
+      .paso {
+        animation: paso-enciende linear both;
+      }
+      .pasos-avance {
+        animation: pasos-avanza linear both;
+      }
+      /* Línea de tiempo en regla aparte (selector distinto): ver nota en Pila.astro. */
+      .pasos > .paso,
+      .pasos-riel > .pasos-avance {
+        animation-timeline: --pasos;
+      }
+      .pasos > .p-0 {
+        animation-range: contain 0% contain 22%;
+      }
+      .pasos > .p-1 {
+        animation-range: contain 33% contain 55%;
+      }
+      .pasos > .p-2 {
+        animation-range: contain 66% contain 88%;
+      }
+      .pasos-riel > .pasos-avance {
+        animation-range: contain 0% contain 88%;
+      }
+    }
+  }
+  /* Con color (niebla 8,3:1 sobre tinta), no opacidad: el paso pendiente sigue siendo legible (AA). */
+  @keyframes paso-enciende {
+    from {
+      color: var(--color-niebla);
+      translate: 1.5rem 0;
+    }
+  }
+  @keyframes pasos-avanza {
+    from {
+      transform: scaleY(0);
+    }
+  }
+</style>

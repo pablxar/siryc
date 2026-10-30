@@ -1,0 +1,228 @@
+---
+// Patrón PILA (scrollytelling): pocas cosas importantes, una a la vez, con foco total.
+// Cada tarjeta queda fija bajo la cabecera y la siguiente sube y la tapa; la de atrás se achica a 0,93
+// y se apaga, sincronizada con la distancia real de scroll (escritorio). Con foto o solo tipográfica.
+// Solo CSS (sticky + animation-timeline). Celular, sin soporte o movimiento reducido: se apila sin achicarse.
+import { Picture } from "astro:assets";
+import Flecha from "./Flecha.astro";
+
+interface Item {
+  titulo: string;
+  texto: string;
+  href?: string;
+  enlace?: string;
+  foto?: ImageMetadata;
+}
+interface Props {
+  items: Item[];
+}
+const { items } = Astro.props;
+const total = items.length;
+const conFoto = items.some((it) => it.foto);
+const n2 = (n: number) => String(n).padStart(2, "0");
+---
+
+<ol class:list={["pila", conFoto ? "pila--foto" : "pila--texto"]}>
+  {
+    items.map((it, i) => {
+      const Etiqueta = it.href ? "a" : "div";
+      return (
+        <li class={`pila-item i-${i}`}>
+          <Etiqueta class={`pila-card corte k-${i}`} href={it.href}>
+            {it.foto && (
+              <span class="pila-foto corte" aria-hidden="true">
+                <Picture src={it.foto} formats={["avif", "webp"]} fallbackFormat="webp" widths={[600, 900, 1200]} sizes="(min-width: 1024px) 45vw, 92vw" alt="" />
+              </span>
+            )}
+            <span class="pila-cuerpo">
+              <span class="cifra pila-num">{conFoto ? `${n2(i + 1)} / ${n2(total)}` : n2(i + 1)}</span>
+              <h3 class="pila-titulo">{it.titulo}</h3>
+              <span class="pila-texto">{it.texto}</span>
+              <span class="pila-pie">
+                <span class="filete pila-filete" />
+                {it.href && (
+                  <span class="pila-ver">
+                    {it.enlace ?? "Ver más"} <Flecha />
+                  </span>
+                )}
+              </span>
+            </span>
+          </Etiqueta>
+        </li>
+      );
+    })
+  }
+</ol>
+
+<style>
+  .pila {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    view-timeline-name: --pila;
+  }
+  .pila-item {
+    position: sticky;
+    /* Debajo de la cabecera; cada una asoma un poco más abajo que la anterior. */
+    top: calc(5.25rem + var(--i, 0) * 0.85rem);
+    padding-bottom: 1.25rem;
+  }
+  .pila-card {
+    --corte: 1.5rem;
+    display: grid;
+    background: var(--color-papel-2);
+    color: var(--color-tinta);
+    text-decoration: none;
+    transform-origin: 50% 0;
+  }
+  .pila-foto {
+    --corte: 1.5rem;
+    display: block;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+  .pila-foto :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .pila-cuerpo {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1.5rem 1.4rem;
+  }
+  .pila-num {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--color-azul);
+  }
+  .pila-titulo {
+    margin-top: 0.9rem;
+    font-size: clamp(1.6rem, 1.1rem + 2.2vw, 3rem);
+    font-weight: 700;
+    line-height: 1.02;
+    letter-spacing: -0.015em;
+  }
+  .pila-texto {
+    margin-top: 1rem;
+    max-width: 34rem;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-grafito);
+  }
+  .pila-pie {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: auto;
+    padding-top: 1.75rem;
+  }
+  .pila-filete {
+    flex: 1;
+    transform: scaleX(0.18);
+    transition: transform var(--dur-larga) var(--ease-barrido);
+  }
+  .pila-ver {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    a.pila-card:hover .pila-filete,
+    a.pila-card:focus-visible .pila-filete {
+      transform: scaleX(1);
+    }
+    a.pila-card:hover :global(.flecha),
+    a.pila-card:focus-visible :global(.flecha) {
+      translate: 0.35rem 0;
+    }
+  }
+
+  /* Tipográfica (sin foto): el número manda, en grande. */
+  .pila--texto .pila-cuerpo {
+    min-height: 15rem;
+  }
+  .pila--texto .pila-num {
+    font-size: clamp(2.5rem, 1.6rem + 3vw, 4.5rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  @media (min-width: 900px) {
+    .pila {
+      --alto: min(68svh, 34rem);
+    }
+    .pila--texto {
+      --alto: 17rem;
+    }
+    .pila-item {
+      top: calc(var(--tope) + var(--i, 0) * 1.25rem);
+      padding-bottom: 2rem;
+    }
+    .pila-card {
+      min-height: var(--alto);
+    }
+    .pila--foto .pila-card {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    }
+    .pila-foto {
+      aspect-ratio: auto;
+    }
+    .pila-cuerpo {
+      padding: 2.5rem 2.75rem 2.25rem;
+    }
+    .pila--texto .pila-cuerpo {
+      display: grid;
+      grid-template-columns: 12rem 1fr;
+      grid-template-rows: auto 1fr auto;
+      column-gap: 3rem;
+      min-height: 0;
+    }
+    .pila--texto .pila-num {
+      grid-row: 1 / span 3;
+    }
+    .pila--texto .pila-titulo {
+      margin-top: 0;
+    }
+  }
+
+  /* La de atrás se achica y se apaga mientras la siguiente sube, sincronizado con la distancia real:
+     cada tarjeta mide --paso (alto mínimo + separación) y se fija 1,25 rem más abajo que la anterior.
+     Tramo de la tarjeta i: desde que la i se fija hasta que la i+1 se fija:
+     fin(i) = (i+1)·paso − (tope + (i+1)·1,25 rem). Solo escritorio (en celular el alto depende del texto). */
+  @supports (animation-timeline: view()) {
+    @media (min-width: 900px) and (prefers-reduced-motion: no-preference) {
+      .pila {
+        --paso: calc(var(--alto) + 2rem);
+      }
+      .pila-item:not(:last-child) > .pila-card {
+        animation: pila-atras linear both;
+      }
+      /* animation-timeline va en una regla aparte (selector distinto): el minificador fusionaría ambas
+         en el atajo «animation», que no admite la línea de tiempo, y Chrome descartaría la regla. */
+      .pila > .pila-item > .pila-card {
+        animation-timeline: --pila;
+      }
+      .pila > .pila-item > .pila-card.k-0 {
+        animation-range: contain 0px contain calc(var(--paso) - var(--tope) - 1.25rem);
+      }
+      .pila > .pila-item > .pila-card.k-1 {
+        animation-range: contain calc(var(--paso) - var(--tope) - 1.25rem) contain calc(2 * var(--paso) - var(--tope) - 2.5rem);
+      }
+      .pila > .pila-item > .pila-card.k-2 {
+        animation-range: contain calc(2 * var(--paso) - var(--tope) - 2.5rem) contain calc(3 * var(--paso) - var(--tope) - 3.75rem);
+      }
+    }
+  }
+  @keyframes pila-atras {
+    to {
+      scale: 0.93;
+      filter: brightness(0.82);
+    }
+  }
+</style>

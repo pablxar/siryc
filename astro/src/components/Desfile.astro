@@ -1,0 +1,148 @@
+---
+// Patrón DESFILE HORIZONTAL (scrollytelling): evidencia o secuencias (proyectos, historia).
+// En escritorio la sección queda fija y, al bajar, las piezas pasan de derecha a izquierda; el filete
+// partido marca el avance. Solo CSS (sticky + animation-timeline). Celular, pantallas bajas, sin soporte
+// o movimiento reducido: carrusel con el dedo y la vecina asomada.
+// Uso: <Desfile n={total}><Fragment slot="cabeza">…</Fragment><li>…</li>…</Desfile>
+interface Props {
+  n: number;
+  /** Ancho de cada pieza en escritorio (rem). */
+  ancho?: 22 | 26 | 30;
+  claro?: boolean;
+  id?: string;
+  etiqueta?: string;
+}
+const { n, ancho = 30, claro = false, id, etiqueta } = Astro.props;
+---
+
+<section class:list={["desfile-seccion", `n-${Math.min(n, 8)}`, `ancho-${ancho}`, { claro }]} id={id} aria-labelledby={etiqueta}>
+  <div class="desfile">
+    <div class="desfile-fijo">
+      <div class="contenedor">
+        <slot name="cabeza" />
+      </div>
+      <ul class="desfile-carril">
+        <slot />
+      </ul>
+      <div class="contenedor">
+        <span class="filete desfile-avance" aria-hidden="true"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .desfile-seccion {
+    --ficha: 82vw;
+    --hueco: 1rem;
+    --margen: 1rem;
+    padding: 4.5rem 0 5rem;
+  }
+  .claro {
+    background: var(--color-tinta);
+    color: var(--color-papel);
+  }
+  .claro .filete {
+    background: linear-gradient(90deg, var(--color-rojo) 0 calc(50% - 3px), transparent calc(50% - 3px) calc(50% + 3px), var(--color-papel) calc(50% + 3px) 100%);
+  }
+  .n-1 { --n: 1; }
+  .n-2 { --n: 2; }
+  .n-3 { --n: 3; }
+  .n-4 { --n: 4; }
+  .n-5 { --n: 5; }
+  .n-6 { --n: 6; }
+  .n-7 { --n: 7; }
+  .n-8 { --n: 8; }
+  .ancho-22 { --ficha-escritorio: 22rem; }
+  .ancho-26 { --ficha-escritorio: 26rem; }
+  .ancho-30 { --ficha-escritorio: 30rem; }
+
+  /* Base (celular y respaldo): carrusel con el dedo, la vecina asomada. */
+  .desfile-carril {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: var(--ficha);
+    gap: var(--hueco);
+    margin: 0;
+    padding: 0 var(--margen) 0.25rem;
+    scroll-padding-inline: var(--margen);
+    list-style: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+  .desfile-carril::-webkit-scrollbar {
+    display: none;
+  }
+  .desfile-carril > :global(li) {
+    scroll-snap-align: start;
+  }
+  .desfile-avance {
+    display: none;
+  }
+  @media (min-width: 640px) {
+    .desfile-seccion {
+      --ficha: 24rem;
+      --margen: 1.5rem;
+    }
+  }
+
+  /* Escritorio con altura suficiente y soporte: la sección se fija y el carril avanza con el scroll. */
+  @media (min-width: 1024px) and (min-height: 44rem) and (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .desfile-seccion {
+        --ficha: var(--ficha-escritorio, 30rem);
+        --hueco: 1.5rem;
+        --margen: max(2.5rem, calc((100vw - 82.5rem) / 2 + 2.5rem));
+        --ancho: calc(var(--n) * var(--ficha) + (var(--n) - 1) * var(--hueco) + 2 * var(--margen));
+        --recorrido: max(0px, calc(var(--ancho) - 100vw));
+        padding: 0;
+      }
+      .desfile {
+        height: calc(100svh + var(--recorrido));
+        view-timeline-name: --desfile;
+      }
+      .desfile-fijo {
+        position: sticky;
+        top: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100svh;
+        padding-top: calc(var(--tope) - 1.5rem);
+        overflow: hidden;
+      }
+      .desfile-carril {
+        width: var(--ancho);
+        overflow: visible;
+        scroll-snap-type: none;
+        animation: desfile linear both;
+      }
+      /* animation-timeline va en una regla aparte (selector distinto): el minificador fusionaría ambas
+         en el atajo «animation», que no admite la línea de tiempo, y Chrome descartaría la regla. */
+      .desfile-fijo > .desfile-carril,
+      .desfile-fijo .desfile-avance {
+        animation-timeline: --desfile;
+        animation-range: contain 0% contain 100%;
+      }
+      .desfile-avance {
+        display: block;
+        height: 3px;
+        margin-top: 2rem;
+        transform: scaleX(0);
+        animation: avance linear both;
+      }
+    }
+  }
+  @keyframes desfile {
+    to {
+      translate: calc(-1 * var(--recorrido)) 0;
+    }
+  }
+  @keyframes avance {
+    to {
+      transform: scaleX(1);
+    }
+  }
+</style>

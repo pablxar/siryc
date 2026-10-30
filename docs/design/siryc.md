@@ -62,16 +62,36 @@ Un vocabulario corto; cada patrón se usa solo para su tipo de contenido, en tod
 | **Pila** | Pocas cosas importantes, una a la vez, con foco total | Tarjetas sticky; la siguiente tapa a la anterior, que se achica a 0,93 y se apaga (sincronizado a la distancia real) |
 | **Título fijo + lectura guiada** | Argumentos o explicación en orden | Titular sticky a la izquierda; cada punto se enciende al llegar a la zona de lectura |
 | **Desfile horizontal** | Evidencia o secuencia (proyectos, historia) | La sección se fija y las fichas pasan de derecha a izquierda; el filete marca el avance |
+| **Foto fija + lectura guiada** | Detalle de un servicio | La foto (con corte) queda fija a un lado; el alcance pasa al costado y se enciende |
+| **Escena de pasos** | Un proceso en orden (contrato de mantención) | La sección se fija; los pasos se encienden uno tras otro y una línea vertical marca el avance |
+| **Índice de capítulos** | Páginas largas (Servicios, Nosotros) | Barra fija bajo la cabecera; el filete marca el capítulo que se lee |
 | **Grilla quieta** | Catálogo para leer libre (artículos, equipo) | Sin efecto de scroll, solo revelado |
+| **Pausa tipográfica** | Una idea fuerte (manifiesto) | Frase grande por líneas sobre tinta |
 | **Remate** | Llamado a la acción | Banda azul con corte y filete |
 
+Componentes: `PortadaFoto`, `Pila`, `Desfile`, `ListaGuiada`, `IndiceCapitulos`, `Llamado`, `.guiada` (utilidad).
+Todo lo sticky se apoya en `--tope` (6,5 rem; 9,75 rem en páginas con índice, clase `.con-indice` en `main`).
+La lectura guiada atenúa con COLOR (gris atenuado 5,1:1 / niebla 8,3:1 sobre tinta), nunca con opacidad: el
+estado pendiente mantiene AA (con opacidad 0,3 Lighthouse midió 1,8:1 y bajó accesibilidad a 96).
 Reglas: solo CSS (sticky + `animation-timeline`), sin librerías. Sin soporte, en pantallas bajas o con movimiento
 reducido: la pila se apila sin achicarse, el desfile pasa a carrusel con el dedo, la lectura guiada se ve completa.
 En celular el desfile es carrusel con el dedo (no se secuestra el scroll vertical).
 Trampa: el minificador fusiona `animation` + `animation-timeline` en el atajo, que Chrome no acepta: la línea de
 tiempo siempre va en una regla aparte con selector distinto.
 
+- **2026-10-30 · Fase 3: Servicios y Nosotros** (pedido del dueño, estructura aprobada).
+  Servicios: portada (panel a la derecha) → índice → 3 capítulos foto fija + lectura guiada (alternan lado) →
+  contratos de mantención como escena de pasos → remate. Nosotros: portada → índice → historia en desfile
+  (años grandes) → forma de trabajar en pila tipográfica → manifiesto → equipo en grilla → respaldo técnico con
+  lectura guiada → remate. Lighthouse móvil: Servicios 99/100/100/100, Nosotros 99/100/100/100.
+
 ## Por confirmar con el dueño
+
+- **Contradicción**: Nosotros (hito 2026) dice «Más de 250 proyectos ejecutados»; la portada dice «3.000+ proyectos
+  entregados». Ambas vienen del sitio actual.
+- Hito 2015 y estándar «ISO 9001:2015»: confirmar que la certificación existe y está vigente.
+- Fotos de Servicios y Nosotros son de banco con marca ajena visible («HVAC SOLUTIONS» en el uniforme, «BUILT FOR
+  A CLEANER TOMORROW» en la pared): reemplazar por fotos reales.
 
 - Cifras publicadas hoy: +20 años, 3.000+ proyectos, 2.000+ mantenciones, 24/7 de respuesta técnica; «SLA definidos
   y guardia operativa»; acreditación SEC y membresía en la Cámara Chilena de Refrigeración y Climatización A.G.

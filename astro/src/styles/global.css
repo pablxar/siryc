@@ -36,6 +36,8 @@
   --dur: 0.9s;
   --dur-larga: 1.2s;
   --escalon: 0.08s;
+  /* Alto de lo fijo arriba (cabecera; + índice de capítulos en páginas largas): todo lo sticky se apoya aquí. */
+  --tope: 6.5rem;
   color-scheme: light;
 }
 
@@ -164,6 +166,12 @@
   }
 }
 
+@media (min-width: 1024px) {
+  .con-indice {
+    --tope: 9.75rem;
+  }
+}
+
 /* Escalonado sin estilos en línea (CSP): clase i-N. */
 .i-1 { --i: 1; }
 .i-2 { --i: 2; }
@@ -251,4 +259,27 @@
     transparent calc(50% - 3px) calc(50% + 3px),
     var(--color-papel) calc(50% + 3px) 100%
   );
+}
+
+/* ─── Lectura guiada: cada pieza parte en gris atenuado y se enciende (a su color) al llegar a la zona
+   de lectura. Con COLOR, no opacidad: el estado atenuado mantiene contraste AA (5,1:1 sobre papel).
+   El texto de cuerpo con color propio (grafito) no cambia. ─── */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .guiada {
+      animation: enciende linear both;
+    }
+    /* La línea de tiempo en regla aparte (selector distinto): el minificador fusionaría ambas en el
+       atajo «animation», que no admite la línea de tiempo, y Chrome descartaría la regla. */
+    :where(html) .guiada {
+      animation-timeline: view();
+      animation-range: entry 40% cover 42%;
+    }
+  }
+}
+@keyframes enciende {
+  from {
+    color: var(--color-atenuado);
+    translate: 0.6rem 0;
+  }
 }

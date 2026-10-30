@@ -1,9 +1,9 @@
 ---
-// 02 · Por qué SIRYC con LECTURA GUIADA: titular fijo a la izquierda (escritorio) y argumentos que
-// se encienden al llegar a la zona de lectura (ligado al scroll). Estrategia: el cómo, en orden.
+// 02 · Por qué SIRYC con TÍTULO FIJO + LECTURA GUIADA (ver ListaGuiada.astro): el cómo, en orden.
 // Abajo, las cifras de trayectoria.
 // Cifras y afirmaciones tomadas del sitio actual: a confirmar con el dueño (ver docs).
 import SeccionTitulo from "../SeccionTitulo.astro";
+import ListaGuiada from "../ListaGuiada.astro";
 
 const puntos = [
   { titulo: "Ingeniería documentada en cada proyecto", texto: "Memoria técnica, planos y protocolos entregables para cada intervención." },
@@ -25,126 +25,33 @@ const cifras = [
 ---
 
 <section class="continuidad" aria-labelledby="cont-t">
-  <div class="contenedor cont-grilla">
-    <div class="cont-cabeza">
-      <SeccionTitulo
-        id="cont-t"
-        numero="02"
-        rotulo="Por qué SIRYC"
-        lineas={["Continuidad", "operativa, sin", "improvisación."]}
-        bajada="Planificación, ejecución y seguimiento técnico documentado en cada intervención."
-      />
-    </div>
-
-    <ol class="cont-lista">
-      {
-        puntos.map((p, i) => (
-          <li data-revela>
-            <span class="filete cont-filete" aria-hidden="true" />
-            <span class="cifra cont-num">{String(i + 1).padStart(2, "0")}</span>
-            <div class="cont-argumento">
-              <h3>{p.titulo}</h3>
-              <p>{p.texto}</p>
+  <ListaGuiada puntos={puntos}>
+    <SeccionTitulo
+      slot="cabeza"
+      id="cont-t"
+      numero="02"
+      rotulo="Por qué SIRYC"
+      lineas={["Continuidad", "operativa, sin", "improvisación."]}
+      bajada="Planificación, ejecución y seguimiento técnico documentado en cada intervención."
+    />
+    <div class="contenedor">
+      <dl class="cont-cifras" data-lineas>
+        {
+          cifras.map((c, i) => (
+            <div>
+              <dt class={`rotulo sigue i-${i}`}>{c.texto}</dt>
+              <dd class={`cifra linea i-${i}`}>
+                <span>{c.valor}</span>
+              </dd>
             </div>
-          </li>
-        ))
-      }
-    </ol>
-  </div>
-
-  <div class="contenedor">
-    <dl class="cont-cifras" data-lineas>
-      {
-        cifras.map((c, i) => (
-          <div>
-            <dt class={`rotulo sigue i-${i}`}>{c.texto}</dt>
-            <dd class={`cifra linea i-${i}`}>
-              <span>{c.valor}</span>
-            </dd>
-          </div>
-        ))
-      }
-    </dl>
-  </div>
+          ))
+        }
+      </dl>
+    </div>
+    </ListaGuiada>
 </section>
 
 <style>
-  .continuidad {
-    padding: 4.5rem 0 5rem;
-    background: var(--color-papel-2);
-  }
-  .cont-grilla {
-    display: grid;
-    gap: 1rem;
-  }
-  .cont-lista {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-  .cont-lista li {
-    position: relative;
-    display: grid;
-    grid-template-columns: 3rem 1fr;
-    gap: 1rem;
-    padding: 1.5rem 0 1.6rem;
-    border-top: 1px solid var(--color-niebla);
-  }
-  .cont-filete {
-    position: absolute;
-    top: -2px;
-    left: 0;
-    width: 7rem;
-  }
-  .cont-num {
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: var(--color-azul);
-  }
-  .cont-lista h3 {
-    font-size: clamp(1.2rem, 1rem + 0.8vw, 1.5rem);
-    font-weight: 700;
-    line-height: 1.15;
-  }
-  .cont-lista p {
-    margin-top: 0.5rem;
-    max-width: 36rem;
-    font-size: 0.9375rem;
-    line-height: 1.6;
-    color: var(--color-grafito);
-  }
-  @media (prefers-reduced-motion: no-preference) {
-    :global(.js) .cont-filete {
-      transform: scaleX(0);
-      transition: transform 1.1s var(--ease-barrido) 0.25s;
-    }
-    :global(.js) .cont-lista li:global(.dentro) .cont-filete {
-      transform: scaleX(1);
-    }
-  }
-
-  /* Lectura guiada: cada argumento parte atenuado y se enciende al acercarse al centro. */
-  @supports (animation-timeline: view()) {
-    @media (prefers-reduced-motion: no-preference) {
-      .cont-argumento,
-      .cont-num {
-        animation: enciende linear both;
-      }
-      /* animation-timeline va en una regla aparte (selector distinto): el minificador fusionaría ambas
-         en el atajo «animation», que no admite la línea de tiempo, y Chrome descartaría la regla. */
-      .cont-lista li > .cont-argumento,
-      .cont-lista li > .cont-num {
-        animation-timeline: view();
-        animation-range: entry 40% cover 42%;
-      }
-    }
-  }
-  @keyframes enciende {
-    from {
-      opacity: 0.3;
-    }
-  }
-
   .cont-cifras {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -169,22 +76,6 @@ const cifras = [
   }
 
   @media (min-width: 1024px) {
-    .continuidad {
-      padding: 7rem 0;
-    }
-    .cont-grilla {
-      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-      gap: 4rem;
-      align-items: start;
-    }
-    .cont-cabeza {
-      position: sticky;
-      top: 7.5rem;
-    }
-    .cont-lista li {
-      grid-template-columns: 4.5rem 1fr;
-      padding: 1.9rem 0 2rem;
-    }
     .cont-cifras {
       grid-template-columns: repeat(4, 1fr);
       margin-top: 5rem;

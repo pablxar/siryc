@@ -1,9 +1,7 @@
 ---
-// 03 · Proyectos recientes como DESFILE HORIZONTAL (scrollytelling, pedido del dueño 2026-10-30):
-// en escritorio la sección queda fija y, al bajar, las fichas técnicas pasan de derecha a izquierda;
-// el filete partido marca el avance. Estrategia: la prueba (obras con cifras), una tras otra.
-// Solo CSS (sticky + animation-timeline). Celular, pantallas bajas, sin soporte o movimiento
-// reducido: carrusel con el dedo. Datos de Supabase al compilar; fotos provisorias por segmento.
+// 03 · Proyectos recientes como DESFILE HORIZONTAL (ver Desfile.astro): la prueba, obra tras obra.
+// Datos de Supabase al compilar; fotos provisorias por segmento.
+import Desfile from "../Desfile.astro";
 import Ficha from "../Ficha.astro";
 import Cifras from "../Cifras.astro";
 import SeccionTitulo from "../SeccionTitulo.astro";
@@ -25,146 +23,32 @@ const total = lista.length;
 
 {
   total > 0 && (
-    <section class:list={["proyectos", `n-${total}`]} aria-labelledby="proy-t">
-      <div class="desfile">
-        <div class="desfile-fijo">
-          <div class="contenedor">
-            <SeccionTitulo
-              id="proy-t"
-              numero="03"
-              rotulo="Proyectos"
-              lineas={["Proyectos recientes."]}
-              enlace={{ href: "/proyectos", texto: "Ver todos los proyectos" }}
-            />
-          </div>
-          <ul class="carril">
-            {lista.map((p, i) => (
-              <li class={`i-${Math.min(i, 5)}`}>
-                <Ficha
-                  href={`/proyectos#${p.id}`}
-                  indice={`${String(i + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`}
-                  rotulo={p.categoria ? SEGMENTO[p.categoria] : undefined}
-                  titulo={p.titulo}
-                  destacado={p.cliente_nombre_publico}
-                  foto={p.categoria ? FOTO[p.categoria] : undefined}
-                  enlace="Ver proyecto"
-                  contenidoAbajo
-                  sizes="(min-width: 1024px) 30rem, 82vw"
-                >
-                  <Cifras metros={p.metros_cuadrados} equipos={p.cantidad_equipos} anio={p.anio} />
-                </Ficha>
-              </li>
-            ))}
-          </ul>
-          <div class="contenedor">
-            <span class="filete desfile-avance" aria-hidden="true" />
-          </div>
-        </div>
-      </div>
-    </section>
+    <Desfile n={total} etiqueta="proy-t">
+      <SeccionTitulo
+        slot="cabeza"
+        id="proy-t"
+        numero="03"
+        rotulo="Proyectos"
+        lineas={["Proyectos recientes."]}
+        enlace={{ href: "/proyectos", texto: "Ver todos los proyectos" }}
+      />
+      {lista.map((p, i) => (
+        <li class={`i-${Math.min(i, 5)}`}>
+          <Ficha
+            href={`/proyectos#${p.id}`}
+            indice={`${String(i + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`}
+            rotulo={p.categoria ? SEGMENTO[p.categoria] : undefined}
+            titulo={p.titulo}
+            destacado={p.cliente_nombre_publico}
+            foto={p.categoria ? FOTO[p.categoria] : undefined}
+            enlace="Ver proyecto"
+            contenidoAbajo
+            sizes="(min-width: 1024px) 30rem, 82vw"
+          >
+            <Cifras metros={p.metros_cuadrados} equipos={p.cantidad_equipos} anio={p.anio} />
+          </Ficha>
+        </li>
+      ))}
+    </Desfile>
   )
 }
-
-<style>
-  .proyectos {
-    --ficha: 82vw;
-    --hueco: 1rem;
-    --margen: 1rem;
-    padding: 4.5rem 0 5rem;
-  }
-  .n-1 { --n: 1; }
-  .n-2 { --n: 2; }
-  .n-3 { --n: 3; }
-  .n-4 { --n: 4; }
-  .n-5 { --n: 5; }
-  .n-6 { --n: 6; }
-
-  /* Base (celular y respaldo): carrusel con el dedo, la vecina asomada. */
-  .carril {
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: var(--ficha);
-    gap: var(--hueco);
-    margin: 0;
-    padding: 0 var(--margen) 0.25rem;
-    scroll-padding-inline: var(--margen);
-    list-style: none;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    overscroll-behavior-x: contain;
-  }
-  .carril::-webkit-scrollbar {
-    display: none;
-  }
-  .carril li {
-    scroll-snap-align: start;
-  }
-  .desfile-avance {
-    display: none;
-  }
-  @media (min-width: 640px) {
-    .proyectos {
-      --ficha: 24rem;
-      --margen: 1.5rem;
-    }
-  }
-
-  /* Escritorio con altura suficiente y soporte: la sección se fija y el carril avanza con el scroll. */
-  @media (min-width: 1024px) and (min-height: 44rem) and (prefers-reduced-motion: no-preference) {
-    @supports (animation-timeline: view()) {
-      .proyectos {
-        --ficha: 30rem;
-        --hueco: 1.5rem;
-        --margen: max(2.5rem, calc((100vw - 82.5rem) / 2 + 2.5rem));
-        --ancho: calc(var(--n) * var(--ficha) + (var(--n) - 1) * var(--hueco) + 2 * var(--margen));
-        --recorrido: max(0px, calc(var(--ancho) - 100vw));
-        padding: 0;
-      }
-      .desfile {
-        height: calc(100svh + var(--recorrido));
-        view-timeline-name: --desfile;
-      }
-      .desfile-fijo {
-        position: sticky;
-        top: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        height: 100svh;
-        padding-top: 5rem;
-        overflow: hidden;
-      }
-      .carril {
-        width: var(--ancho);
-        overflow: visible;
-        scroll-snap-type: none;
-        animation: desfile linear both;
-      }
-      /* animation-timeline va en una regla aparte (selector distinto): el minificador fusionaría ambas
-         en el atajo «animation», que no admite la línea de tiempo, y Chrome descartaría la regla. */
-      .desfile-fijo > .carril,
-      .desfile-fijo .desfile-avance {
-        animation-timeline: --desfile;
-        animation-range: contain 0% contain 100%;
-      }
-      .desfile-avance {
-        display: block;
-        height: 3px;
-        margin-top: 2rem;
-        transform: scaleX(0);
-        animation: avance linear both;
-      }
-    }
-  }
-  @keyframes desfile {
-    to {
-      translate: calc(-1 * var(--recorrido)) 0;
-    }
-  }
-  @keyframes avance {
-    to {
-      transform: scaleX(1);
-    }
-  }
-</style>

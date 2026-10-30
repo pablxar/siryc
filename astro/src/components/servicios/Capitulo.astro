@@ -1,0 +1,176 @@
+---
+// Capítulo de servicio: FOTO FIJA + LECTURA GUIADA. La foto (con el corte) queda fija a un lado mientras
+// el detalle pasa al costado: titular por líneas, alcance como lista editorial que se enciende al leer y
+// la cotización al final. Se alterna el lado de la foto entre capítulos. Celular: foto arriba, sin fijar.
+import { Picture } from "astro:assets";
+import Flecha from "../Flecha.astro";
+
+interface Props {
+  id: string;
+  numero: number;
+  total: number;
+  area: string;
+  lineas: string[];
+  subtitulo: string;
+  descripcion: string;
+  alcance: string[];
+  foto: ImageMetadata;
+  alt: string;
+  invertido?: boolean;
+  fondo?: "papel" | "papel-2";
+}
+const { id, numero, total, area, lineas, subtitulo, descripcion, alcance, foto, alt, invertido = false, fondo = "papel" } = Astro.props;
+const n2 = (n: number) => String(n).padStart(2, "0");
+---
+
+<section id={id} class:list={["capitulo", `fondo-${fondo}`, { invertido }]} aria-labelledby={`${id}-t`}>
+  <div class="contenedor cap-grilla">
+    <div class="cap-foto-marco" data-revela>
+      <figure class="cap-foto corte">
+        <Picture src={foto} formats={["avif", "webp"]} fallbackFormat="webp" widths={[600, 900, 1300]} sizes="(min-width: 1024px) 46vw, 92vw" alt={alt} />
+      </figure>
+    </div>
+
+    <div class="cap-texto">
+      <header data-lineas>
+        <p class="rotulo sigue"><span class="cifra cap-num">{n2(numero)} / {n2(total)}</span> {area}</p>
+        <h2 id={`${id}-t`}>
+          {lineas.map((l, i) => <span class={`linea i-${i}`}><span>{l}</span></span>)}
+        </h2>
+        <span class="filete dibuja cap-filete" aria-hidden="true"></span>
+        <p class="cap-sub sigue i-1">{subtitulo}</p>
+        <p class="cap-desc sigue i-2">{descripcion}</p>
+      </header>
+
+      <p class="rotulo cap-alcance-t">Alcance</p>
+      <ol class="cap-alcance">
+        {
+          alcance.map((a, i) => (
+            <li class="guiada">
+              <span class="cifra">{n2(i + 1)}</span>
+              {a}
+            </li>
+          ))
+        }
+      </ol>
+
+      <a href={`/contacto?servicio=${id}`} class="boton corte cap-cta">Cotizar {area.toLowerCase()} <Flecha /></a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .capitulo {
+    padding: 4rem 0 4.5rem;
+    scroll-margin-top: 5rem;
+  }
+  .fondo-papel-2 {
+    background: var(--color-papel-2);
+  }
+  .cap-grilla {
+    display: grid;
+    gap: 2rem;
+  }
+  .cap-foto {
+    --corte: 1.75rem;
+    margin: 0;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--color-papel-2);
+  }
+  .cap-foto :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .cap-num {
+    margin-right: 0.5rem;
+    color: var(--color-azul);
+  }
+  h2 {
+    margin-top: 1rem;
+    font-size: clamp(2.1rem, 1.3rem + 3.2vw, 4rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .cap-filete {
+    width: 9rem;
+    height: 4px;
+    margin-top: 1.5rem;
+  }
+  .cap-sub {
+    margin-top: 1.25rem;
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-azul);
+  }
+  .cap-desc {
+    margin-top: 0.6rem;
+    max-width: 34rem;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--color-grafito);
+  }
+  .cap-alcance-t {
+    margin-top: 2.5rem;
+  }
+  .cap-alcance {
+    margin: 0.75rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .cap-alcance li {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 0.75rem;
+    padding: 1rem 0;
+    border-top: 1px solid var(--color-niebla);
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 0.95rem + 0.6vw, 1.4rem);
+    font-weight: 600;
+    line-height: 1.25;
+  }
+  .cap-alcance li:last-child {
+    border-bottom: 1px solid var(--color-niebla);
+  }
+  .cap-alcance .cifra {
+    font-size: 0.8125rem;
+    color: var(--color-azul);
+    padding-top: 0.3rem;
+  }
+  .cap-cta {
+    margin-top: 2rem;
+  }
+
+  @media (min-width: 1024px) {
+    .capitulo {
+      padding: 6rem 0 7rem;
+      scroll-margin-top: 8rem;
+    }
+    .cap-grilla {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 4.5rem;
+      align-items: start;
+    }
+    .invertido .cap-foto-marco {
+      order: 2;
+    }
+    /* La foto queda fija bajo cabecera + índice mientras el detalle pasa. */
+    .cap-foto-marco {
+      position: sticky;
+      top: calc(var(--tope) + 0.25rem);
+    }
+    .cap-foto {
+      --corte: 2.5rem;
+      aspect-ratio: auto;
+      height: calc(100svh - var(--tope) - 2.75rem);
+      max-height: 44rem;
+    }
+    .cap-texto {
+      padding-top: 1rem;
+    }
+  }
+</style>
