@@ -1,0 +1,73 @@
+---
+// Remate: banda azul (el acento) con el corte en la esquina y el filete partido.
+import Flecha from "../Flecha.astro";
+---
+
+<section class="llamado corte" aria-labelledby="llamado-t" data-lineas>
+  <div class="contenedor llamado-fila">
+    <div>
+      <h2 id="llamado-t">
+        <span class="linea"><span>Hablemos de tu</span></span>
+        <span class="linea i-1"><span>próximo proyecto.</span></span>
+      </h2>
+      <p class="sigue i-1">Cuéntanos qué necesita tu instalación.</p>
+    </div>
+    <a href="/contacto" class="boton corte llamado-boton sigue i-2">Solicitar cotización <Flecha /></a>
+  </div>
+  <span class="filete dibuja llamado-filete" aria-hidden="true"></span>
+</section>
+
+<style>
+  .llamado {
+    --corte: 2.5rem;
+    position: relative;
+    padding: 4.5rem 0 5rem;
+    background: var(--color-azul);
+    color: var(--color-papel);
+  }
+  .llamado-fila {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2rem;
+  }
+  h2 {
+    font-size: clamp(2.2rem, 1.4rem + 3.6vw, 4.5rem);
+    font-weight: 700;
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+  }
+  p {
+    margin-top: 1.25rem;
+    font-size: 1.0625rem;
+    color: var(--color-niebla);
+  }
+  .llamado-boton {
+    background: var(--color-papel);
+    color: var(--color-azul);
+  }
+  @media (hover: hover) {
+    .llamado-boton:hover {
+      background: var(--color-tinta);
+      color: var(--color-papel);
+    }
+  }
+  .llamado-filete {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 4px;
+  }
+  @media (min-width: 900px) {
+    .llamado {
+      --corte: 4rem;
+      padding: 6.5rem 0;
+    }
+    .llamado-fila {
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+  }
+</style>

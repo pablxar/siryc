@@ -5,8 +5,12 @@ interface Props {
   title: string;
   description?: string;
   noindex?: boolean;
+  /** Portada: habilita la entrada de marca (solo primera llegada desde fuera del sitio). */
+  entrada?: boolean;
 }
-const { title, description, noindex = false } = Astro.props;
+const { title, description, noindex = false, entrada = false } = Astro.props;
+const canonica = new URL(Astro.url.pathname, Astro.site);
+const ogImagen = new URL("/og-image.png", Astro.site);
 ---
 
 <!doctype html>
@@ -17,10 +21,33 @@ const { title, description, noindex = false } = Astro.props;
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonica} />
     <link rel="icon" href="/favicon.ico" />
     <meta name="theme-color" content="#eef0f2" />
-    <!-- Antes del primer pintado: habilita los estados iniciales de revelado. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="SIRYC" />
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:image" content={ogImagen} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <!-- Antes del primer pintado: estados iniciales de revelado y, en la portada, la entrada. -->
     <script is:inline>document.documentElement.classList.add("js");</script>
+    {
+      entrada && (
+        <script is:inline>
+          (function () {
+            try {
+              var d = document.documentElement, l = location, r = document.referrer, c = navigator.connection;
+              var interna = r && new URL(r).origin === l.origin;
+              var ok = !interna && !l.hash && !/[?&]intro=0/.test(l.search) && !navigator.webdriver &&
+                !(c && c.saveData) && !matchMedia("(prefers-reduced-motion: reduce)").matches;
+              if (ok) d.classList.add("con-entrada");
+            } catch (e) {}
+          })();
+        </script>
+      )
+    }
+    <slot name="head" />
   </head>
   <body class="min-h-svh">
     <slot />

@@ -1,0 +1,79 @@
+---
+// 03 · Proyectos recientes: fichas técnicas con datos de Supabase (al compilar).
+// Fotos provisorias por segmento hasta tener fotos reales de cada obra.
+import Ficha from "../Ficha.astro";
+import Cifras from "../Cifras.astro";
+import SeccionTitulo from "../SeccionTitulo.astro";
+import { proyectos, SEGMENTO, type Proyecto } from "../../lib/supabase";
+import refrigeracion from "../../assets/refrigeracion.png";
+import climatizacion from "../../assets/climatizacion.png";
+import electricidad from "../../assets/electricidad.png";
+import banner from "../../assets/banner-web-siryc.png";
+
+const FOTO: Record<NonNullable<Proyecto["categoria"]>, ImageMetadata> = {
+  centro_comercial: climatizacion,
+  gobierno: refrigeracion,
+  corporativo: electricidad,
+  educacion: banner,
+};
+const lista = await proyectos(4);
+const total = lista.length;
+---
+
+{
+  total > 0 && (
+    <section class="proyectos" aria-labelledby="proy-t">
+      <div class="contenedor">
+        <SeccionTitulo
+          id="proy-t"
+          numero="03"
+          rotulo="Proyectos"
+          lineas={["Proyectos recientes."]}
+          enlace={{ href: "/proyectos", texto: "Ver todos los proyectos" }}
+        />
+        <ul class="proy-grilla">
+          {lista.map((p, i) => (
+            <li class={`i-${i}`} data-revela>
+              <Ficha
+                href={`/proyectos#${p.id}`}
+                indice={`${String(i + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`}
+                rotulo={p.categoria ? SEGMENTO[p.categoria] : undefined}
+                titulo={p.titulo}
+                destacado={p.cliente_nombre_publico}
+                foto={p.categoria ? FOTO[p.categoria] : undefined}
+                enlace="Ver proyecto"
+                contenidoAbajo
+              >
+                <Cifras metros={p.metros_cuadrados} equipos={p.cantidad_equipos} anio={p.anio} />
+              </Ficha>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .proyectos {
+    padding: 5rem 0;
+  }
+  .proy-grilla {
+    display: grid;
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  @media (min-width: 720px) {
+    .proy-grilla {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .proyectos {
+      padding: 7rem 0;
+    }
+  }
+</style>

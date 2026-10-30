@@ -1,0 +1,110 @@
+---
+// 01 · Especialidades: tres fichas (molde Ficha). Celular: carrusel con la vecina asomada.
+import Ficha from "../Ficha.astro";
+import SeccionTitulo from "../SeccionTitulo.astro";
+import refrigeracion from "../../assets/refrigeracion.png";
+import climatizacion from "../../assets/climatizacion.png";
+import electricidad from "../../assets/electricidad.png";
+
+const areas = [
+  {
+    titulo: "Refrigeración",
+    href: "/servicios#refrigeracion",
+    texto:
+      "Mantención preventiva y correctiva a los sistemas de frío para que operen sin interrupciones, con respuesta técnica garantizada ante cualquier falla.",
+    foto: refrigeracion,
+  },
+  {
+    titulo: "Climatización y aire acondicionado",
+    href: "/servicios#climatizacion",
+    texto: "Desde una vivienda hasta un centro comercial completo, con el mismo estándar de instalación en cada escala de proyecto.",
+    foto: climatizacion,
+  },
+  {
+    titulo: "Electricidad industrial",
+    href: "/servicios#electricidad",
+    texto:
+      "Instalaciones, tableros, sistemas de control centralizado, detección de incendio y mantención eléctrica preventiva. Todo bajo normativas y registros técnicos documentados.",
+    foto: electricidad,
+  },
+];
+---
+
+<section class="especialidades" aria-labelledby="esp-t">
+  <div class="contenedor">
+    <SeccionTitulo
+      id="esp-t"
+      numero="01"
+      rotulo="Especialidades"
+      lineas={["Tres áreas técnicas,", "un mismo equipo."]}
+      bajada="Refrigeración, climatización y electricidad instaladas y mantenidas por el mismo equipo de técnicos que llevan más de 20 años en terreno."
+      enlace={{ href: "/servicios", texto: "Ver todos los servicios" }}
+    />
+  </div>
+
+  <div class="contenedor carril-marco">
+    <ul class="carril" data-revela>
+      {
+        areas.map((a, i) => (
+          <li>
+            <Ficha href={a.href} indice={`0${i + 1} / 03`} titulo={a.titulo} foto={a.foto} enlace="Ver servicio" sizes="(min-width: 1024px) 30vw, 82vw">
+              <span class="ficha-texto">{a.texto}</span>
+            </Ficha>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .especialidades {
+    padding: 4.5rem 0 5rem;
+  }
+  .carril {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 82%;
+    gap: 1rem;
+    /* Llega al borde de la pantalla; el primer y último ítem respetan el margen. */
+    margin: 0 -1rem;
+    padding: 0 1rem 0.25rem;
+    scroll-padding-inline: 1rem;
+    list-style: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+  .carril::-webkit-scrollbar {
+    display: none;
+  }
+  .carril li {
+    scroll-snap-align: start;
+  }
+  @media (min-width: 640px) {
+    .carril {
+      margin-inline: -1.5rem;
+      padding-inline: 1.5rem;
+      scroll-padding-inline: 1.5rem;
+    }
+  }
+  @media (min-width: 720px) {
+    .carril {
+      grid-auto-columns: 46%;
+    }
+  }
+  @media (min-width: 1024px) {
+    .especialidades {
+      padding: 6.5rem 0 7rem;
+    }
+    .carril {
+      grid-auto-flow: row;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-inline: 0;
+      padding-inline: 0;
+      overflow: visible;
+    }
+  }
+</style>

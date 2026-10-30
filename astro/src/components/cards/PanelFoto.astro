@@ -19,7 +19,7 @@ const { p, i, total, href = "#" } = Astro.props;
 <li class:list={["panel-celda", `i-${i % 6}`]} data-revela>
   <a class="panel corte" href={href}>
     <span class="panel-foto" aria-hidden="true">
-      <Picture src={p.foto} formats={["avif", "webp"]} widths={[400, 700, 1000]} sizes="(min-width: 1024px) 24vw, (min-width: 640px) 46vw, 92vw" alt="" />
+      <Picture src={p.foto} formats={["avif", "webp"]} fallbackFormat="webp" widths={[400, 700, 1000]} sizes="(min-width: 1024px) 24vw, (min-width: 640px) 46vw, 92vw" alt="" />
     </span>
 
     <span class="panel-hoja">

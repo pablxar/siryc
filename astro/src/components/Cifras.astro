@@ -1,0 +1,57 @@
+---
+// Las tres cifras de una ficha de proyecto. Las que falten en la base no se muestran.
+import { miles } from "../data/proyectos-muestra";
+
+interface Props {
+  metros?: number | null;
+  equipos?: number | null;
+  anio?: number | null;
+}
+const { metros, equipos, anio } = Astro.props;
+---
+
+<dl class="cifras">
+  {
+    metros != null && (
+      <div>
+        <dt class="rotulo">Superficie</dt>
+        <dd class="cifra">{miles(metros)}<span> m²</span></dd>
+      </div>
+    )
+  }
+  {
+    equipos != null && (
+      <div>
+        <dt class="rotulo">Equipos</dt>
+        <dd class="cifra">{equipos}</dd>
+      </div>
+    )
+  }
+  {
+    anio != null && (
+      <div>
+        <dt class="rotulo">Año</dt>
+        <dd class="cifra">{anio}</dd>
+      </div>
+    )
+  }
+</dl>
+
+<style>
+  .cifras {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 1rem;
+    margin: 0;
+  }
+  dd {
+    margin: 0.35rem 0 0;
+    font-size: clamp(1.4rem, 1.15rem + 0.8vw, 1.9rem);
+    font-weight: 600;
+    line-height: 1;
+  }
+  dd span {
+    font-size: 0.55em;
+    font-weight: 500;
+  }
+</style>

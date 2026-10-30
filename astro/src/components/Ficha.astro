@@ -1,0 +1,240 @@
+---
+// Molde único de card del sitio: «Ficha técnica» (elegida por el dueño, 2026-10-30).
+// Índice + rótulo, título y contenido (cifras o texto). Con puntero fino, la foto (o la
+// tinta, si no hay foto) entra con un barrido diagonal en el ángulo del corte, el texto
+// se invierte y se dibuja el filete partido. En táctil la foto ya viene arriba.
+import { Picture } from "astro:assets";
+import Flecha from "./Flecha.astro";
+
+interface Props {
+  href: string;
+  indice: string;
+  rotulo?: string;
+  titulo: string;
+  destacado?: string | null;
+  foto?: ImageMetadata;
+  enlace?: string;
+  /** El contenido se apoya en la base (cifras); si no, va bajo el título (texto). */
+  contenidoAbajo?: boolean;
+  nivel?: "h2" | "h3";
+  sizes?: string;
+}
+const {
+  href,
+  indice,
+  rotulo,
+  titulo,
+  destacado,
+  foto,
+  enlace = "Ver más",
+  contenidoAbajo = false,
+  nivel: Titulo = "h3",
+  sizes = "(min-width: 1024px) 45vw, 92vw",
+} = Astro.props;
+---
+
+<a class:list={["ficha corte", { "sin-foto": !foto }]} href={href}>
+  <span class="ficha-media corte" aria-hidden="true">
+    {foto && <Picture src={foto} formats={["avif", "webp"]} fallbackFormat="webp" widths={[480, 800, 1200]} sizes={sizes} alt="" />}
+    <span class="ficha-velo"></span>
+  </span>
+
+  <span class="ficha-cuerpo">
+    <span class="ficha-top">
+      <span class="cifra ficha-num">{indice}</span>
+      {rotulo && <span class="rotulo ficha-seg">{rotulo}</span>}
+    </span>
+
+    <Titulo class="ficha-titulo">{titulo}</Titulo>
+    {destacado && <span class="ficha-destacado">{destacado}</span>}
+
+    <span class:list={["ficha-contenido", { abajo: contenidoAbajo }]}><slot /></span>
+
+    <span class="ficha-pie">
+      <span class="filete ficha-filete"></span>
+      <span class="ficha-ver">{enlace} <Flecha /></span>
+    </span>
+  </span>
+</a>
+
+<style>
+  .ficha {
+    --corte: 1.5rem;
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--color-papel-2);
+    color: var(--color-tinta);
+    text-decoration: none;
+  }
+
+  /* Táctil / sin hover: foto arriba, fija. Sin foto: no hay banda. */
+  .ficha-media {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--color-tinta);
+  }
+  .sin-foto .ficha-media {
+    display: none;
+  }
+  .ficha-media :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .ficha-velo {
+    display: none;
+  }
+
+  .ficha-cuerpo {
+    position: relative;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 1.5rem 1.5rem 1.4rem;
+  }
+  .ficha-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .ficha-num {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--color-azul);
+  }
+  .ficha-titulo {
+    margin-top: 1.1rem;
+    font-size: clamp(1.35rem, 1.1rem + 0.9vw, 1.75rem);
+    font-weight: 700;
+    line-height: 1.12;
+  }
+  .ficha-destacado {
+    display: block;
+    margin-top: 0.4rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-azul);
+  }
+  .ficha-contenido {
+    display: block;
+    margin-top: 1rem;
+  }
+  .ficha-contenido.abajo {
+    margin-top: auto;
+    padding-top: 2rem;
+  }
+  .ficha-contenido :global(.ficha-texto) {
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--color-grafito);
+  }
+  .ficha-pie {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: auto;
+    padding-top: 1.5rem;
+  }
+  .ficha-contenido.abajo + .ficha-pie {
+    margin-top: 0;
+  }
+  .ficha-filete {
+    flex: 1;
+    transform: scaleX(0.18);
+    transition: transform var(--dur-larga) var(--ease-barrido);
+  }
+  .ficha-ver {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+  }
+  .ficha:focus-visible {
+    outline-offset: 4px;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .ficha-media,
+    .sin-foto .ficha-media {
+      display: block;
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      aspect-ratio: auto;
+      clip-path: polygon(0 0, 0 0, -60% 100%, -60% 100%);
+      transition: clip-path 0.8s var(--ease-barrido);
+    }
+    .ficha-media :global(img) {
+      scale: 1.08;
+      transition: scale 1.6s var(--ease-salida);
+    }
+    .ficha-velo {
+      display: block;
+      position: absolute;
+      inset: 0;
+      background: rgb(27 35 44 / 0.78);
+    }
+    .ficha-cuerpo {
+      min-height: 22rem;
+      padding: 1.75rem;
+    }
+    /* El color cambia cuando el barrido ya pasó la mitad: nunca claro sobre claro. */
+    .ficha-cuerpo,
+    .ficha-num,
+    .ficha-seg,
+    .ficha-destacado,
+    .ficha-contenido :global(.rotulo),
+    .ficha-contenido :global(.ficha-texto) {
+      transition: color 0.35s var(--ease-salida) 0.28s;
+    }
+
+    .ficha:hover .ficha-media,
+    .ficha:focus-visible .ficha-media {
+      clip-path: polygon(0 0, 160% 0, 100% 100%, -60% 100%);
+    }
+    .ficha:hover .ficha-media :global(img),
+    .ficha:focus-visible .ficha-media :global(img) {
+      scale: 1;
+    }
+    .ficha:hover .ficha-cuerpo,
+    .ficha:focus-visible .ficha-cuerpo,
+    .ficha:hover .ficha-seg,
+    .ficha:focus-visible .ficha-seg,
+    .ficha:hover .ficha-contenido :global(.rotulo),
+    .ficha:focus-visible .ficha-contenido :global(.rotulo) {
+      color: var(--color-papel);
+    }
+    .ficha:hover .ficha-num,
+    .ficha:focus-visible .ficha-num,
+    .ficha:hover .ficha-destacado,
+    .ficha:focus-visible .ficha-destacado,
+    .ficha:hover .ficha-contenido :global(.ficha-texto),
+    .ficha:focus-visible .ficha-contenido :global(.ficha-texto) {
+      color: var(--color-niebla);
+    }
+    .ficha:hover .ficha-filete,
+    .ficha:focus-visible .ficha-filete {
+      transform: scaleX(1);
+    }
+    .ficha:hover :global(.flecha),
+    .ficha:focus-visible :global(.flecha) {
+      translate: 0.35rem 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ficha *,
+    .ficha :global(img) {
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>

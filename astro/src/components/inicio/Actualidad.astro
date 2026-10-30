@@ -1,0 +1,75 @@
+---
+// 04 · Actualidad técnica: últimos 3 artículos publicados (Supabase, al compilar).
+// Ficha sin foto: al pasar el puntero barre la tinta en vez de una imagen.
+import Ficha from "../Ficha.astro";
+import SeccionTitulo from "../SeccionTitulo.astro";
+import { articulos } from "../../lib/supabase";
+
+const lista = await articulos(3);
+const fecha = (iso: string) => new Date(iso).toLocaleDateString("es-CL", { day: "numeric", month: "long", year: "numeric" });
+---
+
+{
+  lista.length > 0 && (
+    <section class="actualidad" aria-labelledby="act-t">
+      <div class="contenedor">
+        <SeccionTitulo
+          id="act-t"
+          numero="04"
+          rotulo="Actualidad técnica"
+          lineas={["Análisis y normativa", "para operaciones."]}
+          enlace={{ href: "/blog", texto: "Leer todas las noticias" }}
+        />
+        <ul class="act-grilla">
+          {lista.map((a, i) => (
+            <li class={`i-${i}`} data-revela>
+              <Ficha href={`/blog/${a.slug}`} indice={a.categoria ?? "Artículo"} titulo={a.titulo} enlace="Leer artículo">
+                {a.extracto && <span class="ficha-texto act-extracto">{a.extracto}</span>}
+                <span class="rotulo act-fecha">{fecha(a.created_at)}</span>
+              </Ficha>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .actualidad {
+    padding: 5rem 0;
+    background: var(--color-papel-2);
+  }
+  .act-grilla {
+    display: grid;
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  /* En esta sección las fichas van sobre papel 2: se separan con papel. */
+  .act-grilla :global(.ficha) {
+    background: var(--color-papel);
+  }
+  .act-extracto {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .act-fecha {
+    display: block;
+    margin-top: 1rem;
+  }
+  @media (min-width: 900px) {
+    .act-grilla {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .actualidad {
+      padding: 7rem 0;
+    }
+  }
+</style>

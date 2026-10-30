@@ -1,19 +1,22 @@
 ---
-// Provisorio mientras se construye el rediseño: la portada real llega en la fase 2.
-import Base from "../layouts/Base.astro";
+import Sitio from "../layouts/Sitio.astro";
+import Portada from "../components/inicio/Portada.astro";
+import Especialidades from "../components/inicio/Especialidades.astro";
+import Continuidad from "../components/inicio/Continuidad.astro";
+import ProyectosRecientes from "../components/inicio/ProyectosRecientes.astro";
+import Actualidad from "../components/inicio/Actualidad.astro";
+import Llamado from "../components/inicio/Llamado.astro";
 ---
 
-<Base title="SIRYC · rediseño en construcción" noindex>
-  <main class="mx-auto max-w-3xl px-4 py-24 sm:px-6">
-    <p class="rotulo">Rediseño en Astro</p>
-    <h1 class="mt-4 text-5xl font-bold leading-none">En construcción.</h1>
-    {
-      import.meta.env.DEV && (
-        <p class="mt-6 text-grafito">
-          Laboratorio: <a class="font-semibold text-azul underline" href="/cards">/cards</a> ·{" "}
-          <a class="font-semibold text-azul underline" href="/tipografias">/tipografias</a>
-        </p>
-      )
-    }
-  </main>
-</Base>
+<Sitio
+  title="SIRYC — Ingeniería en refrigeración, climatización y electricidad"
+  description="Más de 20 años en refrigeración industrial, climatización y electricidad para centros comerciales, edificios corporativos e instituciones en Chile."
+  entrada
+>
+  <Portada />
+  <Especialidades />
+  <Continuidad />
+  <ProyectosRecientes />
+  <Actualidad />
+  <Llamado />
+</Sitio>

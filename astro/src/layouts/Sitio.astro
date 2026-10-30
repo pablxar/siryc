@@ -1,0 +1,40 @@
+---
+import Base from "./Base.astro";
+import Cabecera from "../components/Cabecera.astro";
+import Pie from "../components/Pie.astro";
+import Entrada from "../components/Entrada.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  entrada?: boolean;
+}
+const { title, description, entrada = false } = Astro.props;
+---
+
+<Base title={title} description={description} entrada={entrada}>
+  <a href="#contenido" class="saltar">Saltar al contenido</a>
+  {entrada && <Entrada />}
+  <Cabecera />
+  <main id="contenido">
+    <slot />
+  </main>
+  <Pie />
+</Base>
+
+<style>
+  .saltar {
+    position: fixed;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 80;
+    padding: 0.75rem 1rem;
+    background: var(--color-azul);
+    color: var(--color-papel);
+    font-weight: 600;
+    translate: 0 -200%;
+  }
+  .saltar:focus-visible {
+    translate: 0 0;
+  }
+</style>

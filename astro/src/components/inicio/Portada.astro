@@ -1,0 +1,170 @@
+---
+// Portada: titular editorial grande que sube línea a línea, filete partido que se dibuja
+// y una sola foto protagonista con el corte de la marca. Celular: foto vertical propia arriba.
+import { getImage } from "astro:assets";
+import Flecha from "../Flecha.astro";
+import banner from "../../assets/banner-web-siryc.png";
+import vertical from "../../assets/hero-mobile-siryc.png";
+
+const formatos = ["avif", "webp"] as const;
+const anchosEscritorio = [900, 1300, 1672];
+const anchosCelular = [480, 720, 887];
+const fuente = async (img: ImageMetadata, anchos: number[], format: "avif" | "webp") => {
+  const imgs = await Promise.all(anchos.map((width) => getImage({ src: img, width, format })));
+  return imgs.map((g, k) => `${g.src} ${anchos[k]}w`).join(", ");
+};
+const escritorio = await Promise.all(formatos.map((f) => fuente(banner, anchosEscritorio, f)));
+const celular = await Promise.all(formatos.map((f) => fuente(vertical, anchosCelular, f)));
+const respaldo = await getImage({ src: banner, width: 1300, format: "webp" });
+---
+
+<section class="portada" data-lineas aria-labelledby="portada-t">
+  <div class="contenedor portada-grilla">
+    <div class="portada-texto">
+      <p class="rotulo sigue">Tu clima, nuestra ingeniería</p>
+      <h1 id="portada-t" class="portada-titulo">
+        <span class="linea"><span>Ingeniería en</span></span>
+        <span class="linea i-1"><span>climatización,</span></span>
+        <span class="linea i-2"><span>refrigeración y</span></span>
+        <span class="linea i-3"><span>electricidad.</span></span>
+      </h1>
+      <span class="filete dibuja portada-filete" aria-hidden="true"></span>
+      <p class="portada-bajada sigue i-1">
+        Más de 20 años instalando y manteniendo sistemas técnicos para domicilios, oficinas, centros comerciales, edificios corporativos e
+        instituciones de gobierno en Chile.
+      </p>
+      <div class="portada-acciones sigue i-2">
+        <a href="/contacto" class="boton corte">Solicitar cotización <Flecha /></a>
+        <a href="/servicios" class="enlace-flecha">Explorar servicios <Flecha /></a>
+      </div>
+    </div>
+
+    <figure class="portada-foto corte">
+      <picture>
+        <source media="(max-width: 1023px)" type="image/avif" srcset={celular[0]} sizes="100vw" />
+        <source media="(max-width: 1023px)" type="image/webp" srcset={celular[1]} sizes="100vw" />
+        <source type="image/avif" srcset={escritorio[0]} sizes="50vw" />
+        <source type="image/webp" srcset={escritorio[1]} sizes="50vw" />
+        <img src={respaldo.src} alt="Técnico de SIRYC supervisando una instalación industrial de climatización" width="1672" height="941" fetchpriority="high" decoding="async" />
+      </picture>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .portada {
+    padding: 5.5rem 0 4rem;
+  }
+  .portada-grilla {
+    display: grid;
+    gap: 2rem;
+  }
+  .portada-texto {
+    order: 2;
+  }
+  .portada-titulo {
+    margin-top: 1rem;
+    font-size: clamp(2.35rem, 1.2rem + 5.2vw, 5.25rem);
+    font-weight: 700;
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+  }
+  .portada-filete {
+    width: min(14rem, 50%);
+    height: 4px;
+    margin-top: 1.75rem;
+  }
+  .portada-bajada {
+    margin-top: 1.5rem;
+    max-width: 38rem;
+    font-size: clamp(1rem, 0.95rem + 0.3vw, 1.175rem);
+    line-height: 1.6;
+    color: var(--color-grafito);
+  }
+  .portada-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.75rem;
+    margin-top: 2rem;
+  }
+  .enlace-flecha {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 2.75rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-tinta);
+    text-decoration: none;
+  }
+  @media (hover: hover) {
+    .enlace-flecha:hover :global(.flecha) {
+      translate: 0.35rem 0;
+    }
+  }
+
+  .portada-foto {
+    --corte: 2rem;
+    order: 1;
+    margin: 0;
+    height: 52svh;
+    min-height: 18rem;
+    overflow: hidden;
+    background: var(--color-papel-2);
+  }
+  .portada-foto img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 28%;
+  }
+
+  @media (min-width: 1024px) {
+    .portada {
+      padding: 7.5rem 0 5rem;
+      min-height: min(100svh, 62rem);
+    }
+    .portada-grilla {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+      align-items: end;
+      gap: 3.5rem;
+    }
+    .portada-texto {
+      order: 1;
+      padding-bottom: 0.5rem;
+    }
+    .portada-foto {
+      --corte: 3rem;
+      order: 2;
+      height: min(74svh, 46rem);
+    }
+    .portada-foto img {
+      object-position: 72% center;
+    }
+  }
+
+  /* La foto entra con un barrido en el ángulo del corte. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .portada-foto img {
+      clip-path: polygon(0 0, 0 0, -60% 100%, -60% 100%);
+      scale: 1.08;
+      transition:
+        clip-path 1.3s var(--ease-barrido) 0.15s,
+        scale 2s var(--ease-salida) 0.15s;
+      animation: salvavidas-foto 0s 5s forwards;
+    }
+    :global(.js) .portada.dentro .portada-foto img {
+      clip-path: polygon(0 0, 160% 0, 100% 100%, -60% 100%);
+      scale: 1;
+      animation: none;
+    }
+  }
+  @keyframes salvavidas-foto {
+    to {
+      clip-path: none;
+      scale: 1;
+    }
+  }
+</style>

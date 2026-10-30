@@ -29,7 +29,7 @@ const { p, i, href = "#" } = Astro.props;
     <span class="fila-dato cifra">{miles(p.metros)}<span> m²</span></span>
 
     <span class="fila-foto corte" aria-hidden="true">
-      <Picture src={p.foto} formats={["avif", "webp"]} widths={[240, 480]} sizes="12rem" alt="" />
+      <Picture src={p.foto} formats={["avif", "webp"]} fallbackFormat="webp" widths={[240, 480]} sizes="12rem" alt="" />
     </span>
 
     <Flecha class="fila-flecha" />

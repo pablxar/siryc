@@ -1,10 +1,13 @@
-// Marca con `.dentro` cada [data-revela] al entrar en pantalla (una sola vez).
+// Marca con `.dentro` cada [data-revela] / [data-lineas] al entrar en pantalla (una sola vez).
 // El CSS solo oculta el estado inicial bajo `.js` y movimiento permitido.
-const items = document.querySelectorAll<HTMLElement>("[data-revela]");
+// Si la portada abre con la entrada del logo, se espera a que termine para no animar debajo del telón.
+const items = document.querySelectorAll<HTMLElement>("[data-revela], [data-lineas]");
 
-if (!("IntersectionObserver" in window)) {
-  items.forEach((el) => el.classList.add("dentro"));
-} else {
+function observar() {
+  if (!("IntersectionObserver" in window)) {
+    items.forEach((el) => el.classList.add("dentro"));
+    return;
+  }
   const io = new IntersectionObserver(
     (entries) => {
       for (const e of entries) {
@@ -13,7 +16,22 @@ if (!("IntersectionObserver" in window)) {
         io.unobserve(e.target);
       }
     },
-    { rootMargin: "0px 0px -12% 0px", threshold: 0.15 },
+    // Margen superior enorme: lo que ya quedó arriba (scroll rápido, ancla) cuenta como visto
+    // y se muestra; nunca queda un bloque oculto por encima de la pantalla.
+    { rootMargin: "99999px 0px -8% 0px", threshold: 0.12 },
   );
   items.forEach((el) => io.observe(el));
+}
+
+if (document.documentElement.classList.contains("con-entrada")) {
+  let listo = false;
+  const empezar = () => {
+    if (listo) return;
+    listo = true;
+    observar();
+  };
+  document.addEventListener("entrada:fin", empezar, { once: true });
+  setTimeout(empezar, 4500); // salvavidas si la entrada falla
+} else {
+  observar();
 }

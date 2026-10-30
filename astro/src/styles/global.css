@@ -170,3 +170,75 @@
 .i-3 { --i: 3; }
 .i-4 { --i: 4; }
 .i-5 { --i: 5; }
+
+/* ─── Contenedor ─────────────────────────────────────────────────────────── */
+.contenedor {
+  width: 100%;
+  max-width: 82.5rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+@media (min-width: 640px) {
+  .contenedor { padding-inline: 1.5rem; }
+}
+@media (min-width: 1024px) {
+  .contenedor { padding-inline: 2.5rem; }
+}
+
+/* ─── Logo en línea: colores por pieza ───────────────────────────────────── */
+.logo .iso-engranaje,
+.logo .iso-copo,
+.isotipo .iso-engranaje,
+.isotipo .iso-copo { fill: var(--logo-iso, #3f4144); }
+.logo .palabra { fill: var(--logo-texto, var(--color-grafito)); }
+.logo .iso-frio,
+.isotipo .iso-frio { fill: var(--color-azul); }
+.logo .iso-calor,
+.isotipo .iso-calor { fill: var(--color-rojo); }
+.logo--claro {
+  --logo-iso: var(--color-papel);
+  --logo-texto: var(--color-papel);
+}
+.logo .iso > g,
+.isotipo .iso > g,
+.isotipo .iso-copo path {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* ─── Líneas que suben detrás de una máscara (titulares) ─────────────────── */
+.linea { display: block; }
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-lineas] .linea {
+    overflow: hidden;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+  }
+  .js [data-lineas] .linea > span {
+    display: inline-block;
+    translate: 0 110%;
+    transition: translate 1.1s var(--ease-salida);
+    transition-delay: calc(var(--i, 0) * 0.09s);
+    animation: salvavidas 0s 5s forwards;
+  }
+  .js [data-lineas] .sigue {
+    opacity: 0;
+    translate: 0 1rem;
+    transition:
+      opacity var(--dur) var(--ease-salida),
+      translate var(--dur) var(--ease-salida);
+    transition-delay: calc(0.45s + var(--i, 0) * var(--escalon));
+    animation: salvavidas 0s 5s forwards;
+  }
+  .js [data-lineas] .filete.dibuja {
+    transform: scaleX(0);
+    transition: transform 1.3s var(--ease-barrido) 0.4s;
+  }
+  .js [data-lineas].dentro .linea > span,
+  .js [data-lineas].dentro .sigue {
+    opacity: 1;
+    translate: 0 0;
+    animation: none;
+  }
+  .js [data-lineas].dentro .filete.dibuja { transform: scaleX(1); }
+}

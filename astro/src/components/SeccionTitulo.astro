@@ -1,0 +1,97 @@
+---
+// Cabeza de capítulo: número de sección, titular que sube por líneas y, opcional, un enlace.
+import Flecha from "./Flecha.astro";
+
+interface Props {
+  numero: string;
+  rotulo: string;
+  lineas: string[];
+  bajada?: string;
+  enlace?: { href: string; texto: string };
+  id: string;
+  claro?: boolean;
+}
+const { numero, rotulo, lineas, bajada, enlace, id, claro = false } = Astro.props;
+---
+
+<header class:list={["sec-titulo", { claro }]} data-lineas>
+  <p class="rotulo sigue"><span class="cifra sec-num">{numero}</span> {rotulo}</p>
+  <h2 id={id}>
+    {lineas.map((l, i) => <span class={`linea i-${i}`}><span>{l}</span></span>)}
+  </h2>
+  {bajada && <p class="sec-bajada sigue i-1">{bajada}</p>}
+  {
+    enlace && (
+      <a href={enlace.href} class="sec-enlace sigue i-2">
+        {enlace.texto} <Flecha />
+      </a>
+    )
+  }
+</header>
+
+<style>
+  .sec-titulo {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+  .sec-num {
+    margin-right: 0.5rem;
+    color: var(--color-azul);
+  }
+  h2 {
+    font-size: clamp(2rem, 1.3rem + 3vw, 3.75rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .sec-bajada {
+    max-width: 40rem;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--color-grafito);
+  }
+  .sec-enlace {
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 2.75rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-tinta);
+    text-decoration: none;
+  }
+  @media (hover: hover) {
+    .sec-enlace:hover :global(.flecha) {
+      translate: 0.35rem 0;
+    }
+  }
+  @media (min-width: 1024px) {
+    .sec-titulo {
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      column-gap: 3rem;
+      margin-bottom: 3.5rem;
+    }
+    .sec-titulo > :not(.sec-enlace) {
+      grid-column: 1;
+    }
+    .sec-enlace {
+      grid-column: 2;
+      grid-row: 1 / span 3;
+      align-self: end;
+    }
+  }
+  .claro h2,
+  .claro .sec-enlace {
+    color: var(--color-papel);
+  }
+  .claro .rotulo,
+  .claro .sec-bajada {
+    color: var(--color-niebla);
+  }
+  .claro .sec-num {
+    color: var(--color-papel);
+  }
+</style>

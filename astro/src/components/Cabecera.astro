@@ -1,0 +1,371 @@
+---
+// Cabecera. Arriba: plana sobre el papel. Al bajar: aparece la «isla» con el corte SIRYC
+// (solo clip-path + opacity sobre una capa; el contenido no se mueve). Menú activo con
+// el filete partido. En celular: una sola pieza (logo + «Menú») y hoja a pantalla completa.
+import Logo from "./Logo.astro";
+import Flecha from "./Flecha.astro";
+
+const enlaces = [
+  { href: "/nosotros", texto: "Nosotros" },
+  { href: "/servicios", texto: "Servicios" },
+  { href: "/proyectos", texto: "Proyectos" },
+  { href: "/blog", texto: "Actualidad" },
+];
+const ruta = Astro.url.pathname.replace(/\/$/, "") || "/";
+const activo = (href: string) => ruta === href || ruta.startsWith(`${href}/`);
+---
+
+<header class="cabecera" data-cabecera>
+  <div class="cabecera-isla" aria-hidden="true"></div>
+  <div class="contenedor cabecera-fila">
+    <a href="/" class="cabecera-logo" aria-label="SIRYC, ir al inicio">
+      <Logo titulo="SIRYC" />
+    </a>
+
+    <nav class="cabecera-nav" aria-label="Principal">
+      {
+        enlaces.map((e) => (
+          <a href={e.href} class:list={["nav-enlace", { activo: activo(e.href) }]} aria-current={activo(e.href) ? "page" : undefined}>
+            {e.texto}
+            <span class="filete" />
+          </a>
+        ))
+      }
+    </nav>
+
+    <a href="/contacto" class="boton corte cabecera-cta">Solicitar cotización <Flecha /></a>
+
+    <button type="button" class="menu-boton" aria-expanded="false" aria-controls="menu-hoja" data-menu-abrir>
+      <span class="menu-boton-texto">Menú</span>
+      <span class="menu-boton-icono" aria-hidden="true"><span></span><span></span></span>
+    </button>
+  </div>
+</header>
+
+<div class="menu-hoja" id="menu-hoja" role="dialog" aria-modal="true" aria-label="Menú" hidden data-menu-hoja>
+  <nav class="contenedor menu-nav" aria-label="Menú principal">
+    <ol>
+      {
+        [{ href: "/", texto: "Inicio" }, ...enlaces, { href: "/contacto", texto: "Contacto" }].map((e, i) => (
+          <li class={`i-${Math.min(i, 5)}`}>
+            <a href={e.href} class:list={["menu-enlace", { activo: e.href === "/" ? ruta === "/" : activo(e.href) }]}>
+              <span class="cifra menu-num">{String(i + 1).padStart(2, "0")}</span>
+              <span class="menu-texto">{e.texto}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+    <div class="menu-pie">
+      <a href="/contacto" class="boton corte">Solicitar cotización <Flecha /></a>
+      <a href="mailto:ventas@siryc.cl" class="menu-correo">ventas@siryc.cl</a>
+    </div>
+  </nav>
+</div>
+
+<style>
+  .cabecera {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 50;
+    padding-top: 0.75rem;
+  }
+  /* Capa de la isla: invisible arriba; al bajar entra con el corte. */
+  .cabecera-isla {
+    --corte: 0.9rem;
+    --isla-x: max(0.5rem, calc((100% - 81.5rem) / 2));
+    position: absolute;
+    inset: 0.5rem 0 -0.25rem 0;
+    background: rgb(238 240 242 / 0.9);
+    backdrop-filter: blur(14px) saturate(1.2);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    opacity: 0;
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      100% 0,
+      100% 100%,
+      0 100%,
+      0 100%
+    );
+    transition:
+      opacity 0.6s var(--ease-salida),
+      clip-path 0.9s var(--ease-salida);
+  }
+  .cabecera.isla .cabecera-isla {
+    opacity: 1;
+    clip-path: polygon(
+      var(--isla-x) 0,
+      calc(100% - var(--isla-x) - var(--corte)) 0,
+      calc(100% - var(--isla-x)) var(--corte-alto),
+      calc(100% - var(--isla-x)) 100%,
+      calc(var(--isla-x) + var(--corte)) 100%,
+      var(--isla-x) calc(100% - var(--corte-alto))
+    );
+  }
+  .cabecera-fila {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    height: 4rem;
+  }
+  .cabecera-logo {
+    display: block;
+    flex: none;
+  }
+  .cabecera-logo :global(.logo) {
+    display: block;
+    height: 2rem;
+    width: auto;
+  }
+  .cabecera-nav {
+    display: none;
+    gap: 2rem;
+    margin-left: auto;
+  }
+  .nav-enlace {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.3rem;
+    min-height: 2.75rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-grafito);
+    text-decoration: none;
+    transition: color 0.4s var(--ease-salida);
+  }
+  .nav-enlace .filete {
+    transform: scaleX(0);
+    transition: transform var(--dur) var(--ease-barrido);
+  }
+  .nav-enlace.activo {
+    color: var(--color-tinta);
+  }
+  .nav-enlace.activo .filete {
+    transform: scaleX(1);
+  }
+  @media (hover: hover) {
+    .nav-enlace:hover {
+      color: var(--color-tinta);
+    }
+    .nav-enlace:hover .filete {
+      transform: scaleX(1);
+    }
+  }
+  .cabecera-cta {
+    display: none;
+  }
+
+  .menu-boton {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 2.75rem;
+    margin-left: auto;
+    padding: 0 0.25rem;
+    font: 600 0.9rem var(--font-sans);
+    color: var(--color-tinta);
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+  .menu-boton-icono {
+    position: relative;
+    display: block;
+    width: 1.5rem;
+    height: 0.75rem;
+  }
+  .menu-boton-icono span {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: currentColor;
+    transition:
+      translate 0.5s var(--ease-salida),
+      rotate 0.5s var(--ease-salida),
+      scale 0.5s var(--ease-salida);
+  }
+  .menu-boton-icono span:first-child {
+    top: 0;
+  }
+  /* Ambas giran desde el centro; la corta se alinea a la derecha con translate. */
+  .menu-boton-icono span:last-child {
+    bottom: 0;
+    translate: 0.3rem 0;
+    scale: 0.6 1;
+  }
+  .menu-boton[aria-expanded="true"] .menu-boton-icono span:first-child {
+    translate: 0 5px;
+    rotate: 45deg;
+  }
+  .menu-boton[aria-expanded="true"] .menu-boton-icono span:last-child {
+    translate: 0 -5px;
+    rotate: -45deg;
+    scale: 1;
+  }
+
+  @media (min-width: 960px) {
+    .cabecera-fila {
+      height: 4.5rem;
+    }
+    .cabecera-logo :global(.logo) {
+      height: 2.25rem;
+    }
+    .cabecera-nav {
+      display: flex;
+    }
+    .cabecera-cta {
+      display: inline-flex;
+    }
+    .menu-boton {
+      display: none;
+    }
+  }
+
+  /* Hoja del menú (celular): entra con un barrido diagonal desde la esquina del corte. */
+  .menu-hoja {
+    position: fixed;
+    inset: 0;
+    z-index: 45;
+    display: flex;
+    padding-top: 6rem;
+    background: var(--color-papel);
+    overflow-y: auto;
+    clip-path: polygon(100% 0, 100% 0, 100% 0, 100% 0);
+    transition: clip-path 0.8s var(--ease-barrido);
+  }
+  .menu-hoja[hidden] {
+    display: none;
+  }
+  .menu-hoja.abierta {
+    clip-path: polygon(-60% 0, 100% 0, 100% 100%, -60% 100%);
+  }
+  .menu-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+  .menu-nav ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .menu-nav li {
+    border-top: 1px solid var(--color-niebla);
+    opacity: 0;
+    translate: 0 0.75rem;
+    transition:
+      opacity 0.6s var(--ease-salida),
+      translate 0.6s var(--ease-salida);
+    transition-delay: calc(0.2s + var(--i, 0) * 0.06s);
+  }
+  .menu-hoja.abierta li {
+    opacity: 1;
+    translate: 0 0;
+  }
+  .menu-enlace {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.9rem 0;
+    color: var(--color-tinta);
+    text-decoration: none;
+  }
+  .menu-num {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-azul);
+  }
+  .menu-texto {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 1.2rem + 3vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.05;
+  }
+  .menu-enlace.activo .menu-texto {
+    color: var(--color-azul);
+  }
+  .menu-pie {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+  .menu-correo {
+    font-weight: 600;
+    color: var(--color-grafito);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .menu-hoja,
+    .menu-nav li,
+    .cabecera-isla {
+      transition-duration: 0.01ms;
+    }
+  }
+
+  /* Durante la entrada de marca el isotipo de la cabecera espera al que vuela. */
+  :global(html.con-entrada:not(.entrada-fin)) .cabecera-logo :global(.iso) {
+    opacity: 0;
+    animation: salvavidas-iso 0s 4.5s forwards;
+  }
+  @keyframes salvavidas-iso {
+    to {
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  const cabecera = document.querySelector<HTMLElement>("[data-cabecera]")!;
+  const boton = document.querySelector<HTMLButtonElement>("[data-menu-abrir]")!;
+  const hoja = document.querySelector<HTMLElement>("[data-menu-hoja]")!;
+
+  // Isla: un solo listener pasivo; solo cambia una clase al cruzar el umbral.
+  let isla = false;
+  const revisar = () => {
+    const ahora = window.scrollY > 24;
+    if (ahora !== isla) {
+      isla = ahora;
+      cabecera.classList.toggle("isla", isla);
+    }
+  };
+  revisar();
+  window.addEventListener("scroll", revisar, { passive: true });
+
+  // Menú del celular.
+  let cerrarTimer: number | undefined;
+  const abrir = () => {
+    clearTimeout(cerrarTimer);
+    hoja.hidden = false;
+    boton.setAttribute("aria-expanded", "true");
+    boton.querySelector(".menu-boton-texto")!.textContent = "Cerrar";
+    document.documentElement.style.setProperty("overflow", "hidden");
+    requestAnimationFrame(() => {
+      hoja.classList.add("abierta");
+      hoja.querySelector<HTMLElement>("a")?.focus({ preventScroll: true });
+    });
+  };
+  const cerrar = (devolverFoco = true) => {
+    hoja.classList.remove("abierta");
+    boton.setAttribute("aria-expanded", "false");
+    boton.querySelector(".menu-boton-texto")!.textContent = "Menú";
+    document.documentElement.style.removeProperty("overflow");
+    cerrarTimer = window.setTimeout(() => (hoja.hidden = true), 800);
+    if (devolverFoco) boton.focus({ preventScroll: true });
+  };
+  boton.addEventListener("click", () => (boton.getAttribute("aria-expanded") === "true" ? cerrar() : abrir()));
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && boton.getAttribute("aria-expanded") === "true") cerrar();
+  });
+  hoja.addEventListener("click", (e) => {
+    if ((e.target as HTMLElement).closest("a")) cerrar(false);
+  });
+  matchMedia("(min-width: 960px)").addEventListener("change", (m) => {
+    if (m.matches && boton.getAttribute("aria-expanded") === "true") cerrar(false);
+  });
+</script>
