@@ -94,13 +94,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       {
         property: "og:image",
-        content:
-          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8d089586-70ac-4ce8-b071-bf3df8990fd6/id-preview-cb0b100a--677beb3d-3aa9-420d-b1fe-e8cfb67f3218.lovable.app-1785033716609.png",
+        content: "https://siryc.cl/og-image.png",
       },
       {
         name: "twitter:image",
-        content:
-          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8d089586-70ac-4ce8-b071-bf3df8990fd6/id-preview-cb0b100a--677beb3d-3aa9-420d-b1fe-e8cfb67f3218.lovable.app-1785033716609.png",
+        content: "https://siryc.cl/og-image.png",
       },
     ],
     links: [

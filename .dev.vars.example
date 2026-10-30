@@ -1,0 +1,3 @@
+# Secretos para `wrangler dev` (copiar a .dev.vars, que está en .gitignore).
+# En producción se cargan con: npx wrangler secret put RESEND_API_KEY
+RESEND_API_KEY=
